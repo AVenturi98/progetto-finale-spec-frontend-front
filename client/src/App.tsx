@@ -7,11 +7,15 @@ import type { Travel } from './types/types';
 // Components
 import Form from './components/Form';
 import List from './components/List';
+import Modal from './components/Modal';
 
 function App() {
 
   const [travels, setTravels] = React.useState<Travel[] | null>(null);
   const [filteredTravels, setFilteredTravels] = React.useState<Travel[] | null>(null);
+
+  // set Open Modal
+  const [openModal, setOpenModal] = React.useState<boolean>(false);
 
   // creo una funzione fetch per recuperare i records
   async function fetchURL(): Promise<Travel[]> {
@@ -58,7 +62,14 @@ function App() {
         {/* RECORDS LIST */}
         <List
           filteredTravels={filteredTravels}
-          travels={travels} />
+          travels={travels}
+          callback={() => setOpenModal(true)} />
+
+        <Modal
+          isOpen={openModal}
+          title={'TITOLO DI TESTO'}
+          onClose={() => setOpenModal(false)}
+          content />
 
       </div>
     </>

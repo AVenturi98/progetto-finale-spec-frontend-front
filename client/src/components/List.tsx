@@ -6,9 +6,11 @@ import type { Travel } from '../types/types';
 export default function List({
     filteredTravels,
     travels,
+    callback
 }: {
     filteredTravels: (Travel[] | null),
     travels: (Travel[] | null),
+    callback: () => void
 }) {
 
     const [order, setOrder] = React.useState<"A-Z" | "Z-A" | undefined>(undefined);
@@ -70,7 +72,10 @@ export default function List({
                 ) : (
                     // sorted va a buon fine
                     sorted.map((e: Travel) => (
-                        <li key={e.id} className='border-4 border-gray-300 rounded-md p-3 m-2 min-w-[250px]'>
+                        <li
+                            key={e.id}
+                            onClick={callback}
+                            className='border-4 border-gray-300 rounded-md p-3 m-2 min-w-[250px]'>
                             <div className='flex justify-between'>
                                 <h2>{e.title}</h2>
                                 <p className='text-gray-500 italic'>{e.category}</p>
