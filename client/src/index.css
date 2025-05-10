@@ -15,12 +15,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-} */
-
 ul,
 ol {
   list-style: none;
@@ -92,8 +86,8 @@ button:focus-visible {
 }
 
 .circle {
-  min-height: 50px;
-  min-width: 50px;
+  min-width: 70px;
+  min-height: 70px;
   border: 2px solid gray;
   border-radius: calc(infinity * 1px);
   padding: 5px 8px;
