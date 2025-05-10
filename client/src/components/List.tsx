@@ -1,20 +1,12 @@
 import * as React from 'react';
+import GlobalContext from '../context/GlobalContext';
 
-type Travel = {
-    id: number,
-    title: string,
-    category: string,
-    image?: string,
-    start: string,
-    price: number,
-    duration: number,
-    direct: boolean,
-    scale?: number,
-    available: boolean
-}
-
+// Types
+import type { Travel } from '../types/types'
 
 function List() {
+
+    const globalContext = React.useContext(GlobalContext); // dichiaro all'interno di una variabile il context
 
     const [travels, setTravels] = React.useState<Travel[] | null>(null);
     const [filteredTravels, setFilteredTravels] = React.useState<Travel[] | null>(null);
@@ -24,35 +16,15 @@ function List() {
     const scaloRef = React.useRef<HTMLInputElement>(null);
     const direttoRef = React.useRef<HTMLInputElement>(null);
 
-    // fetch for get a records list
-    async function fetchGetList(): Promise<Travel | null> {
-        try {
-            const res = await fetch('http://localhost:3001/travels');
-
-            if (!res.ok) throw new Error(`Errore: ${res.status}, message: ${res.statusText}`)
-
-            const data = await res.json();
-
-            setTravels(data);
-
-            console.log(data)
-
-            return data as Travel
-
-        } catch (err) {
-            if (err instanceof Error) {
-                throw new Error(`Errore: ${err.message}`)
-
-            } else {
-                console.error(err)
-            }
-            return null
-        }
-    }
 
     React.useEffect(() => {
-        fetchGetList();
-    }, [])
+        if (globalContext) {
+            const { URL_API, fetchURL } = globalContext;
+            fetchURL(URL_API)
+                .then(res => setTravels(res))
+                .catch(err => console.error(err))
+        }
+    }, [globalContext])
 
 
     // handle submit to Form
