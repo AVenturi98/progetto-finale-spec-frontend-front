@@ -23,7 +23,7 @@ export function GlobalProvider({ children }: ContextProps) {
     // creo una funzione fetch per recuperare il contenuto sotto formato json e utilizzarlo in tutto il progetto
     async function fetchURL(url: string): Promise<Travel[]> {
         try {
-            const res = await fetch(url);
+            const res: Response = await fetch(url);
             if (!res.ok) throw new Error(`Errore durante il recupero dei dati. Errore: ${res.status}, message: ${res.statusText}`)
             const data = await res.json();
             return data

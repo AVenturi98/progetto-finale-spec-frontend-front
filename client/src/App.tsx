@@ -5,7 +5,8 @@ import { GlobalProvider } from "./context/GlobalContext";
 
 // Components
 import DefaultLayout from './layout/DefaultLayout';
-import List from './components/List'
+import List from './components/List';
+import Show from "./pages/Show";
 
 function App() {
 
@@ -16,7 +17,9 @@ function App() {
         <Routes>
 
           <Route path='/' element={<DefaultLayout />}>
-            <Route path='/' element={<List />} />
+            <Route path='/' element={<List />}>
+            </Route>
+            <Route path='/:id' element={<Show />} />
           </Route>
         </Routes>
       </BrowserRouter>

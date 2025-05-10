@@ -76,6 +76,34 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.row_prev,
+.row_next {
+  width: 200px;
+  padding: 3px 0;
+  border-top: 2px solid gray;
+  border-bottom: 2px solid gray;
+  background-color: rgb(56, 56, 56);
+
+}
+
+.row_prev {
+  border-left: 2px solid gray;
+  border-radius: 10px 0 0 10px;
+}
+
+.circle {
+  min-height: 50px;
+  min-width: 50px;
+  border: 2px solid gray;
+  border-radius: calc(infinity * 1px);
+  padding: 5px 8px;
+}
+
+.row_next {
+  border-right: 2px solid gray;
+  border-radius: 0 10px 10px 0;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import GlobalContext from '../context/GlobalContext';
+import { Link } from 'react-router';
 
 // Types
 import type { Travel } from '../types/types'
@@ -132,17 +133,19 @@ function List() {
             <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
                 {sorted ? (
                     sorted.map((e: Travel) => (
-                        <li key={e.id} className='border-4 border-gray-300 rounded-md p-3 m-2 min-w-[250px]'>
-                            <div className='flex justify-between'>
-                                <h2>{e.title}</h2>
-                                <p className='text-gray-500 italic'>{e.category}</p>
-                            </div>
-                            <div>
-                                <p className='italic text-gray-400'>partenza:
-                                    <span className='text-white'>{' ' + e.start}</span>
-                                </p>
-                            </div>
-                        </li>
+                        <Link to={`/${e.id}`} key={e.id}>
+                            <li className='border-4 border-gray-300 rounded-md p-3 m-2 min-w-[250px]'>
+                                <div className='flex justify-between'>
+                                    <h2>{e.title}</h2>
+                                    <p className='text-gray-500 italic'>{e.category}</p>
+                                </div>
+                                <div>
+                                    <p className='italic text-gray-400'>partenza:
+                                        <span className='text-white'>{' ' + e.start}</span>
+                                    </p>
+                                </div>
+                            </li>
+                        </Link>
                     ))
                 ) : (
                     <div className='flex justify-center items-center'>
