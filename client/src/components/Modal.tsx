@@ -4,27 +4,38 @@ export default function Modal({
     isOpen,
     title,
     content,
-    onClose
+    onClose,
+    hContent,
+    isStatic
 }: {
     isOpen: boolean,
     title: string,
     content?: React.ReactNode,
-    onClose: () => void
+    onClose: () => void,
+    hContent?: string,
+    isStatic?: boolean
 }) {
 
+    React.useEffect(() => {
+        scrollTo(0, 0)
+    }, [])
+
     return (
-        <>
-            {isOpen &&
-                <div className="fixed top-0 left-0 w-full h-screen bg-black/80 flex justify-center items-center z-50">
-                    <div className='bg-white text-black h-[75%] w-[75%] rounded-md relative'>
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className='text-red-500 border-2 border-red-500 rounded-md absolute top-0 right-0 m-3'>X</button>
-                        <h2 className='text-center my-4'>{title}</h2>
-                        <div>{content}</div>
-                    </div>
-                </div>}
-        </>
+        <div
+            className={`text-black  ${isStatic ? '' : 'fixed w-full h-screen inset-0 bg-[#181818] '} flex items-center justify-around transition-opacity duration-500 z-55 ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+            <div
+                className={`bg-white rounded-lg shadow-lg p-5 transform transition-transform duration-500 ${isOpen ? 'scale-100' : 'scale-90'}`}>
+                <div className="flex justify-between items-center mb-4">
+                    <h2 className="w-full text-center font-bold">{title}</h2>
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="text-red-500 hover:text-black">
+                        ✕
+                    </button>
+                </div>
+                <div className={`overflow-y-auto overflow-x-hidden ${hContent ? hContent : 'h-[400px]'}`}>{content}</div>
+            </div>
+        </div>
     )
 }

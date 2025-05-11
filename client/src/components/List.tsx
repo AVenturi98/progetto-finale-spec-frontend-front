@@ -7,12 +7,14 @@ export default function List({
     filteredTravels,
     travels,
     setOpenModal,
-    setGetID
+    setGetID,
+    gridCols
 }: {
     filteredTravels: (Travel[] | null),
     travels: (Travel[] | null),
     setOpenModal: (isOpen: boolean) => void,
-    setGetID: (id: number) => void
+    setGetID: (id: number) => void,
+    gridCols?: string
 }) {
 
     const [order, setOrder] = React.useState<"A-Z" | "Z-A" | undefined>(undefined);
@@ -65,7 +67,7 @@ export default function List({
             </div>
 
             {/* RECORDS LIST */}
-            <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
+            <ul className={`grid ${gridCols ? gridCols : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'}`}>
                 {sorted === null ? (
                     // sorted è null
                     <div className='flex justify-center items-center'>

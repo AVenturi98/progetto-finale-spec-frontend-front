@@ -1,46 +1,22 @@
-// import * as React from 'react';
-// import { useParams } from 'react-router';
-// const URL_API = import.meta.env.VITE_URL_API;
-
 // Types 
 import type { Travel } from '../types/types';
 
 // Icons
 import airplane from '../assets/airplane.png'
 
-export default function Show({ item }: { item: Travel | null }) {
-
-    // const { id } = useParams();
-
-    // const [record, setRecord] = React.useState<Travel | null>(null);
-
-    // async function getItem(): Promise<Travel | null> {
-    //     try {
-    //         const res = await fetch(`${URL_API}/${id}`);
-    //         if (!res.ok) throw new Error(`Errore durante il recupero dei dati. Errore: ${res.status}, message: ${res.statusText}`)
-    //         const data = await res.json();
-    //         // console.log(data);
-    //         setRecord(data.travel)
-    //         return data
-    //     } catch (err) {
-    //         if (err instanceof Error) {
-    //             throw new Error(`Errore: ${err.message}`)
-    //         } else {
-    //             console.error(err)
-    //         }
-    //         return null
-    //     }
-    // };
-
-    // React.useEffect(() => {
-    //     getItem();
-    // }, [id])
+export default function Show({
+    item,
+    comparison
+}: {
+    item: Travel | null,
+    comparison: () => void
+}) {
 
 
     return (
         <div className='flex justify-center items-center m-3'>
             {item ?
-                <div className='w-full sm:w-[90%] md:w-[800px] border-2 border-gray-500 rounded-md flex flex-col gap-2 py-5 px-2 sm:p-10 md:px-8'>
+                <div className='w-full border-2 border-gray-500 rounded-md flex flex-col gap-2 py-5 px-2 sm:p-10 md:px-8'>
                     <div className='flex flex-wrap md:flex-nowrap justify-between items-center'>
                         <h2 className='md:w-[30%] text-center'><span className='text-sm'>Da:</span> {item.start && item.start}</h2>
                         <div className=''>
@@ -72,8 +48,8 @@ export default function Show({ item }: { item: Travel | null }) {
                                 <p className='w-full text-center font-extrabold text-2xl'>{item.price && item.price.toFixed(2) + '€'}</p>
                             </div>
                         </div>
-                        <div className='border-2 border-gray-500 w-[45%] h-[120px] p-3 mt-2'>
-                            <button>
+                        <div className='w-[45%] p-3 mt-2 flex flex-wrap justify-between items-center gap-2'>
+                            <button className='w-full'>
                                 Aggiungi ai preferiti
                             </button>
                             <button>
@@ -82,7 +58,10 @@ export default function Show({ item }: { item: Travel | null }) {
                             <button>
                                 DEL
                             </button>
-                            <button>
+                            <button
+                                type="button"
+                                onClick={comparison}
+                                className='bg-green-300'>
                                 COMP
                             </button>
                         </div>
