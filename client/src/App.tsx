@@ -8,6 +8,7 @@ import type { Travel } from './types/types';
 import Form from './components/Form';
 import List from './components/List';
 import Modal from './components/Modal';
+import Show from './pages/Show';
 
 function App() {
 
@@ -15,7 +16,7 @@ function App() {
   const [filteredTravels, setFilteredTravels] = React.useState<Travel[] | null>(null);
 
   // set Open Modal
-  const [openModal, setOpenModal] = React.useState<boolean>(false);
+  const [openModal, setOpenModal] = React.useState<boolean>(true);
 
   // creo una funzione fetch per recuperare i records
   async function fetchURL(): Promise<Travel[]> {
@@ -37,8 +38,34 @@ function App() {
 
   React.useEffect(() => {
     fetchURL();
-  }, [])
+  }, []);
 
+
+  // Show setting
+  const [getIDs, setGetIDs] = React.useState<number | null>(null);
+  const [record, setRecord] = React.useState<Travel | null>(null);
+
+  async function getItem(): Promise<Travel | null> {
+    try {
+      const res = await fetch(`${URL_API}/${getIDs}`);
+      if (!res.ok) throw new Error(`Errore durante il recupero dei dati. Errore: ${res.status}, message: ${res.statusText}`)
+      const data = await res.json();
+      // console.log(data);
+      setRecord(data.travel)
+      return data
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new Error(`Errore: ${err.message}`)
+      } else {
+        console.error(err)
+      }
+      return null
+    }
+  };
+
+  React.useEffect(() => {
+    getItem();
+  }, [getIDs])
 
   return (
     <>
@@ -63,13 +90,16 @@ function App() {
         <List
           filteredTravels={filteredTravels}
           travels={travels}
-          callback={() => setOpenModal(true)} />
+          setOpenModal={setOpenModal}
+          setGetID={setGetIDs} />
 
         <Modal
           isOpen={openModal}
-          title={'TITOLO DI TESTO'}
+          title={`Viaggio a ${record?.title}`}
           onClose={() => setOpenModal(false)}
-          content />
+          content={
+            <Show item={record} />
+          } />
 
       </div>
     </>

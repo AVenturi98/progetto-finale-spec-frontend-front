@@ -6,11 +6,13 @@ import type { Travel } from '../types/types';
 export default function List({
     filteredTravels,
     travels,
-    callback
+    setOpenModal,
+    setGetID
 }: {
     filteredTravels: (Travel[] | null),
     travels: (Travel[] | null),
-    callback: () => void
+    setOpenModal: (isOpen: boolean) => void,
+    setGetID: (id: number) => void
 }) {
 
     const [order, setOrder] = React.useState<"A-Z" | "Z-A" | undefined>(undefined);
@@ -30,6 +32,11 @@ export default function List({
             return 0; // Nessun ordinamento se `order` non è definito
         });
     }, [filteredTravels, travels, order])
+
+    function getID(id: number) {
+        setOpenModal(true);
+        setGetID(id)
+    }
 
     return (
         <>
@@ -74,7 +81,7 @@ export default function List({
                     sorted.map((e: Travel) => (
                         <li
                             key={e.id}
-                            onClick={callback}
+                            onClick={() => getID(e.id)}
                             className='border-4 border-gray-300 rounded-md p-3 m-2 min-w-[250px]'>
                             <div className='flex justify-between'>
                                 <h2>{e.title}</h2>

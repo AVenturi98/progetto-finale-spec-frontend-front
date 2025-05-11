@@ -21,7 +21,7 @@ export default function Modal({
                             type="button"
                             onClick={onClose}
                             className='text-red-500 border-2 border-red-500 rounded-md absolute top-0 right-0 m-3'>X</button>
-                        <h2>{title}</h2>
+                        <h2 className='text-center my-4'>{title}</h2>
                         <div>{content}</div>
                     </div>
                 </div>}
