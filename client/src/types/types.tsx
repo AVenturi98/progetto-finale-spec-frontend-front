@@ -1,9 +1,12 @@
-export type Travel = {
+export type Base = {
     id: number,
     title: string,
     category: string,
+    start: string
+}
+
+export type Travel = Base & {
     image?: string,
-    start: string,
     price: number,
     duration: number,
     direct: boolean,

@@ -1,31 +1,35 @@
 import * as React from 'react';
 
 // Types
-import type { Travel } from '../types/types';
+import type { Travel, Base } from '../types/types';
 
 export default function List({
     filteredTravels,
     travels,
     setOpenModal,
     setGetID,
-    gridCols
+    gridCols,
+    onDelete,
+    setDeleted
 }: {
     filteredTravels: (Travel[] | null),
     travels: (Travel[] | null),
     setOpenModal: (isOpen: boolean) => void,
     setGetID: (id: number) => void,
-    gridCols?: string
+    gridCols?: string,
+    onDelete?: boolean,
+    setDeleted?: React.Dispatch<React.SetStateAction<Base[] | Travel[] | null>>
 }) {
 
     const [order, setOrder] = React.useState<"A-Z" | "Z-A" | undefined>(undefined);
 
 
     // order by selected 
-    const sorted: Travel[] | null = React.useMemo(() => {
+    const sorted = React.useMemo(() => {
         const arrayToSort = filteredTravels || travels;
         if (!arrayToSort) return null; // Controlla che l'array non sia null
 
-        return [...arrayToSort].sort((a: Travel, b: Travel) => {
+        return [...arrayToSort].sort((a, b) => {
             if (order === "A-Z") {
                 return a.title.localeCompare(b.title); // Ordine alfabetico crescente
             } else if (order === "Z-A") {
@@ -36,8 +40,12 @@ export default function List({
     }, [filteredTravels, travels, order])
 
     function getID(id: number) {
-        setOpenModal(true);
-        setGetID(id)
+        if (!onDelete) {
+            setOpenModal(true);
+            setGetID(id)
+        } else {
+            setGetID(id)
+        }
     }
 
     return (
@@ -84,7 +92,7 @@ export default function List({
                         <li
                             key={e.id}
                             onClick={() => getID(e.id)}
-                            className='border-4 border-gray-300 rounded-md p-3 m-2 min-w-[250px]'>
+                            className='cursor-pointer border-4 border-gray-300 rounded-md p-3 m-2 min-w-[250px]'>
                             <div className='flex justify-between'>
                                 <h2>{e.title}</h2>
                                 <p className='text-gray-500 italic'>{e.category}</p>
@@ -93,6 +101,11 @@ export default function List({
                                 <p className='italic text-gray-400'>partenza:
                                     <span className='text-white'>{' ' + e.start}</span>
                                 </p>
+                                {onDelete &&
+                                    <button
+                                        type="button"
+                                        onClick={() => setDeleted && setDeleted(travels?.filter(t => t.id !== e.id) || null)}>DEL
+                                    </button>}
                             </div>
                         </li>
                     ))

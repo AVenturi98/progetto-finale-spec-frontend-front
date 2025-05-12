@@ -2,7 +2,7 @@ import * as React from 'react';
 const URL_API = import.meta.env.VITE_URL_API;
 
 //Types 
-import type { Travel } from './types/types';
+import type { Travel, Base } from './types/types';
 
 // Components
 import Form from './components/Form';
@@ -26,6 +26,12 @@ function App() {
   const [openCompare, setOpenCompare] = React.useState<boolean>(false);
   const [recordCompare, setRecordCompare] = React.useState<Travel | null>(null);
   const [getIDCompare, setGetIDCompare] = React.useState<number | null>(null);
+
+  // Favorites setting
+  const [favorites, setFavorites] = React.useState<Base[] | null>(null);
+  const [filteredFavorites, setFilteredFavorites] = React.useState<Base[] | null>(null);
+  const exists = favorites?.find(t => t.id === record?.id || t.id === recordCompare?.id);
+
 
 
   // creo una funzione fetch per recuperare i records
@@ -75,7 +81,8 @@ function App() {
   React.useEffect(() => {
     openModal && getItem({ set: setRecord });
     openCompare && getItem({ set: setRecordCompare })
-  }, [getIDs, getIDCompare]);
+  }, [getIDs, getIDCompare, favorites]);
+
 
 
 
@@ -89,7 +96,7 @@ function App() {
         </nav>
       </header>
 
-      <main>
+      <main className='flex flex-col gap-10'>
         <div className='m-2'>
           <h1>Viaggia oltre meta</h1>
 
@@ -112,17 +119,40 @@ function App() {
             openCompare={openCompare}
             record={record}
             setOpenModal={setOpenModal}
-            setRecord={setRecord}
             setFilteredTravels={setFilteredTravels}
             travels={travels}
             setGetIDs={setGetIDs}
             filteredTravels={filteredTravels}
             setOpenCompare={setOpenCompare}
             recordCompare={recordCompare}
-            setRecordCompare={setRecordCompare}
-            setGetIDCompare={setGetIDCompare} />
+            setGetIDCompare={setGetIDCompare}
+            setFavorites={setFavorites}
+            textBtnFavorite={`${exists ? 'Rimuovi dai' : 'Aggiungi ai'} preferiti`} />
 
         </div>
+
+        <section>
+          <h2>PREFERITI</h2>
+          {favorites && favorites.length > 0 ?
+            <>
+              <Form
+                // form search
+                setFilteredTravels={setFilteredFavorites}
+                travels={favorites as unknown as Travel[]} />
+              <List
+                filteredTravels={filteredFavorites as unknown as Travel[] | null}
+                travels={[...favorites] as unknown as Travel[] | null}
+                setOpenModal={setOpenModal}
+                setGetID={setGetIDs}
+                gridCols={'grid-cols-1'}
+                onDelete={true}
+                setDeleted={setFavorites} />
+            </>
+            :
+            <div className='flex justify-center items-center'>
+              Nessun elemento tra i Preferiti
+            </div>}
+        </section>
       </main>
     </>
   )

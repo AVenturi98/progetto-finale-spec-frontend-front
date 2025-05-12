@@ -6,12 +6,15 @@ import airplane from '../assets/airplane.png'
 
 export default function Show({
     item,
-    comparison
+    comparison,
+    adding,
+    textBtnFavorite
 }: {
     item: Travel | null,
-    comparison: () => void
+    comparison: () => void,
+    adding: () => void,
+    textBtnFavorite: string
 }) {
-
 
     return (
         <div className='flex justify-center items-center m-3'>
@@ -49,8 +52,11 @@ export default function Show({
                             </div>
                         </div>
                         <div className='w-[45%] p-3 mt-2 flex flex-wrap justify-between items-center gap-2'>
-                            <button className='w-full'>
-                                Aggiungi ai preferiti
+                            <button
+                                type='button'
+                                onClick={adding}
+                                className='w-full'>
+                                {textBtnFavorite}
                             </button>
                             <button>
                                 UP

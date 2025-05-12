@@ -1,40 +1,68 @@
+import * as React from 'react';
+
+// Components
 import Show from "./Show";
 import Modal from "./Modal";
 import Form from "./Form";
 import List from "./List";
 
-import type { Travel } from "../types/types";
+import type { Travel, Base } from "../types/types";
+
+
 
 export default function SettingModals({
     openModal,
     openCompare,
     record,
     setOpenModal,
-    setRecord,
     setFilteredTravels,
     travels,
     setGetIDs,
     filteredTravels,
     setOpenCompare,
     recordCompare,
-    setRecordCompare,
     setGetIDCompare,
-
+    setFavorites,
+    textBtnFavorite
 }: {
     openModal: boolean,
     openCompare: boolean,
     record: Travel | null,
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>,
-    setRecord: React.Dispatch<React.SetStateAction<Travel | null>>
     setFilteredTravels: React.Dispatch<React.SetStateAction<Travel[] | null>>
     travels: Travel[] | null,
     setGetIDs: React.Dispatch<React.SetStateAction<number | null>>,
     filteredTravels: Travel[] | null
     setOpenCompare: React.Dispatch<React.SetStateAction<boolean>>,
     recordCompare: Travel | null,
-    setRecordCompare: React.Dispatch<React.SetStateAction<Travel | null>>,
-    setGetIDCompare: React.Dispatch<React.SetStateAction<number | null>>
+    setGetIDCompare: React.Dispatch<React.SetStateAction<number | null>>,
+    setFavorites: React.Dispatch<React.SetStateAction<Base[] | null>>,
+    textBtnFavorite: string
 }) {
+
+
+
+
+    function addFavorites(item: Base) {
+        setFavorites((prev: Base[] | null) => {
+
+            if (!prev) {
+                alert('Aggiunto');
+                return [item];
+            }
+
+            const idExist = prev.find(t => t.id === item.id);
+            if (!idExist) {
+                alert('Aggiunto');
+                return [...prev, item];
+            } else {
+                alert('Rimosso');
+                return prev.filter(t => t.id !== item.id);
+            }
+        });
+    }
+
+
 
     return (
         <>
@@ -47,10 +75,7 @@ export default function SettingModals({
                             isOpen={true}
                             isStatic={true}
                             title={`Viaggio a ${record?.title}`}
-                            onClose={() => {
-                                setOpenModal(false);
-                                setRecord(null)
-                            }}
+                            onClose={() => { setOpenModal(false) }}
                             content={
                                 record === null ?
                                     <>
@@ -64,17 +89,18 @@ export default function SettingModals({
                                             setGetID={setGetIDs}
                                             gridCols='grid-cols-2' />
                                     </> :
-                                    <Show item={record} comparison={() => setOpenCompare(true)} />}
+                                    <Show
+                                        item={record}
+                                        comparison={() => setOpenCompare(true)}
+                                        adding={() => record && addFavorites({ id: record.id, title: record.title, category: record.category, start: record.start })}
+                                        textBtnFavorite={textBtnFavorite} />}
                         />
                         {/* OPEN MODAL COMPARE */}
                         <Modal
                             isOpen={true}
                             isStatic={true}
                             title={recordCompare ? `Viaggio a ${recordCompare?.title}` : 'Confronta viaggi'}
-                            onClose={() => {
-                                setOpenCompare(false);
-                                setRecordCompare(null)
-                            }}
+                            onClose={() => { setOpenCompare(false) }}
                             content={
                                 recordCompare === null ?
                                     <>
@@ -88,7 +114,11 @@ export default function SettingModals({
                                             setGetID={setGetIDCompare}
                                             gridCols='grid-cols-2' />
                                     </> :
-                                    <Show item={recordCompare} comparison={() => setOpenCompare(true)} />
+                                    <Show
+                                        item={recordCompare}
+                                        comparison={() => setOpenCompare(true)}
+                                        adding={() => recordCompare && addFavorites({ id: recordCompare.id, title: recordCompare.title, category: recordCompare.category, start: recordCompare.start })}
+                                        textBtnFavorite={textBtnFavorite} />
                             }
                         />
                     </div>
@@ -101,11 +131,12 @@ export default function SettingModals({
                         <Modal
                             isOpen={true}
                             title={`Viaggio a ${record?.title}`}
-                            onClose={() => {
-                                setOpenModal(false);
-                                setRecord(null)
-                            }}
-                            content={<Show item={record} comparison={() => setOpenCompare(true)} />}
+                            onClose={() => { setOpenModal(false) }}
+                            content={<Show
+                                item={record}
+                                comparison={() => setOpenCompare(true)}
+                                adding={() => record && addFavorites({ id: record.id, title: record.title, category: record.category, start: record.start })}
+                                textBtnFavorite={textBtnFavorite} />}
                         />
                     }
                     {/* MODAL COMPARE */}
@@ -113,10 +144,7 @@ export default function SettingModals({
                         <Modal
                             isOpen={true}
                             title={recordCompare ? `Viaggio a ${recordCompare?.title}` : 'Confronta viaggi'}
-                            onClose={() => {
-                                setOpenCompare(false);
-                                setRecordCompare(null)
-                            }}
+                            onClose={() => { setOpenCompare(false) }}
                             content={
                                 recordCompare === null ?
                                     <>
@@ -129,7 +157,11 @@ export default function SettingModals({
                                             setOpenModal={setOpenCompare}
                                             setGetID={setGetIDCompare} />
                                     </> :
-                                    <Show item={recordCompare} comparison={() => setOpenModal(true)} />
+                                    <Show
+                                        item={recordCompare}
+                                        comparison={() => setOpenModal(true)}
+                                        adding={() => recordCompare && addFavorites({ id: recordCompare.id, title: recordCompare.title, category: recordCompare.category, start: recordCompare.start })}
+                                        textBtnFavorite={textBtnFavorite} />
                             }
                         />
                     }
