@@ -20,7 +20,7 @@ export default function Show({
     return (
         <div className='flex justify-center items-center m-3'>
             {item ?
-                <div className='w-full border-2 border-gray-500 rounded-md flex flex-col gap-2 py-5 px-2 sm:p-10 md:px-8'>
+                <div className='w-full border-2 border-gray-500 rounded-md flex flex-col gap-2 py-5 px-2 sm:p-8 md:px-8'>
                     <div className='flex flex-wrap md:flex-nowrap justify-between items-center'>
                         <h2 className='md:w-[30%] text-center'><span className='text-sm'>Da:</span> {item.start && item.start}</h2>
                         <div className=''>

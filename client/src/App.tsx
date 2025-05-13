@@ -38,6 +38,9 @@ function App() {
   const exists = favorites?.find(t => t.id === record?.id || t.id === recordCompare?.id);
   const [favoritesModal, setFavoritesModal] = React.useState<boolean>(false);
 
+  // Pop-up setting
+  const [popUp, setPopUp] = React.useState<boolean>(false);
+  const [addRemoved, setAddRemoved] = React.useState<'Aggiunto' | 'Rimosso'>('Aggiunto');
 
 
   // creo una funzione fetch per recuperare i records
@@ -91,6 +94,53 @@ function App() {
 
 
 
+  // Add favorites elements
+  function addFavorites(item: Base) {
+
+    timing();
+
+    setFavorites((prev: Base[] | null) => {
+
+      if (!prev) {
+        setAddRemoved('Aggiunto');
+        return [item];
+      }
+
+      const idExist = prev.find(t => t.id === item.id);
+      if (!idExist) {
+        setAddRemoved('Aggiunto');
+        return [...prev, item];
+      } else {
+        setAddRemoved('Rimosso');
+        return prev.filter(t => t.id !== item.id);
+      }
+    });
+  }
+
+  // Setting visibility Pop-up
+  const timing = () => {
+    let timer;
+    clearTimeout(timer);
+    setTimeout(() => {
+      setPopUp(true)
+      setTimeout(() => {
+        clearTimeout(timer);
+        setPopUp(false)
+      }, 2000)
+    }, 100)
+  }
+
+  const [isVisible, setIsVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    if (popUp) {
+      setIsVisible(true);
+    } else {
+      const timeout = setTimeout(() => setIsVisible(false), 500);
+      return () => clearTimeout(timeout);
+    }
+  }, [popUp]);
+
 
   return (
     <>
@@ -130,7 +180,7 @@ function App() {
             setOpenCompare={setOpenCompare}
             recordCompare={recordCompare}
             setGetIDCompare={setGetIDCompare}
-            setFavorites={setFavorites}
+            adding={() => { record && addFavorites({ id: record.id, title: record.title, category: record.category, start: record.start }) }}
             textBtnFavorite={`${exists ? 'Rimuovi dai' : 'Aggiungi ai'} preferiti`} />
 
         </div>
@@ -153,7 +203,11 @@ function App() {
                   setGetID={setGetIDs}
                   gridCols={'grid-cols-1'}
                   onDelete={true}
-                  setDeleted={setFavorites} />
+                  setDeleted={(updatedFavorites) => {
+                    setFavorites(updatedFavorites);
+                    setAddRemoved('Rimosso');
+                    timing()
+                  }} />
               </>
               :
               <div className='flex justify-center items-center'>
@@ -165,7 +219,7 @@ function App() {
         </section>
 
         {/* BUTTONS */}
-        <section className='fixed bottom-20 md:bottom-40 right-10 sm:right-20 xl:right-50 z-99'>
+        <section className='fixed bottom-20 md:bottom-10 right-10 sm:right-20 xl:right-50 z-99'>
           <div className='flex flex-col items-center gap-2'>
             <button
               type="button"
@@ -180,6 +234,15 @@ function App() {
             </button>
           </div>
         </section>
+
+        {isVisible &&
+          <aside
+            className={`absolute top-5 z-99 transition-all duration-500 ease-in-out ${isVisible && popUp ? 'opacity-100 scale-100 translate-y-0 visible' : 'opacity-0 scale-90 -translate-y-5 invisible'}`}>
+            <div className={`${exists ? 'bg-green-400' : 'bg-red-400'} text-white font-bold h-[50px] w-[300px] rounded-md px-3 py-2 flex items-center justify-center`}>
+              {exists ? addRemoved + ' ai' : addRemoved + ' dai'} preferiti
+            </div>
+          </aside>
+        }
       </main>
     </>
   )
