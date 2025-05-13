@@ -11,36 +11,37 @@ import type { Travel } from "../types/types";
 
 export default function SettingModals({
     openModal,
-    openCompare,
-    record,
     setOpenModal,
+    openCompare,
+    setOpenCompare,
+    record,
+    setRecord,
+    recordCompare,
+    setRecordCompare,
+    filteredTravels,
     setFilteredTravels,
     travels,
     setGetIDs,
-    filteredTravels,
-    setOpenCompare,
-    recordCompare,
     setGetIDCompare,
     adding,
     textBtnFavorite
 }: {
     openModal: boolean,
-    openCompare: boolean,
-    record: Travel | null,
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>,
+    openCompare: boolean,
+    setOpenCompare: React.Dispatch<React.SetStateAction<boolean>>,
+    record: Travel | null,
+    setRecord: React.Dispatch<React.SetStateAction<Travel | null>>,
+    recordCompare: Travel | null,
+    setRecordCompare: React.Dispatch<React.SetStateAction<Travel | null>>,
+    filteredTravels: Travel[] | null
     setFilteredTravels: React.Dispatch<React.SetStateAction<Travel[] | null>>
     travels: Travel[] | null,
     setGetIDs: React.Dispatch<React.SetStateAction<number | null>>,
-    filteredTravels: Travel[] | null
-    setOpenCompare: React.Dispatch<React.SetStateAction<boolean>>,
-    recordCompare: Travel | null,
     setGetIDCompare: React.Dispatch<React.SetStateAction<number | null>>,
     adding: () => void,
     textBtnFavorite: string
 }) {
-
-
-
 
 
     return (
@@ -54,7 +55,10 @@ export default function SettingModals({
                             isOpen={openModal}
                             isStatic={true}
                             title={`Viaggio a ${record?.title}`}
-                            onClose={() => setOpenModal(false)}
+                            onClose={() => {
+                                setOpenModal(false);
+                                setRecord(null)
+                            }}
                             content={
                                 record === null ?
                                     <>
@@ -79,7 +83,10 @@ export default function SettingModals({
                             isOpen={openCompare}
                             isStatic={true}
                             title={recordCompare ? `Viaggio a ${recordCompare?.title}` : 'Confronta viaggi'}
-                            onClose={() => setOpenCompare(false)}
+                            onClose={() => {
+                                setOpenCompare(false);
+                                setRecordCompare(null)
+                            }}
                             content={
                                 recordCompare === null ?
                                     <>
@@ -95,7 +102,7 @@ export default function SettingModals({
                                     </> :
                                     <Show
                                         item={recordCompare}
-                                        comparison={() => setOpenCompare(true)}
+                                        comparison={() => setOpenModal(true)}
                                         adding={adding}
                                         textBtnFavorite={textBtnFavorite} />
                             }

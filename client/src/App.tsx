@@ -68,9 +68,9 @@ function App() {
 
 
 
-  async function getItem({ set }: { set: (travel: Travel) => void }): Promise<Travel | null> {
+  async function getItem({ set, id }: { set: (travel: Travel) => void, id: number | null }): Promise<Travel | null> {
     try {
-      const res = await fetch(`${URL_API}/${getIDs}`);
+      const res = await fetch(`${URL_API}/${id}`);
       if (!res.ok) throw new Error(`Errore durante il recupero dei dati. Errore: ${res.status}, message: ${res.statusText}`)
       const data = await res.json();
       // console.log(data);
@@ -88,9 +88,9 @@ function App() {
 
 
   React.useEffect(() => {
-    openModal && getItem({ set: setRecord });
-    openCompare && getItem({ set: setRecordCompare })
-  }, [getIDs, getIDCompare, favorites]);
+    openModal && getItem({ set: setRecord, id: getIDs });
+    openCompare && getItem({ set: setRecordCompare, id: getIDCompare })
+  }, [getIDs, getIDCompare]);
 
 
 
@@ -170,17 +170,25 @@ function App() {
           {/* SETTING MODALS */}
           <SettingModals
             openModal={openModal}
-            openCompare={openCompare}
-            record={record}
             setOpenModal={setOpenModal}
+            openCompare={openCompare}
+            setOpenCompare={setOpenCompare}
+            record={record}
+            recordCompare={recordCompare}
+            setRecord={setRecord}
+            setRecordCompare={setRecordCompare}
+            filteredTravels={filteredTravels}
             setFilteredTravels={setFilteredTravels}
             travels={travels}
             setGetIDs={setGetIDs}
-            filteredTravels={filteredTravels}
-            setOpenCompare={setOpenCompare}
-            recordCompare={recordCompare}
             setGetIDCompare={setGetIDCompare}
-            adding={() => { record && addFavorites({ id: record.id, title: record.title, category: record.category, start: record.start }) }}
+            adding={() => {
+              if (record && record.id !== undefined) {
+                addFavorites({ id: record.id, title: record.title, category: record.category, start: record.start });
+              } else if (recordCompare && recordCompare.id !== undefined) {
+                addFavorites({ id: recordCompare.id, title: recordCompare.title, category: recordCompare.category, start: recordCompare.start });
+              }
+            }}
             textBtnFavorite={`${exists ? 'Rimuovi dai' : 'Aggiungi ai'} preferiti`} />
 
         </div>
