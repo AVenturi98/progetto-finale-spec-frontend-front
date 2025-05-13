@@ -33,7 +33,10 @@ function App() {
   const [getIDCompare, setGetIDCompare] = React.useState<number | null>(null);
 
   // Favorites setting
-  const [favorites, setFavorites] = React.useState<Base[] | null>(null);
+  const [favorites, setFavorites] = React.useState<Base[] | null>(() => {
+    const storedFavorites = localStorage.getItem('favorites');
+    return storedFavorites ? JSON.parse(storedFavorites) : null;
+  }); // localStoraga for favorites
   const [filteredFavorites, setFilteredFavorites] = React.useState<Base[] | null>(null);
   const exists = favorites?.find(t => t.id === record?.id || t.id === recordCompare?.id);
   const [favoritesModal, setFavoritesModal] = React.useState<boolean>(false);
@@ -67,7 +70,7 @@ function App() {
 
 
 
-
+  // funzione per recuperare un singolo item
   async function getItem({ set, id }: { set: (travel: Travel) => void, id: number | null }): Promise<Travel | null> {
     try {
       const res = await fetch(`${URL_API}/${id}`);
@@ -116,6 +119,11 @@ function App() {
       }
     });
   }
+
+  // Effect for localStorage by favorites
+  React.useEffect(() => {
+    localStorage.setItem('favorites', favorites ? JSON.stringify(favorites) : '[]')
+  }, [favorites])
 
   // Setting visibility Pop-up
   const timing = () => {
