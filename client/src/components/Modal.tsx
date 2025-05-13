@@ -22,19 +22,22 @@ export default function Modal({
 
     return (
         <div
-            className={`text-black  ${isStatic ? '' : 'fixed w-full h-screen inset-0 bg-[#181818] '} flex items-center justify-around transition-opacity duration-500 z-55 ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+            className={`text-black  ${isStatic ? '' : 'fixed w-full h-screen inset-0 bg-[#000000ef] '} flex items-center justify-around transition-opacity duration-500 z-55 ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
             <div
-                className={`bg-white rounded-lg shadow-lg p-5 transform transition-transform duration-500 ${isOpen ? 'scale-100' : 'scale-90'}`}>
-                <div className="flex justify-between items-center mb-4">
+                className={`bg-white rounded-lg shadow-lg p-5 transform transition-transform duration-300 ${isOpen ? 'scale-100' : 'scale-90'} relative`}>
+                <div className="flex justify-center items-center mb-4">
                     <h2 className="w-full text-center font-bold">{title}</h2>
                     <button
                         type="button"
                         onClick={onClose}
-                        className="text-red-500 hover:text-black">
+                        className="py-2 px-3 absolute top-1 right-1 rounded-xl bg-[#c4c4c4] text-[#4973fc] hover:text-[#ffff00] hover:bg-[#0b43fa] hover:shadow-md shadow-[#4973fc]">
                         ✕
                     </button>
                 </div>
-                <div className={`overflow-y-auto overflow-x-hidden ${hContent ? hContent : 'h-[400px]'}`}>{content}</div>
+                <div
+                    className={`overflow-y-auto overflow-x-hidden ${hContent ? hContent : 'h-[400px]'}`}>
+                    {content}
+                </div>
             </div>
         </div>
     )

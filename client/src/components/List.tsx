@@ -3,6 +3,10 @@ import * as React from 'react';
 // Types
 import type { Travel, Base } from '../types/types';
 
+// Icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
 export default function List({
     filteredTravels,
     travels,
@@ -83,7 +87,7 @@ export default function List({
                     </div>
                 ) : Array.isArray(sorted) && sorted.length === 0 ? (
                     // sorted è un array vuoto
-                    <div className='flex justify-center items-center my-5'>
+                    <div className='text-center my-5'>
                         Nessun risultato trovato
                     </div>
                 ) : (
@@ -92,19 +96,21 @@ export default function List({
                         <li
                             key={e.id}
                             onClick={() => getID(e.id)}
-                            className='cursor-pointer border-4 border-gray-300 rounded-md p-3 m-2 min-w-[250px]'>
+                            className='cursor-pointer border-4 border-[#727fa8] hover:bg-yellow-100 transition-all duration-300 rounded-md p-3 m-2 min-w-[250px]'>
                             <div className='flex justify-between'>
                                 <h2>{e.title}</h2>
                                 <p className='text-gray-500 italic'>{e.category}</p>
                             </div>
-                            <div>
+                            <div className='flex justify-between items-center'>
                                 <p className='italic text-gray-400'>partenza:
-                                    <span className='text-white'>{' ' + e.start}</span>
+                                    <span className='text-black'>{' ' + e.start}</span>
                                 </p>
                                 {onDelete &&
                                     <button
                                         type="button"
-                                        onClick={() => setDeleted && setDeleted(travels?.filter(t => t.id !== e.id) || null)}>DEL
+                                        onClick={() => setDeleted && setDeleted(travels?.filter(t => t.id !== e.id) || null)}
+                                        className='rounded-md bg-red-400 px-2 hover:bg-red-500 hover:shadow-md shadow-red-300'>
+                                        <FontAwesomeIcon icon={faTrash} />
                                     </button>}
                             </div>
                         </li>

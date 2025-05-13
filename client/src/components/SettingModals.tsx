@@ -69,7 +69,7 @@ export default function SettingModals({
             {openModal && openCompare ? (
                 // Modal doppio
                 <div className="fixed inset-0 bg-[#181818] z-50 flex items-center justify-center">
-                    <div className="grid grid-cols-2 gap-4 p-4">
+                    <div className='grid grid-cols-2 gap-4 p-4'>
                         {/* OPEN MODAL */}
                         <Modal
                             isOpen={true}
@@ -136,7 +136,8 @@ export default function SettingModals({
                                 item={record}
                                 comparison={() => setOpenCompare(true)}
                                 adding={() => record && addFavorites({ id: record.id, title: record.title, category: record.category, start: record.start })}
-                                textBtnFavorite={textBtnFavorite} />}
+                                textBtnFavorite={textBtnFavorite}
+                            />}
                         />
                     }
                     {/* MODAL COMPARE */}

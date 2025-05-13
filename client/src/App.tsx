@@ -8,6 +8,11 @@ import type { Travel, Base } from './types/types';
 import Form from './components/Form';
 import List from './components/List';
 import SettingModals from './components/SettingModals';
+import Modal from './components/Modal';
+
+// Icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlaneDeparture } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
 
@@ -31,6 +36,7 @@ function App() {
   const [favorites, setFavorites] = React.useState<Base[] | null>(null);
   const [filteredFavorites, setFilteredFavorites] = React.useState<Base[] | null>(null);
   const exists = favorites?.find(t => t.id === record?.id || t.id === recordCompare?.id);
+  const [favoritesModal, setFavoritesModal] = React.useState<boolean>(false);
 
 
 
@@ -88,15 +94,13 @@ function App() {
 
   return (
     <>
-      <header>
-        <nav className='mb-3 md:mb-12 p-3'>
-          <div>
-            LOGO
-          </div>
+      <header className='bg-[#4973fc] shadow-2xl shadow-amber-300'>
+        <nav className='mb-3 md:mb-12 p-3 cursor-context-menu mx-20 py-5'>
+          <FontAwesomeIcon icon={faPlaneDeparture} size='2xl' style={{ color: '#ffffff', }} />
         </nav>
       </header>
 
-      <main className='flex flex-col gap-10'>
+      <main className='flex flex-col gap-10 cursor-context-menu'>
         <div className='m-2'>
           <h1>Viaggia oltre meta</h1>
 
@@ -131,27 +135,50 @@ function App() {
 
         </div>
 
+        {/* FAVORITES */}
         <section>
-          <h2>PREFERITI</h2>
-          {favorites && favorites.length > 0 ?
-            <>
-              <Form
-                // form search
-                setFilteredTravels={setFilteredFavorites}
-                travels={favorites as unknown as Travel[]} />
-              <List
-                filteredTravels={filteredFavorites as unknown as Travel[] | null}
-                travels={[...favorites] as unknown as Travel[] | null}
-                setOpenModal={setOpenModal}
-                setGetID={setGetIDs}
-                gridCols={'grid-cols-1'}
-                onDelete={true}
-                setDeleted={setFavorites} />
-            </>
-            :
-            <div className='flex justify-center items-center'>
-              Nessun elemento tra i Preferiti
-            </div>}
+          <Modal
+            isOpen={favoritesModal}
+            title={'PREFERITI'}
+            content={favorites && favorites.length > 0 ?
+              <>
+                <Form
+                  // form search
+                  setFilteredTravels={setFilteredFavorites}
+                  travels={favorites as unknown as Travel[]} />
+                <List
+                  filteredTravels={filteredFavorites as unknown as Travel[] | null}
+                  travels={[...favorites] as unknown as Travel[] | null}
+                  setOpenModal={setOpenModal}
+                  setGetID={setGetIDs}
+                  gridCols={'grid-cols-1'}
+                  onDelete={true}
+                  setDeleted={setFavorites} />
+              </>
+              :
+              <div className='flex justify-center items-center'>
+                Nessun elemento tra i Preferiti
+              </div>}
+            onClose={() => setFavoritesModal(false)}
+          />
+
+        </section>
+
+        {/* BUTTONS */}
+        <section className='fixed bottom-20 md:bottom-40 right-10 sm:right-20 xl:right-50 z-99'>
+          <div className='flex flex-col items-center gap-2'>
+            <button
+              type="button"
+              onClick={() => setFavoritesModal(true)}
+              className='rounded-full min-h-[40px] min-w-[40px] bg-[#4973fc] text-[#ffff00] hover:bg-[#0b43fa] hover:shadow-md shadow-[#4973fc]'>
+              ♥
+            </button>
+            <button
+              type="button"
+              className='rounded-full min-h-[40px] min-w-[40px] bg-[#4973fc] text-[#ffff00] hover:bg-[#0b43fa] hover:shadow-md shadow-[#4973fc]'>
+              +
+            </button>
+          </div>
         </section>
       </main>
     </>

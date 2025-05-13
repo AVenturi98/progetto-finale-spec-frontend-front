@@ -42,17 +42,17 @@ export default function Form({
             {/* FILTER BY QUERY/CATEGORY */}
             <form
                 onSubmit={handleSubmitSearch}
-                className='my-5 flex flex-wrap  items-center sm:flex-nowrap gap-3 '>
+                className='my-5 flex flex-wrap items-center sm:flex-nowrap gap-3 '>
 
                 <input
                     type="text"
                     placeholder='Cerca..'
                     ref={search}
-                    className='w-full md:w-[40%] border-2 border-gray-500 rounded-sm px-1 mx-3' />
+                    className='w-full md:w-[40%] -outline-offset-2 outline-[#4973fc] border-2 border-gray-500 rounded-sm px-1 mx-3' />
 
                 <div className='flex items-center'>
                     <div className='flex items-center'>
-                        <label htmlFor="scalo" className='mx-2'>scalo</label>
+                        <label htmlFor="scalo" className='mx-2 pb-1'>scalo</label>
                         <input
                             type="checkbox"
                             name="scalo"
@@ -61,7 +61,7 @@ export default function Form({
                     </div>
 
                     <div className='flex items-center'>
-                        <label htmlFor="diretto" className='mx-2'>diretto</label>
+                        <label htmlFor="diretto" className='mx-2 pb-1'>diretto</label>
                         <input
                             type="checkbox"
                             name="diretto"
@@ -70,7 +70,7 @@ export default function Form({
                     </div>
 
                 </div>
-                <button type="submit">Cerca</button>
+                <button type="submit" className='px-5 py-1 rounded-md bg-[#4973fc] text-[#ffff00] hover:bg-[#0b43fa] hover:shadow-md shadow-[#4973fc]'>Cerca</button>
             </form>
         </>
     )
