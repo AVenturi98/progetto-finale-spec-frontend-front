@@ -64,7 +64,7 @@ function App() {
     }
   }
 
-  React.useEffect(() => {
+  React.useMemo(() => {
     fetchURL();
   }, [record, recordCompare]);
 
@@ -90,7 +90,7 @@ function App() {
   };
 
 
-  React.useEffect(() => {
+  React.useMemo(() => {
     openModal && getItem({ set: setRecord, id: getIDs });
     openCompare && getItem({ set: setRecordCompare, id: getIDCompare })
   }, [getIDs, getIDCompare]);
@@ -121,7 +121,7 @@ function App() {
   }
 
   // Effect for localStorage by favorites
-  React.useEffect(() => {
+  React.useMemo(() => {
     localStorage.setItem('favorites', favorites ? JSON.stringify(favorites) : '[]')
   }, [favorites])
 
