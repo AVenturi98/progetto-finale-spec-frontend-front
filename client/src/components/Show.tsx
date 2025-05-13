@@ -13,8 +13,8 @@ export default function Show({
 }: {
     item: Travel | null,
     comparison: () => void,
-    adding: () => void,
-    textBtnFavorite: string
+    adding?: () => void,
+    textBtnFavorite?: string
 }) {
 
 
