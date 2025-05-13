@@ -126,7 +126,7 @@ function App() {
       setTimeout(() => {
         clearTimeout(timer);
         setPopUp(false)
-      }, 2000)
+      }, 1200)
     }, 100)
   }
 
@@ -212,9 +212,9 @@ function App() {
                   gridCols={'grid-cols-1'}
                   onDelete={true}
                   setDeleted={(updatedFavorites) => {
-                    setFavorites(updatedFavorites);
-                    setAddRemoved('Rimosso');
                     timing()
+                    setAddRemoved('Rimosso');
+                    return setFavorites(updatedFavorites);
                   }} />
               </>
               :
@@ -246,8 +246,8 @@ function App() {
         {isVisible &&
           <aside
             className={`absolute top-5 z-99 transition-all duration-500 ease-in-out ${isVisible && popUp ? 'opacity-100 scale-100 translate-y-0 visible' : 'opacity-0 scale-90 -translate-y-5 invisible'}`}>
-            <div className={`${exists ? 'bg-green-400' : 'bg-red-400'} text-white font-bold h-[50px] w-[300px] rounded-md px-3 py-2 flex items-center justify-center`}>
-              {exists ? addRemoved + ' ai' : addRemoved + ' dai'} preferiti
+            <div className={`${addRemoved === 'Aggiunto' ? 'bg-green-400' : 'bg-red-400'} text-white font-bold h-[50px] w-[300px] rounded-md px-3 py-2 flex items-center justify-center`}>
+              {addRemoved === 'Aggiunto' ? addRemoved + ' ai' : addRemoved + ' dai'} preferiti
             </div>
           </aside>
         }

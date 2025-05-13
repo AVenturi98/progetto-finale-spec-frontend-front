@@ -17,7 +17,6 @@ export default function Show({
     textBtnFavorite: string
 }) {
 
-    console.log(item?.id)
 
     return (
         <div className='flex justify-center items-center m-3'>
