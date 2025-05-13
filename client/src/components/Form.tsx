@@ -23,14 +23,12 @@ export default function Form({
 }) {
 
     const [search, setSearch] = React.useState<string>(''); // set Input query
-    const [checkValue, setCheckValue] = React.useState<'scalo' | 'diretto'>('diretto'); // set Checkbox value
+    const [checkValue, setCheckValue] = React.useState<'scalo' | 'diretto' | null>(null); // set Checkbox value
     const [suggest, setSuggest] = React.useState<Travel[] | null>(null); // set Suggestion
 
     // handle submit to Form
     function handleSubmitSearch(e: React.FormEvent<HTMLFormElement>): void {
         e.preventDefault();
-        console.log('Search:', search); // Verifica il valore di search
-        console.log('CheckValue:', checkValue); // Verifica il valore di checkValue
         const filteredTravels = travels?.filter(t => {
             const matchesSearch = search ? t.title.toLowerCase().trim().includes(search.toLowerCase().trim()) : true;
             const matchesCategory = checkValue ? t.category === checkValue : true;
@@ -43,11 +41,7 @@ export default function Form({
 
     // handle change for Category
     function handleCheckboxChange(selected: 'scalo' | 'diretto'): void {
-        if (selected === 'scalo' && checkValue) {
-            if (checkValue) setCheckValue('diretto'); // Deseleziona "diretto"
-        } else if (selected === 'diretto' && checkValue) {
-            if (checkValue) setCheckValue('scalo'); // Deseleziona "scalo"
-        }
+        setCheckValue(prevValue => (prevValue === selected ? null : selected)); // Deseleziona se già selezionato, altrimenti seleziona
     }
 
     // Suggestion function Debounce
@@ -98,13 +92,14 @@ export default function Form({
                     </div>
                 </div>
 
+                {/* CHECKBOX */}
                 <div className='flex items-center'>
                     <div className='flex items-center'>
                         <label htmlFor="scalo" className='mx-2 pb-1'>scalo</label>
                         <input
                             type="checkbox"
                             name="scalo"
-                            value={checkValue}
+                            checked={checkValue === 'scalo'}
                             onChange={() => handleCheckboxChange('scalo')} />
                     </div>
 
@@ -113,7 +108,7 @@ export default function Form({
                         <input
                             type="checkbox"
                             name="diretto"
-                            value={checkValue}
+                            checked={checkValue === 'diretto'}
                             onChange={() => handleCheckboxChange('diretto')} />
                     </div>
 
