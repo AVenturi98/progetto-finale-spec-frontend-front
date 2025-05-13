@@ -113,46 +113,42 @@ export default function SettingModals({
                 // Modal singolo
                 <>
                     {/* MODAL */}
-                    {openModal &&
-                        <Modal
-                            isOpen={openModal}
-                            title={`Viaggio a ${record?.title}`}
-                            onClose={() => { setOpenModal(false) }}
-                            content={record &&
-                                <Show
-                                    item={record}
-                                    comparison={() => setOpenCompare(true)}
-                                    adding={adding}
-                                    textBtnFavorite={textBtnFavorite}
-                                />}
-                        />
-                    }
+                    <Modal
+                        isOpen={openModal}
+                        title={`Viaggio a ${record?.title}`}
+                        onClose={() => { setOpenModal(false) }}
+                        content={record &&
+                            <Show
+                                item={record}
+                                comparison={() => setOpenCompare(true)}
+                                adding={adding}
+                                textBtnFavorite={textBtnFavorite}
+                            />}
+                    />
                     {/* MODAL COMPARE */}
-                    {openCompare &&
-                        <Modal
-                            isOpen={openCompare}
-                            title={recordCompare ? `Viaggio a ${recordCompare?.title}` : 'Confronta viaggi'}
-                            onClose={() => setOpenCompare(false)}
-                            content={
-                                recordCompare === null ?
-                                    <>
-                                        <Form
-                                            setFilteredTravels={setFilteredTravels}
-                                            travels={travels} />
-                                        <List
-                                            filteredTravels={filteredTravels}
-                                            travels={travels}
-                                            setOpenModal={setOpenCompare}
-                                            setGetID={setGetIDCompare} />
-                                    </> :
-                                    <Show
-                                        item={recordCompare}
-                                        comparison={() => setOpenModal(true)}
-                                        adding={adding}
-                                        textBtnFavorite={textBtnFavorite} />
-                            }
-                        />
-                    }
+                    <Modal
+                        isOpen={openCompare}
+                        title={recordCompare ? `Viaggio a ${recordCompare?.title}` : 'Confronta viaggi'}
+                        onClose={() => setOpenCompare(false)}
+                        content={
+                            recordCompare === null ?
+                                <>
+                                    <Form
+                                        setFilteredTravels={setFilteredTravels}
+                                        travels={travels} />
+                                    <List
+                                        filteredTravels={filteredTravels}
+                                        travels={travels}
+                                        setOpenModal={setOpenCompare}
+                                        setGetID={setGetIDCompare} />
+                                </> :
+                                <Show
+                                    item={recordCompare}
+                                    comparison={() => setOpenModal(true)}
+                                    adding={adding}
+                                    textBtnFavorite={textBtnFavorite} />
+                        }
+                    />
                 </>
             )}
         </>

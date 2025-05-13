@@ -26,6 +26,7 @@ export default function Form({
     const [checkValue, setCheckValue] = React.useState<'scalo' | 'diretto' | null>(null); // set Checkbox value
     const [suggest, setSuggest] = React.useState<Travel[] | null>(null); // set Suggestion
 
+
     // handle submit to Form
     function handleSubmitSearch(e: React.FormEvent<HTMLFormElement>): void {
         e.preventDefault();
@@ -93,9 +94,9 @@ export default function Form({
                 </div>
 
                 {/* CHECKBOX */}
-                <div className='mx-2 flex items-center gap-2'>
+                <div className='flex items-center'>
                     <div className='flex items-center'>
-                        <label htmlFor="scalo" className='pb-1'>scalo</label>
+                        <label htmlFor="scalo" className='mx-2 pb-1'>scalo</label>
                         <input
                             type="checkbox"
                             name="scalo"
@@ -104,7 +105,7 @@ export default function Form({
                     </div>
 
                     <div className='flex items-center'>
-                        <label htmlFor="diretto" className='pb-1'>diretto</label>
+                        <label htmlFor="diretto" className='mx-2 pb-1'>diretto</label>
                         <input
                             type="checkbox"
                             name="diretto"

@@ -46,7 +46,7 @@ export default function List({
     function getID(id: number) {
         if (!onDelete) {
             setOpenModal(true);
-            setGetID(id)
+            setGetID(id);
         } else {
             setGetID(id)
         }

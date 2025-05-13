@@ -138,7 +138,7 @@ function App() {
     }, 100)
   }
 
-  const [isVisible, setIsVisible] = React.useState(false);
+  const [isVisible, setIsVisible] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (popUp) {
