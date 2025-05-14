@@ -96,6 +96,7 @@ export default function SettingModals({
     textBtnFavorite: string
 }) {
 
+
     // filtered travel comparison
     const travelCompare: Travel[] | null = travels?.filter(t => {
         return t.id !== getIDs &&
@@ -122,10 +123,11 @@ export default function SettingModals({
                                 <Modal
                                     isOpen={openModal}
                                     isStatic={true}
-                                    title={`Viaggio a ${record?.title}`}
+                                    title={record ? `Viaggio a ${record?.title}` : 'Confronta viaggi'}
                                     onClose={() => {
                                         setOpenModal(false);
-                                        setRecord(null)
+                                        setRecord(null);
+                                        setGetIDs(null)
                                     }}
                                     hContent={conditions.filter(Boolean).length >= 3 ? 'h-[350px]' : ''}
                                     content={
@@ -145,7 +147,8 @@ export default function SettingModals({
                                                 item={record}
                                                 comparison={() => setOpenCompare(true)}
                                                 adding={adding}
-                                                textBtnFavorite={textBtnFavorite} />}
+                                                textBtnFavorite={textBtnFavorite}
+                                                activeComparison={!openCompare} />}
                                 />}
                             {/* OPEN MODAL COMPARE FIST*/}
                             {openCompare &&
@@ -155,7 +158,8 @@ export default function SettingModals({
                                     title={recordCompare ? `Viaggio a ${recordCompare?.title}` : 'Confronta viaggi'}
                                     onClose={() => {
                                         setOpenCompare(false);
-                                        setRecordCompare(null)
+                                        setRecordCompare(null);
+                                        setGetIDCompare(null)
                                     }}
                                     hContent={conditions.filter(Boolean).length >= 3 ? 'h-[350px]' : ''}
                                     content={
@@ -175,7 +179,8 @@ export default function SettingModals({
                                                 item={recordCompare}
                                                 comparison={() => setOpenCompareSecond(true)}
                                                 adding={adding}
-                                                textBtnFavorite={textBtnFavorite} />
+                                                textBtnFavorite={textBtnFavorite}
+                                                activeComparison={!openCompareSecond} />
                                     }
                                 />}
                             {/* OPEN MODAL COMPARE SECOND*/}
@@ -186,7 +191,8 @@ export default function SettingModals({
                                     title={recordCompareSecond ? `Viaggio a ${recordCompareSecond?.title}` : 'Confronta viaggi'}
                                     onClose={() => {
                                         setOpenCompareSecond(false);
-                                        setRecordCompareSecond(null)
+                                        setRecordCompareSecond(null);
+                                        setGetIDCompareSecond(null)
                                     }}
                                     hContent={conditions.filter(Boolean).length >= 3 ? 'h-[350px]' : ''}
                                     content={
@@ -206,7 +212,8 @@ export default function SettingModals({
                                                 item={recordCompareSecond}
                                                 comparison={() => setOpenCompareThirty(true)}
                                                 adding={adding}
-                                                textBtnFavorite={textBtnFavorite} />}
+                                                textBtnFavorite={textBtnFavorite}
+                                                activeComparison={!openCompareThirty} />}
                                 />}
                             {/* OPEN MODAL COMPARE THIRTY*/}
                             {openCompareThirty &&
@@ -216,7 +223,8 @@ export default function SettingModals({
                                     title={recordCompareThirty ? `Viaggio a ${recordCompareThirty?.title}` : 'Confronta viaggi'}
                                     onClose={() => {
                                         setOpenCompareThirty(false);
-                                        setRecordCompareThirty(null)
+                                        setRecordCompareThirty(null);
+                                        setGetIDCompareThirty(null)
                                     }}
                                     hContent={conditions.filter(Boolean).length >= 3 ? 'h-[350px]' : ''}
                                     content={
@@ -236,7 +244,8 @@ export default function SettingModals({
                                                 item={recordCompareThirty}
                                                 comparison={() => setOpenModal(true)}
                                                 adding={adding}
-                                                textBtnFavorite={textBtnFavorite} />
+                                                textBtnFavorite={textBtnFavorite}
+                                                activeComparison={!openModal} />
                                     }
                                 />}
                         </div>
@@ -269,6 +278,7 @@ export default function SettingModals({
                                         comparison={() => setOpenCompare(true)}
                                         adding={adding}
                                         textBtnFavorite={textBtnFavorite}
+                                        activeComparison={!openCompare}
                                     />
                             }
                         />
@@ -296,7 +306,9 @@ export default function SettingModals({
                                         item={recordCompare}
                                         comparison={() => setOpenModal(true)}
                                         adding={adding}
-                                        textBtnFavorite={textBtnFavorite} />
+                                        textBtnFavorite={textBtnFavorite}
+                                        activeComparison={!openCompareSecond}
+                                    />
                             }
                         />
                         {/* MODAL COMAPRE SECOND */}
@@ -324,6 +336,7 @@ export default function SettingModals({
                                         comparison={() => setOpenCompareThirty(true)}
                                         adding={adding}
                                         textBtnFavorite={textBtnFavorite}
+                                        activeComparison={!openCompareThirty}
                                     />}
                         />
                         {/* MODAL COMPARE THIRTY*/}
@@ -350,7 +363,9 @@ export default function SettingModals({
                                         item={recordCompareThirty}
                                         comparison={() => setOpenCompareThirty(true)}
                                         adding={adding}
-                                        textBtnFavorite={textBtnFavorite} />
+                                        textBtnFavorite={textBtnFavorite}
+                                        activeComparison={!openModal}
+                                    />
                             }
                         />
                     </>

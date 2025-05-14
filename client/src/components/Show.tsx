@@ -9,12 +9,14 @@ export default function Show({
     item,
     comparison,
     adding,
-    textBtnFavorite
+    textBtnFavorite,
+    activeComparison
 }: {
     item: Travel | null,
     comparison: () => void,
     adding?: () => void,
-    textBtnFavorite?: string
+    textBtnFavorite?: string,
+    activeComparison: boolean
 }) {
 
 
@@ -57,12 +59,13 @@ export default function Show({
                                 className='w-full py-2 rounded-xl bg-[#4973fc] text-[#ffff00] hover:bg-[#0b43fa] hover:shadow-md shadow-[#4973fc]'>
                                 {textBtnFavorite}
                             </button>
-                            <button
-                                type="button"
-                                onClick={comparison}
-                                className='w-full py-2 rounded-xl bg-green-300 text-[#4973FC] hover:bg-green-400 hover:shadow-md shadow-green-300'>
-                                CONFRONTA
-                            </button>
+                            {activeComparison &&
+                                <button
+                                    type="button"
+                                    onClick={comparison}
+                                    className='w-full py-2 rounded-xl bg-green-300 text-[#4973FC] hover:bg-green-400 hover:shadow-md shadow-green-300'>
+                                    CONFRONTA
+                                </button>}
                         </div>
 
                     </div>
