@@ -49,14 +49,6 @@ function App() {
     return storedFavorites ? JSON.parse(storedFavorites) : null;
   }); // localStoraga for favorites
   const [filteredFavorites, setFilteredFavorites] = React.useState<Base[] | null>(null);
-  const exists = favorites?.some(t => {
-    if (t.id === record?.id ||
-      t.id === recordCompare?.id ||
-      t.id === recordCompareSecond?.id ||
-      t.id === recordCompareThirty?.id) {
-      return true
-    } else return false
-  });
   const [favoritesModal, setFavoritesModal] = React.useState<boolean>(false);
 
   // Pop-up setting
@@ -143,7 +135,6 @@ function App() {
   // Effect for localStorage by favorites
   React.useMemo(() => {
     localStorage.setItem('favorites', favorites ? JSON.stringify(favorites) : '[]')
-    console.log(exists)
   }, [favorites])
 
   // Setting visibility Pop-up

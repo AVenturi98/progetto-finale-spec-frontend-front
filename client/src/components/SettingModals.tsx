@@ -95,6 +95,51 @@ export default function SettingModals({
 }) {
 
 
+    // Modal config array
+    const modalsConfig = [
+        {
+            isOpen: openModal,
+            setIsOpen: setOpenModal,
+            record: record,
+            setRecord: setRecord,
+            getID: getIDs,
+            setGetID: setGetIDs,
+            comparison: () => setOpenCompare(true),
+            activeComparison: !openCompare,
+        },
+        {
+            isOpen: openCompare,
+            setIsOpen: setOpenCompare,
+            record: recordCompare,
+            setRecord: setRecordCompare,
+            getID: getIDCompare,
+            setGetID: setGetIDCompare,
+            comparison: () => setOpenCompareSecond(true),
+            activeComparison: !openCompareSecond,
+        },
+        {
+            isOpen: openCompareSecond,
+            setIsOpen: setOpenCompareSecond,
+            record: recordCompareSecond,
+            setRecord: setRecordCompareSecond,
+            getID: getIDCompareSecond,
+            setGetID: setGetIDCompareSecond,
+            comparison: () => setOpenCompareThirty(true),
+            activeComparison: !openCompareThirty,
+        },
+        {
+            isOpen: openCompareThirty,
+            setIsOpen: setOpenCompareThirty,
+            record: recordCompareThirty,
+            setRecord: setRecordCompareThirty,
+            getID: getIDCompareThirty,
+            setGetID: setGetIDCompareThirty,
+            comparison: () => setOpenModal(true),
+            activeComparison: !openModal,
+        },
+    ];
+
+
     // filtered travel comparison
     const travelCompare: Travel[] | null = travels?.filter(t => {
         return t.id !== getIDs &&
@@ -116,285 +161,92 @@ export default function SettingModals({
                     // Modal doppio
                     <div className="fixed inset-0 bg-[#181818] z-50 flex items-center justify-center">
                         <div className={`grid grid-cols-2 gap-4 p-4`}>
-                            {/* OPEN MODAL */}
-                            {openModal &&
+                            {modalsConfig.map((modal, index) => (
                                 <Modal
-                                    isOpen={openModal}
-                                    isStatic={true}
-                                    title={record ? `Viaggio a ${record?.title}` : 'Confronta viaggi'}
+                                    key={index}
+                                    isOpen={modal.isOpen}
+                                    title={modal.record ? `Viaggio a ${modal.record?.title}` : 'Confronta viaggi'}
                                     onClose={() => {
-                                        setOpenModal(false);
-                                        setRecord(null);
-                                        setGetIDs(null)
+                                        modal.setIsOpen(false);
+                                        conditions.filter(Boolean).length >= 3 && modal.setRecord(null);
+                                        modal.setGetID(null);
                                     }}
                                     hContent={conditions.filter(Boolean).length >= 3 ? 'h-[350px]' : ''}
                                     content={
-                                        record === null ?
+                                        modal.record === null ? (
                                             <>
                                                 <Form
                                                     setFilteredTravels={setFilteredTravels}
-                                                    travels={travelCompare} />
+                                                    travels={travelCompare}
+                                                />
                                                 <List
                                                     filteredTravels={filteredTravels}
                                                     travels={travelCompare}
-                                                    setOpenModal={setOpenModal}
-                                                    setGetID={setGetIDs}
-                                                    gridCols='grid-cols-2' />
-                                            </> :
+                                                    setOpenModal={modal.setIsOpen}
+                                                    setGetID={modal.setGetID}
+                                                    gridCols="grid-cols-2"
+                                                />
+                                            </>
+                                        ) : (
                                             <Show
-                                                item={record}
-                                                comparison={() => setOpenCompare(true)}
+                                                item={modal.record}
+                                                comparison={modal.comparison}
                                                 adding={(item: Base) => {
                                                     addFavorites(item);
                                                     return item;
                                                 }}
-                                                activeComparison={!openCompare}
+                                                activeComparison={modal.activeComparison}
                                                 favorites={favorites}
                                             />
+                                        )
                                     }
-                                />}
-                            {/* OPEN MODAL COMPARE FIST*/}
-                            {openCompare &&
-                                <Modal
-                                    isOpen={openCompare}
-                                    isStatic={true}
-                                    title={recordCompare ? `Viaggio a ${recordCompare?.title}` : 'Confronta viaggi'}
-                                    onClose={() => {
-                                        setOpenCompare(false);
-                                        setRecordCompare(null);
-                                        setGetIDCompare(null)
-                                    }}
-                                    hContent={conditions.filter(Boolean).length >= 3 ? 'h-[350px]' : ''}
-                                    content={
-                                        recordCompare === null ?
-                                            <>
-                                                <Form
-                                                    setFilteredTravels={setFilteredTravels}
-                                                    travels={travelCompare} />
-                                                <List
-                                                    filteredTravels={filteredTravels}
-                                                    travels={travelCompare}
-                                                    setOpenModal={setOpenCompare}
-                                                    setGetID={setGetIDCompare}
-                                                    gridCols='grid-cols-2' />
-                                            </> :
-                                            <Show
-                                                item={recordCompare}
-                                                comparison={() => setOpenCompareSecond(true)}
-                                                adding={(item: Base) => {
-                                                    addFavorites(item);
-                                                    return item;
-                                                }}
-                                                activeComparison={!openCompareSecond}
-                                                favorites={favorites}
-                                            />
-                                    }
-                                />}
-                            {/* OPEN MODAL COMPARE SECOND*/}
-                            {openCompareSecond &&
-                                <Modal
-                                    isOpen={openCompareSecond}
-                                    isStatic={true}
-                                    title={recordCompareSecond ? `Viaggio a ${recordCompareSecond?.title}` : 'Confronta viaggi'}
-                                    onClose={() => {
-                                        setOpenCompareSecond(false);
-                                        setRecordCompareSecond(null);
-                                        setGetIDCompareSecond(null)
-                                    }}
-                                    hContent={conditions.filter(Boolean).length >= 3 ? 'h-[350px]' : ''}
-                                    content={
-                                        recordCompareSecond === null ?
-                                            <>
-                                                <Form
-                                                    setFilteredTravels={setFilteredTravels}
-                                                    travels={travelCompare} />
-                                                <List
-                                                    filteredTravels={filteredTravels}
-                                                    travels={travelCompare}
-                                                    setOpenModal={setOpenCompareSecond}
-                                                    setGetID={setGetIDCompareSecond}
-                                                    gridCols='grid-cols-2' />
-                                            </> :
-                                            <Show
-                                                item={recordCompareSecond}
-                                                comparison={() => setOpenCompareThirty(true)}
-                                                adding={(item: Base) => {
-                                                    addFavorites(item);
-                                                    return item;
-                                                }}
-                                                activeComparison={!openCompareThirty}
-                                                favorites={favorites} />
-                                    }
-                                />}
-                            {/* OPEN MODAL COMPARE THIRTY*/}
-                            {openCompareThirty &&
-                                <Modal
-                                    isOpen={openCompareThirty}
-                                    isStatic={true}
-                                    title={recordCompareThirty ? `Viaggio a ${recordCompareThirty?.title}` : 'Confronta viaggi'}
-                                    onClose={() => {
-                                        setOpenCompareThirty(false);
-                                        setRecordCompareThirty(null);
-                                        setGetIDCompareThirty(null)
-                                    }}
-                                    hContent={conditions.filter(Boolean).length >= 3 ? 'h-[350px]' : ''}
-                                    content={
-                                        recordCompareThirty === null ?
-                                            <>
-                                                <Form
-                                                    setFilteredTravels={setFilteredTravels}
-                                                    travels={travelCompare} />
-                                                <List
-                                                    filteredTravels={filteredTravels}
-                                                    travels={travelCompare}
-                                                    setOpenModal={setOpenCompareThirty}
-                                                    setGetID={setGetIDCompareThirty}
-                                                    gridCols='grid-cols-2' />
-                                            </> :
-                                            <Show
-                                                item={recordCompareThirty}
-                                                comparison={() => setOpenModal(true)}
-                                                adding={(item: Base) => {
-                                                    addFavorites(item);
-                                                    return item;
-                                                }}
-                                                activeComparison={!openModal}
-                                                favorites={favorites} />
-                                    }
-                                />}
+                                />
+                            ))}
                         </div>
                     </div>
                 ) : (
                     // Modal singolo
                     <>
-                        {/* MODAL */}
-                        <Modal
-                            isOpen={openModal}
-                            title={record ? `Viaggio a ${record?.title}` : 'Confronta viaggi'}
-                            onClose={() => {
-                                setOpenModal(false);
-                                conditions.filter(Boolean).length >= 3 && setRecord(null)
-                            }}
-                            content={
-                                record === null ?
-                                    <>
-                                        <Form
-                                            setFilteredTravels={setFilteredTravels}
-                                            travels={travelCompare} />
-                                        <List
-                                            filteredTravels={filteredTravels}
-                                            travels={travelCompare}
-                                            setOpenModal={setOpenModal}
-                                            setGetID={setGetIDCompare} />
-                                    </> :
-                                    <Show
-                                        item={record}
-                                        comparison={() => setOpenCompare(true)}
-                                        adding={(item: Base) => {
-                                            addFavorites(item);
-                                            return item;
-                                        }}
-                                        activeComparison={!openCompare}
-                                        favorites={favorites}
-                                    />
-                            }
-                        />
-                        {/* MODAL COMPARE */}
-                        <Modal
-                            isOpen={openCompare}
-                            title={recordCompare ? `Viaggio a ${recordCompare?.title}` : 'Confronta viaggi'}
-                            onClose={() => {
-                                setOpenCompare(false);
-                                conditions.filter(Boolean).length >= 3 && setRecordCompare(null)
-                            }}
-                            content={
-                                recordCompare === null ?
-                                    <>
-                                        <Form
-                                            setFilteredTravels={setFilteredTravels}
-                                            travels={travelCompare} />
-                                        <List
-                                            filteredTravels={filteredTravels}
-                                            travels={travelCompare}
-                                            setOpenModal={setOpenCompare}
-                                            setGetID={setGetIDCompare} />
-                                    </> :
-                                    <Show
-                                        item={recordCompare}
-                                        comparison={() => setOpenModal(true)}
-                                        adding={(item: Base) => {
-                                            addFavorites(item);
-                                            return item;
-                                        }}
-                                        activeComparison={!openCompareSecond}
-                                        favorites={favorites}
-                                    />
-                            }
-                        />
-                        {/* MODAL COMAPRE SECOND */}
-                        <Modal
-                            isOpen={openCompareSecond}
-                            title={recordCompareSecond ? `Viaggio a ${recordCompareSecond?.title}` : 'Confronta viaggi'}
-                            onClose={() => {
-                                setOpenCompareSecond(false);
-                                conditions.filter(Boolean).length >= 3 && setRecordCompareSecond(null)
-                            }}
-                            content={
-                                recordCompareSecond === null ?
-                                    <>
-                                        <Form
-                                            setFilteredTravels={setFilteredTravels}
-                                            travels={travelCompare} />
-                                        <List
-                                            filteredTravels={filteredTravels}
-                                            travels={travelCompare}
-                                            setOpenModal={setOpenCompareSecond}
-                                            setGetID={setGetIDCompare} />
-                                    </> :
-                                    <Show
-                                        item={recordCompareSecond}
-                                        comparison={() => setOpenCompareThirty(true)}
-                                        adding={(item: Base) => {
-                                            addFavorites(item);
-                                            return item;
-                                        }}
-                                        activeComparison={!openCompareThirty}
-                                        favorites={favorites}
-                                    />
-                            }
-                        />
-                        {/* MODAL COMPARE THIRTY*/}
-                        <Modal
-                            isOpen={openCompareThirty}
-                            title={recordCompareThirty ? `Viaggio a ${recordCompareThirty?.title}` : 'Confronta viaggi'}
-                            onClose={() => {
-                                setOpenCompareThirty(false);
-                                conditions.filter(Boolean).length >= 3 && setRecordCompareThirty(null)
-                            }}
-                            content={
-                                recordCompareThirty === null ?
-                                    <>
-                                        <Form
-                                            setFilteredTravels={setFilteredTravels}
-                                            travels={travelCompare} />
-                                        <List
-                                            filteredTravels={filteredTravels}
-                                            travels={travelCompare}
-                                            setOpenModal={setOpenCompareThirty}
-                                            setGetID={setGetIDCompareThirty} />
-                                    </> :
-                                    <Show
-                                        item={recordCompareThirty}
-                                        comparison={() => setOpenCompareThirty(true)}
-                                        adding={(item: Base) => {
-                                            addFavorites(item);
-                                            return item;
-                                        }}
-                                        activeComparison={!openModal}
-                                        favorites={favorites}
-                                    />
-                            }
-                        />
+                        {modalsConfig.map((modal, index) => (
+                            <Modal
+                                key={index}
+                                isOpen={modal.isOpen}
+                                title={modal.record ? `Viaggio a ${modal.record?.title}` : 'Confronta viaggi'}
+                                onClose={() => {
+                                    modal.setIsOpen(false);
+                                    conditions.filter(Boolean).length >= 3 && modal.setRecord(null);
+                                }}
+                                hContent={conditions.filter(Boolean).length >= 3 ? 'h-[350px]' : ''}
+                                content={
+                                    modal.record === null ? (
+                                        <>
+                                            <Form
+                                                setFilteredTravels={setFilteredTravels}
+                                                travels={travelCompare}
+                                            />
+                                            <List
+                                                filteredTravels={filteredTravels}
+                                                travels={travelCompare}
+                                                setOpenModal={modal.setIsOpen}
+                                                setGetID={modal.setGetID}
+                                                gridCols="grid-cols-2"
+                                            />
+                                        </>
+                                    ) : (
+                                        <Show
+                                            item={modal.record}
+                                            comparison={modal.comparison}
+                                            adding={(item: Base) => {
+                                                addFavorites(item);
+                                                return item;
+                                            }}
+                                            activeComparison={modal.activeComparison}
+                                            favorites={favorites}
+                                        />
+                                    )
+                                }
+                            />
+                        ))}
                     </>
                 )}
         </>
