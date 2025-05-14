@@ -7,7 +7,7 @@ import Form from "./Form";
 import List from "./List";
 
 // Types
-import type { Travel } from "../types/types";
+import type { Travel, Base } from "../types/types";
 
 export default function SettingModals({
     openModal,
@@ -32,13 +32,13 @@ export default function SettingModals({
     setGetIDCompare,
     getIDCompareSecond,
     setGetIDCompareSecond,
-    adding,
-    textBtnFavorite,
+    addFavorites,
     openCompareThirty,
     recordCompareThirty,
     setRecordCompareThirty,
     getIDCompareThirty,
-    setGetIDCompareThirty
+    setGetIDCompareThirty,
+    favorites
 }: {
     // Modal settings 
     // --open modal--
@@ -90,10 +90,8 @@ export default function SettingModals({
     setFilteredTravels: React.Dispatch<React.SetStateAction<Travel[] | null>>,
 
     // Adding favorites item
-    adding: () => void,
-
-    // Custom text btn add favorites
-    textBtnFavorite: string
+    addFavorites: (favorite: Base) => void,
+    favorites: Base[] | null,
 }) {
 
 
@@ -146,9 +144,14 @@ export default function SettingModals({
                                             <Show
                                                 item={record}
                                                 comparison={() => setOpenCompare(true)}
-                                                adding={adding}
-                                                textBtnFavorite={textBtnFavorite}
-                                                activeComparison={!openCompare} />}
+                                                adding={(item: Base) => {
+                                                    addFavorites(item);
+                                                    return item;
+                                                }}
+                                                activeComparison={!openCompare}
+                                                favorites={favorites}
+                                            />
+                                    }
                                 />}
                             {/* OPEN MODAL COMPARE FIST*/}
                             {openCompare &&
@@ -178,9 +181,13 @@ export default function SettingModals({
                                             <Show
                                                 item={recordCompare}
                                                 comparison={() => setOpenCompareSecond(true)}
-                                                adding={adding}
-                                                textBtnFavorite={textBtnFavorite}
-                                                activeComparison={!openCompareSecond} />
+                                                adding={(item: Base) => {
+                                                    addFavorites(item);
+                                                    return item;
+                                                }}
+                                                activeComparison={!openCompareSecond}
+                                                favorites={favorites}
+                                            />
                                     }
                                 />}
                             {/* OPEN MODAL COMPARE SECOND*/}
@@ -211,9 +218,13 @@ export default function SettingModals({
                                             <Show
                                                 item={recordCompareSecond}
                                                 comparison={() => setOpenCompareThirty(true)}
-                                                adding={adding}
-                                                textBtnFavorite={textBtnFavorite}
-                                                activeComparison={!openCompareThirty} />}
+                                                adding={(item: Base) => {
+                                                    addFavorites(item);
+                                                    return item;
+                                                }}
+                                                activeComparison={!openCompareThirty}
+                                                favorites={favorites} />
+                                    }
                                 />}
                             {/* OPEN MODAL COMPARE THIRTY*/}
                             {openCompareThirty &&
@@ -243,9 +254,12 @@ export default function SettingModals({
                                             <Show
                                                 item={recordCompareThirty}
                                                 comparison={() => setOpenModal(true)}
-                                                adding={adding}
-                                                textBtnFavorite={textBtnFavorite}
-                                                activeComparison={!openModal} />
+                                                adding={(item: Base) => {
+                                                    addFavorites(item);
+                                                    return item;
+                                                }}
+                                                activeComparison={!openModal}
+                                                favorites={favorites} />
                                     }
                                 />}
                         </div>
@@ -259,26 +273,29 @@ export default function SettingModals({
                             title={record ? `Viaggio a ${record?.title}` : 'Confronta viaggi'}
                             onClose={() => {
                                 setOpenModal(false);
-                                setRecord(null)
+                                conditions.filter(Boolean).length >= 3 && setRecord(null)
                             }}
                             content={
                                 record === null ?
                                     <>
                                         <Form
                                             setFilteredTravels={setFilteredTravels}
-                                            travels={travels} />
+                                            travels={travelCompare} />
                                         <List
                                             filteredTravels={filteredTravels}
-                                            travels={travels}
+                                            travels={travelCompare}
                                             setOpenModal={setOpenModal}
                                             setGetID={setGetIDCompare} />
                                     </> :
                                     <Show
                                         item={record}
                                         comparison={() => setOpenCompare(true)}
-                                        adding={adding}
-                                        textBtnFavorite={textBtnFavorite}
+                                        adding={(item: Base) => {
+                                            addFavorites(item);
+                                            return item;
+                                        }}
                                         activeComparison={!openCompare}
+                                        favorites={favorites}
                                     />
                             }
                         />
@@ -288,26 +305,29 @@ export default function SettingModals({
                             title={recordCompare ? `Viaggio a ${recordCompare?.title}` : 'Confronta viaggi'}
                             onClose={() => {
                                 setOpenCompare(false);
-                                setRecordCompare(null)
+                                conditions.filter(Boolean).length >= 3 && setRecordCompare(null)
                             }}
                             content={
                                 recordCompare === null ?
                                     <>
                                         <Form
                                             setFilteredTravels={setFilteredTravels}
-                                            travels={travels} />
+                                            travels={travelCompare} />
                                         <List
                                             filteredTravels={filteredTravels}
-                                            travels={travels}
+                                            travels={travelCompare}
                                             setOpenModal={setOpenCompare}
                                             setGetID={setGetIDCompare} />
                                     </> :
                                     <Show
                                         item={recordCompare}
                                         comparison={() => setOpenModal(true)}
-                                        adding={adding}
-                                        textBtnFavorite={textBtnFavorite}
+                                        adding={(item: Base) => {
+                                            addFavorites(item);
+                                            return item;
+                                        }}
                                         activeComparison={!openCompareSecond}
+                                        favorites={favorites}
                                     />
                             }
                         />
@@ -317,27 +337,31 @@ export default function SettingModals({
                             title={recordCompareSecond ? `Viaggio a ${recordCompareSecond?.title}` : 'Confronta viaggi'}
                             onClose={() => {
                                 setOpenCompareSecond(false);
-                                setRecordCompareSecond(null)
+                                conditions.filter(Boolean).length >= 3 && setRecordCompareSecond(null)
                             }}
                             content={
                                 recordCompareSecond === null ?
                                     <>
                                         <Form
                                             setFilteredTravels={setFilteredTravels}
-                                            travels={travels} />
+                                            travels={travelCompare} />
                                         <List
                                             filteredTravels={filteredTravels}
-                                            travels={travels}
+                                            travels={travelCompare}
                                             setOpenModal={setOpenCompareSecond}
                                             setGetID={setGetIDCompare} />
                                     </> :
                                     <Show
                                         item={recordCompareSecond}
                                         comparison={() => setOpenCompareThirty(true)}
-                                        adding={adding}
-                                        textBtnFavorite={textBtnFavorite}
+                                        adding={(item: Base) => {
+                                            addFavorites(item);
+                                            return item;
+                                        }}
                                         activeComparison={!openCompareThirty}
-                                    />}
+                                        favorites={favorites}
+                                    />
+                            }
                         />
                         {/* MODAL COMPARE THIRTY*/}
                         <Modal
@@ -345,26 +369,29 @@ export default function SettingModals({
                             title={recordCompareThirty ? `Viaggio a ${recordCompareThirty?.title}` : 'Confronta viaggi'}
                             onClose={() => {
                                 setOpenCompareThirty(false);
-                                setRecordCompareThirty(null)
+                                conditions.filter(Boolean).length >= 3 && setRecordCompareThirty(null)
                             }}
                             content={
                                 recordCompareThirty === null ?
                                     <>
                                         <Form
                                             setFilteredTravels={setFilteredTravels}
-                                            travels={travels} />
+                                            travels={travelCompare} />
                                         <List
                                             filteredTravels={filteredTravels}
-                                            travels={travels}
+                                            travels={travelCompare}
                                             setOpenModal={setOpenCompareThirty}
                                             setGetID={setGetIDCompareThirty} />
                                     </> :
                                     <Show
                                         item={recordCompareThirty}
                                         comparison={() => setOpenCompareThirty(true)}
-                                        adding={adding}
-                                        textBtnFavorite={textBtnFavorite}
+                                        adding={(item: Base) => {
+                                            addFavorites(item);
+                                            return item;
+                                        }}
                                         activeComparison={!openModal}
+                                        favorites={favorites}
                                     />
                             }
                         />

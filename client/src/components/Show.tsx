@@ -1,5 +1,5 @@
 // Types 
-import type { Travel } from '../types/types';
+import type { Travel, Base } from '../types/types';
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,16 +9,22 @@ export default function Show({
     item,
     comparison,
     adding,
-    textBtnFavorite,
-    activeComparison
+    activeComparison,
+    favorites
 }: {
     item: Travel | null,
     comparison: () => void,
-    adding?: () => void,
-    textBtnFavorite?: string,
-    activeComparison: boolean
+    adding: (data: { id: number; title: string; category: string; start: string }) => Base
+    activeComparison: boolean,
+    favorites: Base[] | null
 }) {
 
+
+    const exists = favorites?.some(t => {
+        if (t.id === item?.id) {
+            return true
+        } else return false
+    });
 
     return (
         <div className='flex justify-center items-center m-3'>
@@ -55,9 +61,9 @@ export default function Show({
                         <div className='w-[45%] p-3 mt-2 flex flex-wrap justify-between items-center gap-2'>
                             <button
                                 type='button'
-                                onClick={adding}
+                                onClick={() => adding({ id: item?.id!, title: item?.title!, category: item?.category!, start: item?.start! })}
                                 className='w-full py-2 rounded-xl bg-[#4973fc] text-[#ffff00] hover:bg-[#0b43fa] hover:shadow-md shadow-[#4973fc]'>
-                                {textBtnFavorite}
+                                {`${exists ? 'Rimuovi dai' : 'Aggiungi ai'} preferiti`}
                             </button>
                             {activeComparison &&
                                 <button

@@ -49,7 +49,14 @@ function App() {
     return storedFavorites ? JSON.parse(storedFavorites) : null;
   }); // localStoraga for favorites
   const [filteredFavorites, setFilteredFavorites] = React.useState<Base[] | null>(null);
-  const exists = favorites?.find(t => t.id === record?.id || t.id === recordCompare?.id);
+  const exists = favorites?.some(t => {
+    if (t.id === record?.id ||
+      t.id === recordCompare?.id ||
+      t.id === recordCompareSecond?.id ||
+      t.id === recordCompareThirty?.id) {
+      return true
+    } else return false
+  });
   const [favoritesModal, setFavoritesModal] = React.useState<boolean>(false);
 
   // Pop-up setting
@@ -136,6 +143,7 @@ function App() {
   // Effect for localStorage by favorites
   React.useMemo(() => {
     localStorage.setItem('favorites', favorites ? JSON.stringify(favorites) : '[]')
+    console.log(exists)
   }, [favorites])
 
   // Setting visibility Pop-up
@@ -240,16 +248,10 @@ function App() {
             setFilteredTravels={setFilteredTravels}
 
             // Adding favorites item
-            adding={() => {
-              if (record && record.id !== undefined) {
-                addFavorites({ id: record.id, title: record.title, category: record.category, start: record.start });
-              } else if (recordCompare && recordCompare.id !== undefined) {
-                addFavorites({ id: recordCompare.id, title: recordCompare.title, category: recordCompare.category, start: recordCompare.start });
-              }
-            }}
+            addFavorites={addFavorites}
 
             // Custom text btn add favorites
-            textBtnFavorite={`${exists ? 'Rimuovi dai' : 'Aggiungi ai'} preferiti`}
+            favorites={favorites}
           />
 
         </div>
