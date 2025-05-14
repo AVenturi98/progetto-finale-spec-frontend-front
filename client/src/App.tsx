@@ -198,6 +198,7 @@ function App() {
             record={record}
             setRecord={setRecord}
             // --get ID item modal--
+            getIDs={getIDs}
             setGetIDs={setGetIDs}
 
             // Comparison settings compare
@@ -208,6 +209,7 @@ function App() {
             recordCompare={recordCompare}
             setRecordCompare={setRecordCompare}
             // --get ID item compare--
+            getIDCompare={getIDCompare}
             setGetIDCompare={setGetIDCompare}
 
             // Comparison settings compare Second
@@ -218,6 +220,7 @@ function App() {
             recordCompareSecond={recordCompareSecond}
             setRecordCompareSecond={setRecordCompareSecond}
             // --get ID item compare second--
+            getIDCompareSecond={getIDCompareSecond}
             setGetIDCompareSecond={setGetIDCompareSecond}
 
             // Comparison settings compare Thirty
@@ -227,6 +230,7 @@ function App() {
             // --item compare second-
             recordCompareThirty={recordCompareThirty}
             setRecordCompareThirty={setRecordCompareThirty}
+            getIDCompareThirty={getIDCompareThirty}
             // --get ID item compare second--
             setGetIDCompareThirty={setGetIDCompareThirty}
 

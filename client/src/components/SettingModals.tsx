@@ -26,14 +26,18 @@ export default function SettingModals({
     filteredTravels,
     setFilteredTravels,
     travels,
+    getIDs,
     setGetIDs,
+    getIDCompare,
     setGetIDCompare,
+    getIDCompareSecond,
     setGetIDCompareSecond,
     adding,
     textBtnFavorite,
     openCompareThirty,
     recordCompareThirty,
     setRecordCompareThirty,
+    getIDCompareThirty,
     setGetIDCompareThirty
 }: {
     // Modal settings 
@@ -44,6 +48,7 @@ export default function SettingModals({
     record: Travel | null,
     setRecord: React.Dispatch<React.SetStateAction<Travel | null>>,
     // --get ID item modal--
+    getIDs: number | null,
     setGetIDs: React.Dispatch<React.SetStateAction<number | null>>,
 
     // Comparison settings compare
@@ -54,6 +59,7 @@ export default function SettingModals({
     recordCompare: Travel | null,
     setRecordCompare: React.Dispatch<React.SetStateAction<Travel | null>>,
     // --get ID item compare--
+    getIDCompare: number | null,
     setGetIDCompare: React.Dispatch<React.SetStateAction<number | null>>,
 
     // Comparison settings compare Second
@@ -64,16 +70,18 @@ export default function SettingModals({
     recordCompareSecond: Travel | null,
     setRecordCompareSecond: React.Dispatch<React.SetStateAction<Travel | null>>,
     // --get ID item compare second--
+    getIDCompareSecond: number | null,
     setGetIDCompareSecond: React.Dispatch<React.SetStateAction<number | null>>,
 
     // Comparison settings compare Thirty
-    // --open modal compare second--
+    // --open modal compare thirty--
     openCompareThirty: boolean,
     setOpenCompareThirty: React.Dispatch<React.SetStateAction<boolean>>,
-    // --item compare second--
+    // --item compare thirty--
     recordCompareThirty: Travel | null,
     setRecordCompareThirty: React.Dispatch<React.SetStateAction<Travel | null>>,
-    // --get ID item compare second--
+    // --get ID item compare thirty--
+    getIDCompareThirty: number | null,
     setGetIDCompareThirty: React.Dispatch<React.SetStateAction<number | null>>,
 
     // Travels / Filtered travels
@@ -88,6 +96,14 @@ export default function SettingModals({
     textBtnFavorite: string
 }) {
 
+    // filtered travel comparison
+    const travelCompare: Travel[] | null = travels?.filter(t => {
+        return t.id !== getIDs &&
+            t.id !== getIDCompare &&
+            t.id !== getIDCompareSecond &&
+            t.id !== getIDCompareThirty
+
+    }) || null
 
     const conditions = [openModal, openCompare, openCompareSecond, openCompareThirty];
 
@@ -117,10 +133,10 @@ export default function SettingModals({
                                             <>
                                                 <Form
                                                     setFilteredTravels={setFilteredTravels}
-                                                    travels={travels} />
+                                                    travels={travelCompare} />
                                                 <List
                                                     filteredTravels={filteredTravels}
-                                                    travels={travels}
+                                                    travels={travelCompare}
                                                     setOpenModal={setOpenModal}
                                                     setGetID={setGetIDs}
                                                     gridCols='grid-cols-2' />
@@ -147,10 +163,10 @@ export default function SettingModals({
                                             <>
                                                 <Form
                                                     setFilteredTravels={setFilteredTravels}
-                                                    travels={travels} />
+                                                    travels={travelCompare} />
                                                 <List
                                                     filteredTravels={filteredTravels}
-                                                    travels={travels}
+                                                    travels={travelCompare}
                                                     setOpenModal={setOpenCompare}
                                                     setGetID={setGetIDCompare}
                                                     gridCols='grid-cols-2' />
@@ -178,10 +194,10 @@ export default function SettingModals({
                                             <>
                                                 <Form
                                                     setFilteredTravels={setFilteredTravels}
-                                                    travels={travels} />
+                                                    travels={travelCompare} />
                                                 <List
                                                     filteredTravels={filteredTravels}
-                                                    travels={travels}
+                                                    travels={travelCompare}
                                                     setOpenModal={setOpenCompareSecond}
                                                     setGetID={setGetIDCompareSecond}
                                                     gridCols='grid-cols-2' />
@@ -208,10 +224,10 @@ export default function SettingModals({
                                             <>
                                                 <Form
                                                     setFilteredTravels={setFilteredTravels}
-                                                    travels={travels} />
+                                                    travels={travelCompare} />
                                                 <List
                                                     filteredTravels={filteredTravels}
-                                                    travels={travels}
+                                                    travels={travelCompare}
                                                     setOpenModal={setOpenCompareThirty}
                                                     setGetID={setGetIDCompareThirty}
                                                     gridCols='grid-cols-2' />
