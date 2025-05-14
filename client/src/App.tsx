@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlaneDeparture } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
-
+  // Travels / Filtered travels
   const [travels, setTravels] = React.useState<Travel[] | null>(null);
   const [filteredTravels, setFilteredTravels] = React.useState<Travel[] | null>(null);
 
@@ -27,10 +27,21 @@ function App() {
   const [getIDs, setGetIDs] = React.useState<number | null>(null);
   const [record, setRecord] = React.useState<Travel | null>(null);
 
-  // Comparison setting
+  // COMPARISON 
+  // Comparison setting first
   const [openCompare, setOpenCompare] = React.useState<boolean>(false);
   const [recordCompare, setRecordCompare] = React.useState<Travel | null>(null);
   const [getIDCompare, setGetIDCompare] = React.useState<number | null>(null);
+
+  // Comparison setting second
+  const [openCompareSecond, setOpenCompareSecond] = React.useState<boolean>(false);
+  const [recordCompareSecond, setRecordCompareSecond] = React.useState<Travel | null>(null);
+  const [getIDCompareSecond, setGetIDCompareSecond] = React.useState<number | null>(null);
+
+  // Comparison setting thirty
+  const [openCompareThirty, setOpenCompareThirty] = React.useState<boolean>(false);
+  const [recordCompareThirty, setRecordCompareThirty] = React.useState<Travel | null>(null);
+  const [getIDCompareThirty, setGetIDCompareThirty] = React.useState<number | null>(null);
 
   // Favorites setting
   const [favorites, setFavorites] = React.useState<Base[] | null>(() => {
@@ -90,10 +101,12 @@ function App() {
   };
 
 
-  React.useMemo(() => {
+  React.useEffect(() => {
     openModal && getItem({ set: setRecord, id: getIDs });
-    openCompare && getItem({ set: setRecordCompare, id: getIDCompare })
-  }, [getIDs, getIDCompare]);
+    openCompare && getItem({ set: setRecordCompare, id: getIDCompare });
+    openCompareSecond && getItem({ set: setRecordCompareSecond, id: getIDCompareSecond });
+    openCompareThirty && getItem({ set: setRecordCompareThirty, id: getIDCompareThirty })
+  }, [getIDs, getIDCompare, getIDCompareSecond, getIDCompareThirty]);
 
 
 
@@ -177,19 +190,52 @@ function App() {
 
           {/* SETTING MODALS */}
           <SettingModals
+            // Modal settings 
+            // --open modal--
             openModal={openModal}
             setOpenModal={setOpenModal}
+            // --item modal--
+            record={record}
+            setRecord={setRecord}
+            // --get ID item modal--
+            setGetIDs={setGetIDs}
+
+            // Comparison settings compare
+            // --open modal compare--
             openCompare={openCompare}
             setOpenCompare={setOpenCompare}
-            record={record}
+            // --item compare--
             recordCompare={recordCompare}
-            setRecord={setRecord}
             setRecordCompare={setRecordCompare}
+            // --get ID item compare--
+            setGetIDCompare={setGetIDCompare}
+
+            // Comparison settings compare Second
+            // --open modal compare second--
+            openCompareSecond={openCompareSecond}
+            setOpenCompareSecond={setOpenCompareSecond}
+            // --item compare second--
+            recordCompareSecond={recordCompareSecond}
+            setRecordCompareSecond={setRecordCompareSecond}
+            // --get ID item compare second--
+            setGetIDCompareSecond={setGetIDCompareSecond}
+
+            // Comparison settings compare Thirty
+            // --open modal compare second--
+            openCompareThirty={openCompareThirty}
+            setOpenCompareThirty={setOpenCompareThirty}
+            // --item compare second-
+            recordCompareThirty={recordCompareThirty}
+            setRecordCompareThirty={setRecordCompareThirty}
+            // --get ID item compare second--
+            setGetIDCompareThirty={setGetIDCompareThirty}
+
+            // Travels / Filtered travels
+            travels={travels}
             filteredTravels={filteredTravels}
             setFilteredTravels={setFilteredTravels}
-            travels={travels}
-            setGetIDs={setGetIDs}
-            setGetIDCompare={setGetIDCompare}
+
+            // Adding favorites item
             adding={() => {
               if (record && record.id !== undefined) {
                 addFavorites({ id: record.id, title: record.title, category: record.category, start: record.start });
@@ -197,7 +243,10 @@ function App() {
                 addFavorites({ id: recordCompare.id, title: recordCompare.title, category: recordCompare.category, start: recordCompare.start });
               }
             }}
-            textBtnFavorite={`${exists ? 'Rimuovi dai' : 'Aggiungi ai'} preferiti`} />
+
+            // Custom text btn add favorites
+            textBtnFavorite={`${exists ? 'Rimuovi dai' : 'Aggiungi ai'} preferiti`}
+          />
 
         </div>
 

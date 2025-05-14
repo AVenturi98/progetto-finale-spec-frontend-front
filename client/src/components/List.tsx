@@ -62,7 +62,7 @@ export default function List({
                     id="sorted"
                     value={order}
                     onChange={e => setOrder(e.target.value as "A-Z" | "Z-A" | undefined)}
-                    className='border-2 border-gray-700 rounded-sm my-1'>
+                    className='border-2 border-gray-700 hover:bg-yellow-100 rounded-sm my-1'>
 
                     <option
                         value=""

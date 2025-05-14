@@ -73,7 +73,7 @@ export default function Form({
                         className='w-full -outline-offset-2 outline-[#4973fc] border-2 border-gray-500 rounded-sm px-1 mx-3' />
 
                     {/* SUGGEST */}
-                    <div className={`absolute top-full left-3 w-full rounded-b-md ${suggest !== null ? ' bg-gray-400' : 'hidden'} py-1 px-2 z-50 shadow-lg`}>
+                    <div className={`absolute top-full left-3 w-full rounded-b-md ${search && suggest !== null ? ' bg-gray-400' : 'hidden'} py-1 px-2 z-50 shadow-lg`}>
                         {search && search?.length > 0 && suggest && suggest.length > 0 ?
                             suggest?.map(e =>
                                 <div
@@ -88,7 +88,7 @@ export default function Form({
                                     <p>{e.title}</p>
                                     <p className='italic text-gray-700'>{e.category}</p>
                                 </div>
-                            ) :
+                            ) : search &&
                             <div className={suggest === null ? 'hidden' : ''}>Nessun risultato</div>}
                     </div>
                 </div>
