@@ -1,12 +1,10 @@
+import type { PopUp } from "../types/types"
+
 export default function PopUp({
     isVisible,
     popUp,
     addRemoved
-}: {
-    isVisible: boolean,
-    popUp: boolean,
-    addRemoved: 'Aggiunto' | 'Rimosso'
-}) {
+}: PopUp) {
 
     return (
         <>

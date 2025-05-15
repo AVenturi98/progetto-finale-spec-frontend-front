@@ -1,5 +1,8 @@
 import * as React from 'react';
 
+// Types
+import type { Modal } from '../types/types';
+
 export default function Modal({
     isOpen,
     title,
@@ -7,14 +10,7 @@ export default function Modal({
     onClose,
     hContent,
     isStatic
-}: {
-    isOpen: boolean,
-    title: string,
-    content?: React.ReactNode,
-    onClose: () => void,
-    hContent?: string,
-    isStatic?: boolean
-}) {
+}: Modal) {
 
     React.useEffect(() => {
         scrollTo(0, 0)

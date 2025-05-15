@@ -8,7 +8,6 @@ import type { Travel, Base } from './types/types';
 import Form from './components/Form';
 import List from './components/List';
 import SettingModals from './components/SettingModals';
-import Modal from './components/Modal';
 import PopUp from './components/PopUp';
 import BtnsFixed from './components/BtnsFixed';
 import Favorites from './components/Favorites';

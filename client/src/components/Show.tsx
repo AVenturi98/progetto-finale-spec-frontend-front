@@ -1,5 +1,5 @@
 // Types 
-import type { Travel, Base } from '../types/types';
+import type { Show } from '../types/types';
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,13 +11,7 @@ export default function Show({
     adding,
     activeComparison,
     favorites
-}: {
-    item: Travel | null,
-    comparison: () => void,
-    adding: (data: { id: number; title: string; category: string; start: string }) => Base
-    activeComparison: boolean,
-    favorites: Base[] | null
-}) {
+}: Show) {
 
 
     const exists = favorites?.some(t => {

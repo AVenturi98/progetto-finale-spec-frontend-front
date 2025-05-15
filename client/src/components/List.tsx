@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // Types
-import type { Travel, Base } from '../types/types';
+import type { Travel, List } from '../types/types';
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,15 +15,7 @@ export default function List({
     gridCols,
     onDelete,
     setDeleted
-}: {
-    filteredTravels: (Travel[] | null),
-    travels: (Travel[] | null),
-    setOpenModal: (isOpen: boolean) => void,
-    setGetID: (id: number) => void,
-    gridCols?: string,
-    onDelete?: boolean,
-    setDeleted?: React.Dispatch<React.SetStateAction<Base[] | Travel[] | null>>
-}) {
+}: List) {
 
     const [order, setOrder] = React.useState<"A-Z" | "Z-A" | undefined>(undefined);
 

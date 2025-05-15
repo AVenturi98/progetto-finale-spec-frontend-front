@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // Types
-import type { Travel } from '../types/types';
+import type { Travel, Form } from '../types/types';
 
 // Debounce Function
 function debounce<T>(callback: (value: T) => void, delay: number) {
@@ -17,10 +17,7 @@ function debounce<T>(callback: (value: T) => void, delay: number) {
 export default function Form({
     setFilteredTravels,
     travels
-}: {
-    setFilteredTravels: (filteredTravels: Travel[] | null) => void,
-    travels: (Travel[] | null)
-}) {
+}: Form) {
 
     const [search, setSearch] = React.useState<string>(''); // set Input query
     const [checkValue, setCheckValue] = React.useState<'scalo' | 'diretto' | null>(null); // set Checkbox value
