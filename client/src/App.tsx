@@ -11,6 +11,7 @@ import SettingModals from './components/SettingModals';
 import Modal from './components/Modal';
 import PopUp from './components/PopUp';
 import BtnsFixed from './components/BtnsFixed';
+import Favorites from './components/Favorites';
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -250,37 +251,18 @@ function App() {
         </div>
 
         {/* FAVORITES */}
-        <section>
-          <Modal
-            isOpen={favoritesModal}
-            title={'PREFERITI'}
-            content={favorites && favorites.length > 0 ?
-              <>
-                <Form
-                  // form search
-                  setFilteredTravels={setFilteredFavorites}
-                  travels={favorites as unknown as Travel[]} />
-                <List
-                  filteredTravels={filteredFavorites as unknown as Travel[] | null}
-                  travels={[...favorites] as unknown as Travel[] | null}
-                  setOpenModal={setOpenModal}
-                  setGetID={setGetIDs}
-                  gridCols={'grid-cols-1'}
-                  onDelete={true}
-                  setDeleted={(updatedFavorites) => {
-                    timing()
-                    setAddRemoved('Rimosso');
-                    return setFavorites(updatedFavorites);
-                  }} />
-              </>
-              :
-              <div className='flex justify-center items-center'>
-                Nessun elemento tra i Preferiti
-              </div>}
-            onClose={() => setFavoritesModal(false)}
-          />
-
-        </section>
+        <Favorites
+          favorites={favorites}
+          setFavorites={setFavorites}
+          favoritesModal={favoritesModal}
+          setFavoritesModal={setFavoritesModal}
+          filteredFavorites={filteredFavorites}
+          setFilteredFavorites={setFilteredFavorites}
+          setOpenModal={setOpenModal}
+          setGetIDs={setGetIDs}
+          timing={timing}
+          setAddRemoved={setAddRemoved}
+        />
 
         {/* BUTTONS */}
         <BtnsFixed setFavoritesModal={setFavoritesModal} />
