@@ -44,13 +44,13 @@ export default function SettingModals({
 ) {
 
     // filtered travel comparison
-    const travelCompare: Travel[] | null = travels?.filter(t => {
-        return t.id !== getIDs &&
-            t.id !== getIDCompare &&
-            t.id !== getIDCompareSecond &&
-            t.id !== getIDCompareThirty
+    // const travelCompare: Travel[] | null = travels?.filter(t => {
+    //     return t.id !== getIDs &&
+    //         t.id !== getIDCompare &&
+    //         t.id !== getIDCompareSecond &&
+    //         t.id !== getIDCompareThirty
 
-    }) || null
+    // }) || null
 
     const conditions = [openModal, openCompare, openCompareSecond, openCompareThirty];
 
@@ -123,10 +123,10 @@ export default function SettingModals({
                                             <>
                                                 <Form
                                                     setFilteredTravels={setFilteredTravels}
-                                                    travels={travelCompare} />
+                                                    travels={travels} />
                                                 <List
                                                     filteredTravels={filteredTravels}
-                                                    travels={travelCompare}
+                                                    travels={travels}
                                                     setOpenModal={setOpenModal}
                                                     setGetID={setGetIDs}
                                                     gridCols='grid-cols-2' />
@@ -160,10 +160,10 @@ export default function SettingModals({
                                             <>
                                                 <Form
                                                     setFilteredTravels={setFilteredTravels}
-                                                    travels={travelCompare} />
+                                                    travels={travels} />
                                                 <List
                                                     filteredTravels={filteredTravels}
-                                                    travels={travelCompare}
+                                                    travels={travels}
                                                     setOpenModal={setOpenCompare}
                                                     setGetID={setGetIDCompare}
                                                     gridCols='grid-cols-2' />
@@ -197,10 +197,10 @@ export default function SettingModals({
                                             <>
                                                 <Form
                                                     setFilteredTravels={setFilteredTravels}
-                                                    travels={travelCompare} />
+                                                    travels={travels} />
                                                 <List
                                                     filteredTravels={filteredTravels}
-                                                    travels={travelCompare}
+                                                    travels={travels}
                                                     setOpenModal={setOpenCompareSecond}
                                                     setGetID={setGetIDCompareSecond}
                                                     gridCols='grid-cols-2' />
@@ -233,10 +233,10 @@ export default function SettingModals({
                                             <>
                                                 <Form
                                                     setFilteredTravels={setFilteredTravels}
-                                                    travels={travelCompare} />
+                                                    travels={travels} />
                                                 <List
                                                     filteredTravels={filteredTravels}
-                                                    travels={travelCompare}
+                                                    travels={travels}
                                                     setOpenModal={setOpenCompareThirty}
                                                     setGetID={setGetIDCompareThirty}
                                                     gridCols='grid-cols-2' />
@@ -263,17 +263,17 @@ export default function SettingModals({
                             title={modal.record ? `Viaggio a ${modal.record?.title}` : 'Confronta viaggi'}
                             onClose={() => {
                                 modal.setIsOpen(false);
-                                modal.setRecord(null);
+                                // modal.setRecord(null);
                             }}
                             content={
                                 modal.record === null ?
                                     <>
                                         <Form
                                             setFilteredTravels={setFilteredTravels}
-                                            travels={travelCompare} />
+                                            travels={travels} />
                                         <List
                                             filteredTravels={filteredTravels}
-                                            travels={travelCompare}
+                                            travels={travels}
                                             setOpenModal={modal.setIsOpen}
                                             setGetID={modal.setGetID} />
                                     </> :

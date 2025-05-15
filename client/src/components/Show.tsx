@@ -1,5 +1,5 @@
 // Types 
-import type { Show } from '../types/types';
+import type { Show, Travel } from '../types/types';
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,12 +20,14 @@ export default function Show({
         } else return false
     });
 
+    console.log(item?.id)
+
     return (
         <div className='flex justify-center items-center m-3'>
             {item ?
                 <div className='w-full border-2 border-gray-500 rounded-md flex flex-col gap-2 py-5 px-2 sm:p-8 md:px-8'>
                     <div className='flex flex-wrap md:flex-nowrap justify-between items-center'>
-                        <h2 className='md:w-[30%] text-center'><span className='text-sm'>Da:</span> {item.start && item.start}</h2>
+                        {/* <h2 className='md:w-[30%] text-center'><span className='text-sm'>Da:</span> {item.start && item.start}</h2> */}
                         <div className=''>
                             {item.available ?
                                 <p className='text-green-500'>Disponibile</p> :
@@ -38,12 +40,12 @@ export default function Show({
                         <div className='circle flex justify-center items-center'>
                             <div className='flex flex-col justify-center items-center '>
                                 <FontAwesomeIcon icon={faPlane} style={{ color: '424242' }} />
-                                <p>{item.duration && item.duration.toFixed(2)}h</p>
+                                {/* <p>{item.duration && item.duration.toFixed(2)}h</p> */}
                             </div>
                         </div>
                         <div className='row_next'></div>
                     </div>
-                    <p className='flex justify-center items-center italic'><span className='mr-1'>{item.scale ? item.scale : ''}</span> {item.category && item.category}</p>
+                    {/* <p className='flex justify-center items-center italic'><span className='mr-1'>{item.scale ? item.scale : ''}</span> {item.category && item.category}</p> */}
                     <div className='flex justify-between items-center'>
                         <div className='border-2 border-gray-500 w-[50%] rounded-md p-3 mt-2'>
                             <p className='font-bold text-xl'>Costo biglietto</p>
@@ -55,7 +57,7 @@ export default function Show({
                         <div className='w-[45%] p-3 mt-2 flex flex-wrap justify-between items-center gap-2'>
                             <button
                                 type='button'
-                                onClick={() => adding({ id: item?.id!, title: item?.title!, category: item?.category!, start: item?.start! })}
+                                onClick={() => adding({ id: item?.id!, title: item?.title!, category: item?.category! })}
                                 className='w-full py-2 rounded-xl bg-[#4973fc] text-[#ffff00] hover:bg-[#0b43fa] hover:shadow-md shadow-[#4973fc]'>
                                 {`${exists ? 'Rimuovi dai' : 'Aggiungi ai'} preferiti`}
                             </button>

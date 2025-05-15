@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // Types
-import type { Travel, List } from '../types/types';
+import type { Base, List } from '../types/types';
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -84,7 +84,7 @@ export default function List({
                     </div>
                 ) : (
                     // sorted va a buon fine
-                    sorted.map((e: Travel) => (
+                    sorted.map((e: Base) => (
                         <li
                             key={e.id}
                             onClick={() => getID(e.id)}
@@ -94,8 +94,8 @@ export default function List({
                                 <p className='text-gray-500 italic'>{e.category}</p>
                             </div>
                             <div className='flex justify-between items-center'>
-                                <p className='italic text-gray-400'>partenza:
-                                    <span className='text-black'>{' ' + e.start}</span>
+                                <p className='italic text-gray-400 hidden'>partenza:
+                                    <span className='text-black'>{' '}</span>
                                 </p>
                                 {onDelete &&
                                     <button

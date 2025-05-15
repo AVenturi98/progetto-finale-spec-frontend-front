@@ -2,7 +2,7 @@ import * as React from 'react';
 const URL_API = import.meta.env.VITE_URL_API;
 
 //Types 
-import type { Travel, Base } from './types/types';
+import type { Base, Travel, Food } from './types/types';
 
 // Components
 import Form from './components/Form';
@@ -16,10 +16,34 @@ import Favorites from './components/Favorites';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlaneDeparture, faBars, faX } from '@fortawesome/free-solid-svg-icons';
 
+
+type Props<T> = {
+  URL_fetch: string,
+  set: React.Dispatch<React.SetStateAction<T[] | null>>,
+  id?: number | null
+};
+
+type ResponseData = {
+  URL_fetch: string,
+  set: React.Dispatch<React.SetStateAction<Travel | Food | null>>,
+  id?: number | null
+};
+
+
+const categories = ['travels', 'foods'];
+
 function App() {
+
+  //Category setting
+  const [category, setCategory] = React.useState<'travels' | 'foods' | null>(null);
+
   // Travels / Filtered travels
   const [travels, setTravels] = React.useState<Travel[] | null>(null);
   const [filteredTravels, setFilteredTravels] = React.useState<Travel[] | null>(null);
+
+  // Foods / Filtered foods
+  const [foods, setFoods] = React.useState<Food[] | null>(null);
+  const [filteredFoods, setFilteredFoods] = React.useState<Food[] | null>(null);
 
   // set Open Modal
   const [openModal, setOpenModal] = React.useState<boolean>(false);
@@ -27,7 +51,7 @@ function App() {
 
   // Show setting
   const [getIDs, setGetIDs] = React.useState<number | null>(null);
-  const [record, setRecord] = React.useState<Travel | null>(null);
+  const [record, setRecord] = React.useState<Travel | Food | null>(null);
 
   // COMPARISON 
   // Comparison setting first
@@ -59,55 +83,64 @@ function App() {
 
 
   // creo una funzione fetch per recuperare i records
-  async function fetchURL(): Promise<Travel[]> {
+  async function fetchURL<T>({ URL_fetch, set }: Props<T>): Promise<T[] | null> {
     try {
-      const res: Response = await fetch(URL_API);
-      if (!res.ok) throw new Error(`Errore durante il recupero dei dati. Errore: ${res.status}, message: ${res.statusText}`)
-      const data = await res.json();
-      setTravels(data);
-      return data
+      const res: Response = await fetch(URL_fetch);
+      if (!res.ok) throw new Error(`Errore durante il recupero dei dati. Errore: ${res.status}, message: ${res.statusText}`);
+      const data: T[] = await res.json();
+      set(data);
+      console.log(data);
+      return data;
     } catch (err) {
       if (err instanceof Error) {
-        throw new Error(`Errore: ${err.message}`)
+        throw new Error(`Errore: ${err.message}`);
       } else {
-        console.error(err)
+        console.error(err);
       }
-      return []
+      return [];
     }
   }
 
-  React.useMemo(() => {
-    fetchURL();
-  }, [record, recordCompare]);
+  React.useEffect(() => {
+    if (category === 'travels') {
+      fetchURL<Travel>({ URL_fetch: `${URL_API}travels`, set: setTravels });
+    } else if (category === 'foods') {
+      fetchURL<Food>({ URL_fetch: `${URL_API}foods`, set: setFoods });
+    }
+
+  }, [category]);
 
 
 
   // funzione per recuperare un singolo item
-  async function getItem({ set, id }: { set: (travel: Travel) => void, id: number | null }): Promise<Travel | null> {
+  async function getItem({ URL_fetch, set, id }: ResponseData): Promise<Travel | Food | null> {
     try {
-      const res = await fetch(`${URL_API}/${id}`);
-      if (!res.ok) throw new Error(`Errore durante il recupero dei dati. Errore: ${res.status}, message: ${res.statusText}`)
-      const data = await res.json();
-      // console.log(data);
-      set(data.travel)
-      return data
+      const res = await fetch(`${URL_fetch}${category}/${id}`);
+      if (!res.ok) throw new Error(`Errore: ${res.status} ${res.statusText}`);
+
+      const data: { travel?: Travel; food?: Food } = await res.json();
+
+      const result = data.travel ?? data.food ?? null;
+
+      set(result);
+      return result;
     } catch (err) {
       if (err instanceof Error) {
-        throw new Error(`Errore: ${err.message}`)
+        throw new Error(`Errore: ${err.message}`);
       } else {
-        console.error(err)
+        console.error(err);
       }
-      return null
+      return null;
     }
-  };
+  }
 
 
   React.useEffect(() => {
-    openModal && getItem({ set: setRecord, id: getIDs });
-    openCompare && getItem({ set: setRecordCompare, id: getIDCompare });
-    openCompareSecond && getItem({ set: setRecordCompareSecond, id: getIDCompareSecond });
-    openCompareThirty && getItem({ set: setRecordCompareThirty, id: getIDCompareThirty })
-  }, [getIDs, getIDCompare, getIDCompareSecond, getIDCompareThirty]);
+    openModal && getItem({ URL_fetch: URL_API, set: setRecord, id: getIDs });
+    // openCompare && getItem({ set: setRecordCompare, id: getIDCompare });
+    // openCompareSecond && getItem({ set: setRecordCompareSecond, id: getIDCompareSecond });
+    // openCompareThirty && getItem({ set: setRecordCompareThirty, id: getIDCompareThirty })
+  }, [getIDs, getIDCompare, getIDCompareSecond, getIDCompareThirty]);//
 
 
 
@@ -189,7 +222,8 @@ function App() {
 
       <main className='flex flex-col gap-10 cursor-context-menu'>
 
-        <aside className={`fixed right-0 bg-[#000000ef] text-white rounded-l-full h-screen flex items-center transition-all transition-discrete duration-500 ${openAside ? ' translate-0 xl:w-[30%]' : ' translate-100 w-0'}`}>
+
+        <aside className={`fixed top-0.5 right-0 bg-[#000000ef] text-white rounded-l-full h-screen flex items-center transition-all transition-discrete duration-500 ${openAside ? ' translate-0 xl:w-[30%]' : ' translate-100 w-0'}`}>
           <button
             type="button"
             className={`text-[#ffff00] bg-gray-500 hover:bg-gray-400 border-2 border-amber-100 py-1 px-2 rounded-md absolute top-50 right-10 ${openAside ? 'block' : 'hidden'}`}
@@ -197,16 +231,29 @@ function App() {
             <FontAwesomeIcon icon={faX} />
           </button>
           <ul className='relative  text-center w-full'>
-            <li>Lorem ipsum dolor sit amet.</li>
-            <li>Lorem ipsum dolor sit amet.</li>
-            <li>Lorem ipsum dolor sit amet.</li>
-            <li>Lorem ipsum dolor sit amet.</li>
-            <li>Lorem ipsum dolor sit amet.</li>
+            {categories.map((e, i) =>
+              <li key={i} value={e}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (e === 'travels') {
+                      return setCategory('travels')
+                    } else if (e === 'foods') {
+                      return setCategory('foods')
+                    }
+                  }}
+                  className='text-yellow-400 hover:text-blue-500'>
+                  {e.toUpperCase()}
+                </button>
+              </li>
+            )}
           </ul>
         </aside>
 
         <div className='m-2'>
           <h1>Viaggia oltre meta</h1>
+
+
 
           {/* FORM SEARCH */}
           <Form
@@ -216,7 +263,7 @@ function App() {
           {/* RECORDS LIST */}
           <List
             filteredTravels={filteredTravels}
-            travels={travels}
+            travels={category === 'travels' ? travels : category === 'foods' ? foods : null}
             setOpenModal={setOpenModal}
             setGetID={setGetIDs} />
 
@@ -267,7 +314,7 @@ function App() {
             setGetIDCompareThirty={setGetIDCompareThirty}
 
             // Travels / Filtered travels
-            travels={travels}
+            travels={category === 'travels' ? travels : category === 'foods' ? foods : null}
             filteredTravels={filteredTravels}
             setFilteredTravels={setFilteredTravels}
 
