@@ -10,6 +10,7 @@ import List from './components/List';
 import SettingModals from './components/SettingModals';
 import Modal from './components/Modal';
 import PopUp from './components/PopUp';
+import BtnsFixed from './components/BtnsFixed';
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -282,22 +283,9 @@ function App() {
         </section>
 
         {/* BUTTONS */}
-        <section className='fixed bottom-20 md:bottom-10 right-10 sm:right-20 xl:right-50 z-99'>
-          <div className='flex flex-col items-center gap-2'>
-            <button
-              type="button"
-              onClick={() => setFavoritesModal(true)}
-              className='rounded-full min-h-[40px] min-w-[40px] bg-[#4973fc] text-[#ffff00] hover:bg-[#0b43fa] hover:shadow-md shadow-[#4973fc]'>
-              ♥
-            </button>
-            <button
-              type="button"
-              className='rounded-full min-h-[40px] min-w-[40px] bg-[#4973fc] text-[#ffff00] hover:bg-[#0b43fa] hover:shadow-md shadow-[#4973fc]'>
-              +
-            </button>
-          </div>
-        </section>
+        <BtnsFixed setFavoritesModal={setFavoritesModal} />
 
+        {/* POP UP */}
         <PopUp
           isVisible={isVisible}
           popUp={popUp}
