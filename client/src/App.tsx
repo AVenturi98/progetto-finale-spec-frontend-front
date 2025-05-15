@@ -14,7 +14,7 @@ import Favorites from './components/Favorites';
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlaneDeparture } from '@fortawesome/free-solid-svg-icons';
+import { faPlaneDeparture, faBars, faX } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
   // Travels / Filtered travels
@@ -152,6 +152,7 @@ function App() {
     }, 100)
   }
 
+  // Pop-up setting
   const [isVisible, setIsVisible] = React.useState<boolean>(false);
 
   React.useEffect(() => {
@@ -164,21 +165,51 @@ function App() {
   }, [popUp]);
 
 
+  const [openAside, setOpenAside] = React.useState<boolean>(false);
+
+
   return (
     <>
       <header className='bg-[#4973fc] shadow-2xl shadow-amber-300'>
-        <nav className='mb-3 md:mb-12 p-3 cursor-context-menu mx-20 py-5'>
+        <nav className='mb-3 md:mb-12 p-3 cursor-context-menu mx-20 py-5 flex justify-around'>
           <FontAwesomeIcon icon={faPlaneDeparture} size='2xl' style={{ color: '#ffffff', }} />
+          <button
+            type="button"
+            onClick={() => {
+              if (openAside) setOpenAside(false)
+              else setOpenAside(true)
+            }}>
+            <FontAwesomeIcon
+              icon={faBars}
+              size='2xl'
+              style={{ color: !openAside ? '#ffffff' : '#ffff00', }} />
+          </button>
         </nav>
       </header>
 
       <main className='flex flex-col gap-10 cursor-context-menu'>
+
+        <aside className={`fixed right-0 bg-[#000000ef] text-white rounded-l-full h-screen flex items-center transition-all transition-discrete duration-500 ${openAside ? ' translate-0 xl:w-[30%]' : ' translate-100 w-0'}`}>
+          <button
+            type="button"
+            className={`text-[#ffff00] bg-gray-500 hover:bg-gray-400 border-2 border-amber-100 py-1 px-2 rounded-md absolute top-50 right-10 ${openAside ? 'block' : 'hidden'}`}
+            onClick={() => setOpenAside(false)}>
+            <FontAwesomeIcon icon={faX} />
+          </button>
+          <ul className='relative  text-center w-full'>
+            <li>Lorem ipsum dolor sit amet.</li>
+            <li>Lorem ipsum dolor sit amet.</li>
+            <li>Lorem ipsum dolor sit amet.</li>
+            <li>Lorem ipsum dolor sit amet.</li>
+            <li>Lorem ipsum dolor sit amet.</li>
+          </ul>
+        </aside>
+
         <div className='m-2'>
           <h1>Viaggia oltre meta</h1>
 
           {/* FORM SEARCH */}
           <Form
-            // form search
             setFilteredTravels={setFilteredTravels}
             travels={travels} />
 

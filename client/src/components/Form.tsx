@@ -92,8 +92,8 @@ export default function Form({
 
                 {/* CHECKBOX */}
                 <div className='flex items-center'>
-                    <div className='flex items-center'>
-                        <label htmlFor="scalo" className='mx-2 pb-1'>scalo</label>
+                    <div className='flex items-center gap-0.5'>
+                        <label htmlFor="scalo" className='ml-2 pb-0.5'>scalo</label>
                         <input
                             type="checkbox"
                             name="scalo"
@@ -101,8 +101,8 @@ export default function Form({
                             onChange={() => handleCheckboxChange('scalo')} />
                     </div>
 
-                    <div className='flex items-center'>
-                        <label htmlFor="diretto" className='mx-2 pb-1'>diretto</label>
+                    <div className='flex items-center gap-0.5'>
+                        <label htmlFor="diretto" className='ml-2 pb-0.5'>diretto</label>
                         <input
                             type="checkbox"
                             name="diretto"

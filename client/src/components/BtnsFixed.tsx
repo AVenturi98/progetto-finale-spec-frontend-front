@@ -3,7 +3,7 @@ import type { SetStateAction } from "react";
 export default function BtnsFixed({ setFavoritesModal }: { setFavoritesModal: React.Dispatch<SetStateAction<boolean>> }) {
 
     return (
-        <section className='fixed bottom-20 md:bottom-10 right-10 sm:right-20 xl:right-50 z-99'>
+        <section className='fixed bottom-20 md:bottom-10 xl:bottom-30 right-10 sm:right-20 xl:right-50 z-99'>
             <div className='flex flex-col items-center gap-2'>
                 <button
                     type="button"

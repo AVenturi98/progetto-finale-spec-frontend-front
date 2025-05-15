@@ -43,7 +43,6 @@ h2 {
 
 
 button {
-  border: 1px solid black;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
@@ -53,11 +52,6 @@ button {
 
 button:hover {
   transition: all 200ms;
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
 option {
