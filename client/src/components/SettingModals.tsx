@@ -5,7 +5,7 @@ import Form from "./Form";
 import List from "./List";
 
 // Types
-import type { Travel, Base, SettingModal } from "../types/types";
+import type { Travel, SettingModal, Food } from "../types/types";
 
 
 
@@ -28,6 +28,8 @@ export default function SettingModals({
     travels,
     getIDs,
     setGetIDs,
+    getIDFoods, // get id food
+    setGetIDFoods, // get id food
     getIDCompare,
     setGetIDCompare,
     getIDCompareSecond,
@@ -38,7 +40,8 @@ export default function SettingModals({
     setRecordCompareThirty,
     getIDCompareThirty,
     setGetIDCompareThirty,
-    favorites
+    favorites,
+    category
 }:
     SettingModal
 ) {
@@ -64,6 +67,8 @@ export default function SettingModals({
             setRecord: setRecord,
             getID: getIDs,
             setGetID: setGetIDs,
+            getIDFoods: getIDFoods,// get id foods
+            setGetIDFoods: setGetIDFoods,// get id foods
             comparison: () => setOpenCompare(true),
             activeComparison: !openCompare,
         },
@@ -129,17 +134,22 @@ export default function SettingModals({
                                                     travels={travels}
                                                     setOpenModal={setOpenModal}
                                                     setGetID={setGetIDs}
-                                                    gridCols='grid-cols-2' />
+                                                    gridCols='grid-cols-2'
+                                                    category={category}
+                                                    setGetIDFoods={setGetIDFoods}
+                                                />
                                             </> :
                                             <Show
                                                 item={record}
                                                 comparison={() => setOpenCompare(true)}
-                                                adding={(item: Base) => {
+                                                adding={(item: Travel | Food) => {
                                                     addFavorites(item);
-                                                    return item;
+                                                    if (category === 'travels') return item as Travel
+                                                    else if (category === 'foods') return item as Food
                                                 }}
                                                 activeComparison={!openCompare}
                                                 favorites={favorites}
+                                                category={category}
                                             />
                                     }
                                 />}
@@ -166,17 +176,20 @@ export default function SettingModals({
                                                     travels={travels}
                                                     setOpenModal={setOpenCompare}
                                                     setGetID={setGetIDCompare}
-                                                    gridCols='grid-cols-2' />
+                                                    gridCols='grid-cols-2'
+                                                    category={category}
+                                                    setGetIDFoods={setGetIDFoods} />
                                             </> :
                                             <Show
                                                 item={recordCompare}
                                                 comparison={() => setOpenCompareSecond(true)}
-                                                adding={(item: Base) => {
+                                                adding={(item: Travel | Food) => {
                                                     addFavorites(item);
                                                     return item;
                                                 }}
                                                 activeComparison={!openCompareSecond}
                                                 favorites={favorites}
+                                                category={category}
                                             />
                                     }
                                 />}
@@ -203,17 +216,21 @@ export default function SettingModals({
                                                     travels={travels}
                                                     setOpenModal={setOpenCompareSecond}
                                                     setGetID={setGetIDCompareSecond}
-                                                    gridCols='grid-cols-2' />
+                                                    gridCols='grid-cols-2'
+                                                    category={category}
+                                                    setGetIDFoods={setGetIDFoods} />
                                             </> :
                                             <Show
                                                 item={recordCompareSecond}
                                                 comparison={() => setOpenCompareThirty(true)}
-                                                adding={(item: Base) => {
+                                                adding={(item: Travel | Food) => {
                                                     addFavorites(item);
                                                     return item;
                                                 }}
                                                 activeComparison={!openCompareThirty}
-                                                favorites={favorites} />
+                                                favorites={favorites}
+                                                category={category}
+                                            />
                                     }
                                 />}
                             {/* OPEN MODAL COMPARE THIRTY*/}
@@ -239,17 +256,21 @@ export default function SettingModals({
                                                     travels={travels}
                                                     setOpenModal={setOpenCompareThirty}
                                                     setGetID={setGetIDCompareThirty}
-                                                    gridCols='grid-cols-2' />
+                                                    gridCols='grid-cols-2'
+                                                    category={category}
+                                                    setGetIDFoods={setGetIDFoods} />
                                             </> :
                                             <Show
                                                 item={recordCompareThirty}
                                                 comparison={() => setOpenModal(true)}
-                                                adding={(item: Base) => {
+                                                adding={(item: Travel | Food) => {
                                                     addFavorites(item);
                                                     return item;
                                                 }}
                                                 activeComparison={!openModal}
-                                                favorites={favorites} />
+                                                favorites={favorites}
+                                                category={category}
+                                            />
                                     }
                                 />}
                         </div>
@@ -275,17 +296,21 @@ export default function SettingModals({
                                             filteredTravels={filteredTravels}
                                             travels={travels}
                                             setOpenModal={modal.setIsOpen}
-                                            setGetID={modal.setGetID} />
+                                            setGetID={modal.setGetID}
+                                            category={category}
+                                            setGetIDFoods={setGetIDFoods} />
                                     </> :
                                     <Show
                                         item={modal.record}
                                         comparison={modal.comparison}
-                                        adding={(item: Base) => {
+                                        adding={(item: Travel | Food) => {
                                             addFavorites(item);
-                                            return item;
+                                            if (category === 'travels') return item as Travel
+                                            else if (category === 'foods') return item as Food
                                         }}
                                         activeComparison={modal.activeComparison}
                                         favorites={favorites}
+                                        category={category}
                                     />
                             }
                         />

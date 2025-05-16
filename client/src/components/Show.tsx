@@ -1,5 +1,5 @@
 // Types 
-import type { Show, Travel } from '../types/types';
+import type { Show, Travel, Food } from '../types/types';
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,12 +15,10 @@ export default function Show({
 
 
     const exists = favorites?.some(t => {
-        if (t.id === item?.id) {
+        if (t.id === item?.id && t.category === item?.category) {
             return true
         } else return false
     });
-
-    console.log(item?.id)
 
     return (
         <div className='flex justify-center items-center m-3'>
@@ -57,7 +55,7 @@ export default function Show({
                         <div className='w-[45%] p-3 mt-2 flex flex-wrap justify-between items-center gap-2'>
                             <button
                                 type='button'
-                                onClick={() => adding({ id: item?.id!, title: item?.title!, category: item?.category! })}
+                                onClick={() => adding({ id: item?.id!, title: item?.title!, category: item?.category! } as Travel | Food)}
                                 className='w-full py-2 rounded-xl bg-[#4973fc] text-[#ffff00] hover:bg-[#0b43fa] hover:shadow-md shadow-[#4973fc]'>
                                 {`${exists ? 'Rimuovi dai' : 'Aggiungi ai'} preferiti`}
                             </button>

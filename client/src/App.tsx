@@ -2,7 +2,7 @@ import * as React from 'react';
 const URL_API = import.meta.env.VITE_URL_API;
 
 //Types 
-import type { Base, Travel, Food } from './types/types';
+import type { Travel, Food } from './types/types';
 
 // Components
 import Form from './components/Form';
@@ -30,7 +30,7 @@ type ResponseData = {
 };
 
 
-const categories = ['travels', 'foods'];
+const categories = ['VIAGGI' as 'travels', 'ALIMENTI' as 'foods'];
 
 function App() {
 
@@ -43,15 +43,17 @@ function App() {
 
   // Foods / Filtered foods
   const [foods, setFoods] = React.useState<Food[] | null>(null);
-  const [filteredFoods, setFilteredFoods] = React.useState<Food[] | null>(null);
+  // const [filteredFoods, setFilteredFoods] = React.useState<Food[] | null>(null);
 
   // set Open Modal
   const [openModal, setOpenModal] = React.useState<boolean>(false);
 
 
   // Show setting
-  const [getIDs, setGetIDs] = React.useState<number | null>(null);
+  const [getIDs, setGetIDs] = React.useState<number | null>(null); // get  ID travels
   const [record, setRecord] = React.useState<Travel | Food | null>(null);
+
+  const [getIDFoods, setGetIDFoods] = React.useState<number | null>(null); // get ID foods
 
   // COMPARISON 
   // Comparison setting first
@@ -70,12 +72,16 @@ function App() {
   const [getIDCompareThirty, setGetIDCompareThirty] = React.useState<number | null>(null);
 
   // Favorites setting
-  const [favorites, setFavorites] = React.useState<Base[] | null>(() => {
+  const [favorites, setFavorites] = React.useState<Travel[] | null>(() => {
     const storedFavorites = localStorage.getItem('favorites');
     return storedFavorites ? JSON.parse(storedFavorites) : null;
   }); // localStoraga for favorites
-  const [filteredFavorites, setFilteredFavorites] = React.useState<Base[] | null>(null);
+  const [filteredFavorites, setFilteredFavorites] = React.useState<Travel[] | Food[] | null>(null);
   const [favoritesModal, setFavoritesModal] = React.useState<boolean>(false);
+
+
+  // Favorites Foods 
+  const [favoritesFoods, setFavoritesFoods] = React.useState<Food[] | null>(null);
 
   // Pop-up setting
   const [popUp, setPopUp] = React.useState<boolean>(false);
@@ -136,35 +142,57 @@ function App() {
 
 
   React.useEffect(() => {
-    openModal && getItem({ URL_fetch: URL_API, set: setRecord, id: getIDs });
+    openModal && category === 'travels' && getItem({ URL_fetch: URL_API, set: setRecord, id: getIDs });
+    openModal && category === 'foods' && getItem({ URL_fetch: URL_API, set: setRecord, id: getIDFoods });
+
     // openCompare && getItem({ set: setRecordCompare, id: getIDCompare });
     // openCompareSecond && getItem({ set: setRecordCompareSecond, id: getIDCompareSecond });
     // openCompareThirty && getItem({ set: setRecordCompareThirty, id: getIDCompareThirty })
-  }, [getIDs, getIDCompare, getIDCompareSecond, getIDCompareThirty]);//
+  }, [getIDs, getIDFoods, getIDCompare, getIDCompareSecond, getIDCompareThirty]);//
 
 
 
   // Add favorites elements
-  function addFavorites(item: Base) {
-
+  function addFavorites(item: Travel | Food) {
     timing();
 
-    setFavorites((prev: Base[] | null) => {
+    if (category === 'travels') {
+      setFavorites((prev: Travel[] | null) => {
+        if (!prev) {
+          setAddRemoved('Aggiunto');
+          return [item as Travel];
+        }
 
-      if (!prev) {
-        setAddRemoved('Aggiunto');
-        return [item];
-      }
+        const exists = prev.some(t => t.id === item.id);
 
-      const idExist = prev.find(t => t.id === item.id);
-      if (!idExist) {
-        setAddRemoved('Aggiunto');
-        return [...prev, item];
-      } else {
-        setAddRemoved('Rimosso');
-        return prev.filter(t => t.id !== item.id);
-      }
-    });
+        if (!exists) {
+          setAddRemoved('Aggiunto');
+          return [...prev, item as Travel];
+        } else {
+          setAddRemoved('Rimosso');
+          return prev.filter(t => t.id !== item.id);
+        }
+      });
+    }
+
+    if (category === 'foods') {
+      setFavoritesFoods((prev: Food[] | null) => {
+        if (!prev) {
+          setAddRemoved('Aggiunto');
+          return [item as Food];
+        }
+
+        const exists = prev.some(t => t.id === item.id);
+
+        if (!exists) {
+          setAddRemoved('Aggiunto');
+          return [...prev, item as Food];
+        } else {
+          setAddRemoved('Rimosso');
+          return prev.filter(t => t.id !== item.id);
+        }
+      });
+    }
   }
 
   // Effect for localStorage by favorites
@@ -200,7 +228,7 @@ function App() {
 
   const [openAside, setOpenAside] = React.useState<boolean>(false);
 
-
+  console.log(category)
   return (
     <>
       <header className='bg-[#4973fc] shadow-2xl shadow-amber-300'>
@@ -236,9 +264,9 @@ function App() {
                 <button
                   type="button"
                   onClick={() => {
-                    if (e === 'travels') {
+                    if (e === 'VIAGGI' as 'travels') {
                       return setCategory('travels')
-                    } else if (e === 'foods') {
+                    } else if (e === 'ALIMENTI' as 'foods') {
                       return setCategory('foods')
                     }
                   }}
@@ -265,7 +293,11 @@ function App() {
             filteredTravels={filteredTravels}
             travels={category === 'travels' ? travels : category === 'foods' ? foods : null}
             setOpenModal={setOpenModal}
-            setGetID={setGetIDs} />
+            setGetID={setGetIDs}
+            category={category}
+            setGetIDFoods={setGetIDFoods}
+
+          />
 
           {/* SETTING MODALS */}
           <SettingModals
@@ -280,6 +312,8 @@ function App() {
             getIDs={getIDs}
             setGetIDs={setGetIDs}
 
+            getIDFoods={getIDFoods} // get id food
+            setGetIDFoods={setGetIDFoods} // get id food
             // Comparison settings compare
             // --open modal compare--
             openCompare={openCompare}
@@ -323,13 +357,15 @@ function App() {
 
             // Custom text btn add favorites
             favorites={favorites}
+
+            category={category}
           />
 
         </div>
 
         {/* FAVORITES */}
         <Favorites
-          favorites={favorites}
+          favorites={category === 'travels' ? favorites : favoritesFoods}
           setFavorites={setFavorites}
           favoritesModal={favoritesModal}
           setFavoritesModal={setFavoritesModal}
@@ -339,6 +375,9 @@ function App() {
           setGetIDs={setGetIDs}
           timing={timing}
           setAddRemoved={setAddRemoved}
+          category={category}
+          setGetIDFoods={setGetIDFoods}
+          setFavoritesFoods={setFavoritesFoods}
         />
 
         {/* BUTTONS */}

@@ -1,5 +1,5 @@
 // Types
-import type { Travel, Base } from "../types/types";
+import type { Travel, Food, Base } from "../types/types";
 
 // Components
 import Modal from "./Modal";
@@ -15,19 +15,25 @@ export default function Favorites({
     setFilteredFavorites,
     setOpenModal,
     setGetIDs,
+    setGetIDFoods,
     timing,
-    setAddRemoved
+    setAddRemoved,
+    category,
+    setFavoritesFoods
 }: {
-    favorites: Base[] | null,
-    setFavorites: React.Dispatch<React.SetStateAction<Base[] | null>>,
+    favorites: Travel[] | Food[] | null,
+    setFavorites: React.Dispatch<React.SetStateAction<Travel[] | null>>,
     favoritesModal: boolean,
     setFavoritesModal: React.Dispatch<React.SetStateAction<boolean>>,
     filteredFavorites: Base[] | null,
-    setFilteredFavorites: React.Dispatch<React.SetStateAction<Base[] | null>>
-    setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
-    setGetIDs: React.Dispatch<React.SetStateAction<number | null>>
+    setFilteredFavorites: React.Dispatch<React.SetStateAction<Travel[] | Food[] | null>>,
+    setOpenModal: React.Dispatch<React.SetStateAction<boolean>>,
+    setGetIDs: React.Dispatch<React.SetStateAction<number | null>>,
+    setGetIDFoods: React.Dispatch<React.SetStateAction<number | null>>, // get id foods
     timing: () => void,
-    setAddRemoved: React.Dispatch<React.SetStateAction<"Rimosso" | "Aggiunto">>
+    setAddRemoved: React.Dispatch<React.SetStateAction<"Rimosso" | "Aggiunto">>,
+    category: "travels" | "foods" | null,
+    setFavoritesFoods: React.Dispatch<React.SetStateAction<Food[] | null>>
 }) {
 
     return (
@@ -40,19 +46,26 @@ export default function Favorites({
                         <Form
                             // form search
                             setFilteredTravels={setFilteredFavorites}
-                            travels={favorites as unknown as Travel[]} />
+                            travels={favorites as unknown as Travel[] | Food[]} />
                         <List
-                            filteredTravels={filteredFavorites as unknown as Travel[] | null}
-                            travels={[...favorites] as unknown as Travel[] | null}
+                            filteredTravels={filteredFavorites as unknown as Travel[] | Food[] | null}
+                            travels={[...favorites] as unknown as Travel[] | Food[] | null}
                             setOpenModal={setOpenModal}
                             setGetID={setGetIDs}
+                            setGetIDFoods={setGetIDFoods}
                             gridCols={'grid-cols-1'}
                             onDelete={true}
                             setDeleted={(updatedFavorites) => {
-                                timing()
+                                timing();
                                 setAddRemoved('Rimosso');
-                                return setFavorites(updatedFavorites);
-                            }} />
+
+                                if (category === 'travels') {
+                                    setFavorites(updatedFavorites as Travel[] | null);
+                                } else {
+                                    setFavoritesFoods(updatedFavorites as Food[] | null);
+                                }
+                            }}
+                            category={category} />
                     </>
                     :
                     <div className='flex justify-center items-center'>
