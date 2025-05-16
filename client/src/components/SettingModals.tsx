@@ -53,14 +53,21 @@ export default function SettingModals({
     SettingModal
 ) {
 
-    // filtered travel comparison
-    // const travelCompare: Travel[] | null = travels?.filter(t => {
-    //     return t.id !== getIDs &&
-    //         t.id !== getIDCompare &&
-    //         t.id !== getIDCompareSecond &&
-    //         t.id !== getIDCompareThirty
+    // filtered travel / food comparison
+    const travelCompare: (Travel | Food)[] | null = travels?.filter(t => {
+        return t.id !== getIDs &&
+            t.id !== getIDCompare &&
+            t.id !== getIDCompareSecond &&
+            t.id !== getIDCompareThirty
 
-    // }) || null
+    }) || null
+
+    const foodCompare: (Travel | Food)[] | null = travels?.filter(t => {
+        return t.id !== getIDFoods &&
+            t.id !== getIDCompareFoods &&
+            t.id !== getIDCompareSecondFoods &&
+            t.id !== getIDCompareThirtyFoods
+    }) || null
 
     const conditions = [openModal, openCompare, openCompareSecond, openCompareThirty];
 
@@ -117,6 +124,9 @@ export default function SettingModals({
         },
     ];
 
+    console.log('ID', getIDFoods)
+    console.log('IDSSSS', getIDCompareFoods)
+
     return (
         <>
             {
@@ -132,7 +142,7 @@ export default function SettingModals({
                                     title={
                                         category === 'travels' && record ?
                                             `Viaggio a ${record?.title}` :
-                                            !record ? 'Confronta viaggi' :
+                                            !record && category === 'travels' ? 'Confronta viaggi' :
                                                 category !== 'travels' && record ?
                                                     `Food & Beverage` : 'Confronta alimenti'}
                                     onClose={() => {
@@ -153,7 +163,7 @@ export default function SettingModals({
                                                     setFilteredFoods={setFilteredFoods}
                                                 />
                                                 <List
-                                                    filteredTravels={filteredTravels}
+                                                    filteredTravels={category === 'travels' ? travelCompare as Travel[] : foodCompare as Food[]}
                                                     travels={travels}
                                                     setOpenModal={setOpenModal}
                                                     setGetID={setGetIDs}
@@ -185,7 +195,7 @@ export default function SettingModals({
                                         category === 'travels' && recordCompare ?
                                             `Viaggio a ${recordCompare?.title}` :
                                             !recordCompare && category === 'travels' ? 'Confronta viaggi' :
-                                                category === 'foods' && recordCompare ?
+                                                category !== 'travels' && recordCompare ?
                                                     `Food & Beverage` : 'Confronta alimenti'}
                                     onClose={() => {
                                         setOpenCompare(false);
@@ -205,7 +215,7 @@ export default function SettingModals({
                                                     setFilteredFoods={setFilteredFoods}
                                                 />
                                                 <List
-                                                    filteredTravels={filteredTravels}
+                                                    filteredTravels={category === 'travels' ? travelCompare as Travel[] : foodCompare as Food[]}
                                                     travels={travels}
                                                     setOpenModal={setOpenCompare}
                                                     setGetID={setGetIDCompare}
@@ -234,10 +244,10 @@ export default function SettingModals({
                                     isOpen={openCompareSecond}
                                     isStatic={true}
                                     title={
-                                        category === 'travels' && recordCompare ?
-                                            `Viaggio a ${recordCompare?.title}` :
-                                            !recordCompare ? 'Confronta viaggi' :
-                                                category !== 'travels' && recordCompare ?
+                                        category === 'travels' && recordCompareSecond ?
+                                            `Viaggio a ${recordCompareSecond?.title}` :
+                                            !recordCompareSecond && category === 'travels' ? 'Confronta viaggi' :
+                                                category !== 'travels' && recordCompareSecond ?
                                                     `Food & Beverage` : 'Confronta alimenti'}
                                     onClose={() => {
                                         setOpenCompareSecond(false);
@@ -257,7 +267,7 @@ export default function SettingModals({
                                                     setFilteredFoods={setFilteredFoods}
                                                 />
                                                 <List
-                                                    filteredTravels={filteredTravels}
+                                                    filteredTravels={category === 'travels' ? travelCompare as Travel[] : foodCompare as Food[]}
                                                     travels={travels}
                                                     setOpenModal={setOpenCompareSecond}
                                                     setGetID={setGetIDCompareSecond}
@@ -286,10 +296,10 @@ export default function SettingModals({
                                     isOpen={openCompareThirty}
                                     isStatic={true}
                                     title={
-                                        category === 'travels' && recordCompare ?
-                                            `Viaggio a ${recordCompare?.title}` :
-                                            !recordCompare ? 'Confronta viaggi' :
-                                                category !== 'travels' && recordCompare ?
+                                        category === 'travels' && recordCompareThirty ?
+                                            `Viaggio a ${recordCompareThirty?.title}` :
+                                            !recordCompareThirty && category === 'travels' ? 'Confronta viaggi' :
+                                                category !== 'travels' && recordCompareThirty ?
                                                     `Food & Beverage` : 'Confronta alimenti'}
                                     onClose={() => {
                                         setOpenCompareThirty(false);
@@ -310,7 +320,7 @@ export default function SettingModals({
                                                 />
 
                                                 <List
-                                                    filteredTravels={filteredTravels}
+                                                    filteredTravels={category === 'travels' ? travelCompare as Travel[] : foodCompare as Food[]}
                                                     travels={travels}
                                                     setOpenModal={setOpenCompareThirty}
                                                     setGetID={setGetIDCompareThirty}
@@ -344,7 +354,7 @@ export default function SettingModals({
                             title={modal.record ? `Viaggio a ${modal.record?.title}` : 'Confronta viaggi'}
                             onClose={() => {
                                 modal.setIsOpen(false);
-                                // modal.setRecord(null);
+                                conditions.filter(Boolean).length >= 2 && modal.setRecord(null);
                             }}
                             content={
                                 modal.record === null ?

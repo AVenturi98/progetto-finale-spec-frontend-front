@@ -88,7 +88,10 @@ function App() {
 
 
   // Favorites Foods 
-  const [favoritesFoods, setFavoritesFoods] = React.useState<Food[] | null>(null);
+  const [favoritesFoods, setFavoritesFoods] = React.useState<Food[] | null>(() => {
+    const storedFavoritesFoods = localStorage.getItem('favoritesFoods');
+    return storedFavoritesFoods ? JSON.parse(storedFavoritesFoods) : null;
+  });
 
   // Pop-up setting
   const [popUp, setPopUp] = React.useState<boolean>(false);
@@ -212,7 +215,8 @@ function App() {
   // Effect for localStorage by favorites
   React.useMemo(() => {
     localStorage.setItem('favorites', favorites ? JSON.stringify(favorites) : '[]')
-  }, [favorites])
+    localStorage.setItem('favoritesFoods', favorites ? JSON.stringify(favoritesFoods) : '[]')
+  }, [favorites, favoritesFoods])
 
   // Setting visibility Pop-up
   const timing = () => {
