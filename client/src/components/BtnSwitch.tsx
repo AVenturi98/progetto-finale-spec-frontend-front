@@ -30,8 +30,9 @@ export default function BtnSwitch({
 
     return (
         <div className="flex justify-around">
-            {categories.map(e =>
+            {categories.map((e, i) =>
                 <button
+                    key={i}
                     type="button"
                     onClick={() => { console.log('E', e); return handleSelectedBtn(e) }}
                     className={`px-5 py-1 rounded-md bg-[#4973fc] hover:text-[#ffff00] hover:bg-[#0b43fa] hover:shadow-md shadow-[#4973fc] ${selectedBtn === category && category === e ? 'bg-[#fff000] border-2 border-[#0b43fa] text-[#0b43fa]' : 'bg-blue-500 text-[#ffff00]'}`}>

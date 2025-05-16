@@ -89,7 +89,9 @@ export type PopUp = {
 
 export type Form = {
     setFilteredTravels: (filteredTravels: Travel[] | null) => void,
-    travels: (Travel[] | Food[] | null)
+    travels: (Travel[] | Food[] | null),
+    category: "travels" | "foods" | null,
+    setFilteredFoods: React.Dispatch<React.SetStateAction<Food[] | null>>
 }
 
 export type List = {

@@ -43,7 +43,7 @@ function App() {
 
   // Foods / Filtered foods
   const [foods, setFoods] = React.useState<Food[] | null>(null);
-  // const [filteredFoods, setFilteredFoods] = React.useState<Food[] | null>(null);
+  const [filteredFoods, setFilteredFoods] = React.useState<Food[] | null>(null);
 
   // set Open Modal
   const [openModal, setOpenModal] = React.useState<boolean>(false);
@@ -269,6 +269,7 @@ function App() {
                   type="button"
                   onClick={() => {
                     if (e === 'travels') {
+                      console.log('E', e)
                       setOpenAside(false);
                       setSelectedBtn('travels');
                       return setCategory('travels')
@@ -278,7 +279,7 @@ function App() {
                       return setCategory('foods')
                     }
                   }}
-                  className='text-yellow-400 hover:text-blue-500'>
+                  className={` hover:text-blue-500 ${category === e ? 'text-blue-400 underline' : 'text-yellow-400'}`}>
                   {e === 'travels' ? 'VIAGGI' : 'ALIMENTI'}
                 </button>
               </li>
@@ -294,11 +295,13 @@ function App() {
           {/* FORM SEARCH */}
           <Form
             setFilteredTravels={setFilteredTravels}
-            travels={travels} />
+            travels={category === 'travels' ? travels : category === 'foods' ? foods : null}
+            category={category}
+            setFilteredFoods={setFilteredFoods} />
 
           {/* RECORDS LIST */}
           <List
-            filteredTravels={filteredTravels}
+            filteredTravels={category === 'travels' ? filteredTravels : category === 'foods' ? filteredFoods : null}
             travels={category === 'travels' ? travels : category === 'foods' ? foods : null}
             setOpenModal={setOpenModal}
             setGetID={setGetIDs}
