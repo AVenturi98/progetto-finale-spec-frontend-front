@@ -30,7 +30,7 @@ type ResponseData = {
 };
 
 
-const categories = ['VIAGGI' as 'travels', 'ALIMENTI' as 'foods'];
+const categories = ['travels', 'foods'];
 
 function App() {
 
@@ -86,6 +86,10 @@ function App() {
   // Pop-up setting
   const [popUp, setPopUp] = React.useState<boolean>(false);
   const [addRemoved, setAddRemoved] = React.useState<'Aggiunto' | 'Rimosso'>('Aggiunto');
+
+  // BtnSwitch setting
+  const [selectedBtn, setSelectedBtn] = React.useState<"travels" | "foods" | null>(null);
+
 
 
   // creo una funzione fetch per recuperare i records
@@ -264,14 +268,18 @@ function App() {
                 <button
                   type="button"
                   onClick={() => {
-                    if (e === 'VIAGGI' as 'travels') {
+                    if (e === 'travels') {
+                      setOpenAside(false);
+                      setSelectedBtn('travels');
                       return setCategory('travels')
-                    } else if (e === 'ALIMENTI' as 'foods') {
+                    } else if (e === 'foods') {
+                      setOpenAside(false);
+                      setSelectedBtn('foods');
                       return setCategory('foods')
                     }
                   }}
                   className='text-yellow-400 hover:text-blue-500'>
-                  {e.toUpperCase()}
+                  {e === 'travels' ? 'VIAGGI' : 'ALIMENTI'}
                 </button>
               </li>
             )}
@@ -376,8 +384,12 @@ function App() {
           timing={timing}
           setAddRemoved={setAddRemoved}
           category={category}
+          setCategory={setCategory}
           setGetIDFoods={setGetIDFoods}
           setFavoritesFoods={setFavoritesFoods}
+          categories={categories}
+          selectedBtn={selectedBtn}
+          setSelectedBtn={setSelectedBtn}
         />
 
         {/* BUTTONS */}
