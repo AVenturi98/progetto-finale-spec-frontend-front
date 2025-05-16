@@ -26,15 +26,7 @@ export default function Form({
     const [suggest, setSuggest] = React.useState<Travel[] | Food[] | null>(null); // set Suggestion
 
 
-    function isFood(item: Travel | Food): item is Food {
-        return 'brand' in item;
-    }
-
-    function isTravel(item: Travel | Food): item is Travel {
-        return 'start' in item;
-    }
-
-
+    // submit travels
     function handleSubmitTravel(e: React.FormEvent<HTMLFormElement>): void {
         e.preventDefault();
         const filteredTravels = travels
@@ -49,6 +41,7 @@ export default function Form({
         setSuggest(null)
     }
 
+    // submit foods
     function handleSubmitFood(e: React.FormEvent<HTMLFormElement>): void {
         e.preventDefault();
         const filteredTravels = travels

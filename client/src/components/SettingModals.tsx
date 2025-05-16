@@ -28,20 +28,27 @@ export default function SettingModals({
     travels,
     getIDs,
     setGetIDs,
-    getIDFoods, // get id food
-    setGetIDFoods, // get id food
+    getIDFoods,
+    setGetIDFoods,
     getIDCompare,
     setGetIDCompare,
+    getIDCompareFoods,
+    setGetIDCompareFoods,
     getIDCompareSecond,
     setGetIDCompareSecond,
+    getIDCompareSecondFoods,
+    setGetIDCompareSecondFoods,
     addFavorites,
     openCompareThirty,
     recordCompareThirty,
     setRecordCompareThirty,
     getIDCompareThirty,
     setGetIDCompareThirty,
+    getIDCompareThirtyFoods,
+    setGetIDCompareThirtyFoods,
     favorites,
-    category
+    category,
+    setFilteredFoods
 }:
     SettingModal
 ) {
@@ -79,6 +86,8 @@ export default function SettingModals({
             setRecord: setRecordCompare,
             getID: getIDCompare,
             setGetID: setGetIDCompare,
+            getIDCompareFoods: getIDCompareFoods,// get id foods
+            setGetIDCompareFoods: setGetIDCompareFoods,// get id foods
             comparison: () => setOpenCompareSecond(true),
             activeComparison: !openCompareSecond,
         },
@@ -89,6 +98,8 @@ export default function SettingModals({
             setRecord: setRecordCompareSecond,
             getID: getIDCompareSecond,
             setGetID: setGetIDCompareSecond,
+            getIDCompareSecondFoods: getIDCompareSecondFoods,// get id foods
+            setGetIDCompareSecondFoods: setGetIDCompareSecondFoods,// get id foods
             comparison: () => setOpenCompareThirty(true),
             activeComparison: !openCompareThirty,
         },
@@ -99,6 +110,8 @@ export default function SettingModals({
             setRecord: setRecordCompareThirty,
             getID: getIDCompareThirty,
             setGetID: setGetIDCompareThirty,
+            getIDCompareThirtyFoods: getIDCompareThirtyFoods,// get id foods
+            setGetIDCompareThirtyFoods: setGetIDCompareThirtyFoods,// get id foods
             comparison: () => setOpenModal(true),
             activeComparison: !openModal,
         },
@@ -116,11 +129,18 @@ export default function SettingModals({
                                 <Modal
                                     isOpen={openModal}
                                     isStatic={true}
-                                    title={record ? `Viaggio a ${record?.title}` : 'Confronta viaggi'}
+                                    title={
+                                        category === 'travels' && record ?
+                                            `Viaggio a ${record?.title}` :
+                                            !record ? 'Confronta viaggi' :
+                                                category !== 'travels' && record ?
+                                                    `Food & Beverage` : 'Confronta alimenti'}
                                     onClose={() => {
                                         setOpenModal(false);
                                         setRecord(null);
-                                        setGetIDs(null)
+                                        if (category === 'travels') {
+                                            setGetIDs(null)
+                                        } else setGetIDFoods(null)
                                     }}
                                     hContent={conditions.filter(Boolean).length >= 3 ? 'h-[350px]' : ''}
                                     content={
@@ -128,7 +148,10 @@ export default function SettingModals({
                                             <>
                                                 <Form
                                                     setFilteredTravels={setFilteredTravels}
-                                                    travels={travels} />
+                                                    travels={travels}
+                                                    category={category}
+                                                    setFilteredFoods={setFilteredFoods}
+                                                />
                                                 <List
                                                     filteredTravels={filteredTravels}
                                                     travels={travels}
@@ -158,11 +181,18 @@ export default function SettingModals({
                                 <Modal
                                     isOpen={openCompare}
                                     isStatic={true}
-                                    title={recordCompare ? `Viaggio a ${recordCompare?.title}` : 'Confronta viaggi'}
+                                    title={
+                                        category === 'travels' && recordCompare ?
+                                            `Viaggio a ${recordCompare?.title}` :
+                                            !recordCompare && category === 'travels' ? 'Confronta viaggi' :
+                                                category === 'foods' && recordCompare ?
+                                                    `Food & Beverage` : 'Confronta alimenti'}
                                     onClose={() => {
                                         setOpenCompare(false);
                                         setRecordCompare(null);
-                                        setGetIDCompare(null)
+                                        if (category === 'travels') {
+                                            setGetIDCompare(null)
+                                        } else setGetIDCompareFoods(null)
                                     }}
                                     hContent={conditions.filter(Boolean).length >= 3 ? 'h-[350px]' : ''}
                                     content={
@@ -170,7 +200,10 @@ export default function SettingModals({
                                             <>
                                                 <Form
                                                     setFilteredTravels={setFilteredTravels}
-                                                    travels={travels} />
+                                                    travels={travels}
+                                                    category={category}
+                                                    setFilteredFoods={setFilteredFoods}
+                                                />
                                                 <List
                                                     filteredTravels={filteredTravels}
                                                     travels={travels}
@@ -178,14 +211,16 @@ export default function SettingModals({
                                                     setGetID={setGetIDCompare}
                                                     gridCols='grid-cols-2'
                                                     category={category}
-                                                    setGetIDFoods={setGetIDFoods} />
+                                                    setGetIDFoods={setGetIDCompareFoods}
+                                                />
                                             </> :
                                             <Show
                                                 item={recordCompare}
                                                 comparison={() => setOpenCompareSecond(true)}
                                                 adding={(item: Travel | Food) => {
                                                     addFavorites(item);
-                                                    return item;
+                                                    if (category === 'travels') return item as Travel
+                                                    else if (category === 'foods') return item as Food
                                                 }}
                                                 activeComparison={!openCompareSecond}
                                                 favorites={favorites}
@@ -198,11 +233,18 @@ export default function SettingModals({
                                 <Modal
                                     isOpen={openCompareSecond}
                                     isStatic={true}
-                                    title={recordCompareSecond ? `Viaggio a ${recordCompareSecond?.title}` : 'Confronta viaggi'}
+                                    title={
+                                        category === 'travels' && recordCompare ?
+                                            `Viaggio a ${recordCompare?.title}` :
+                                            !recordCompare ? 'Confronta viaggi' :
+                                                category !== 'travels' && recordCompare ?
+                                                    `Food & Beverage` : 'Confronta alimenti'}
                                     onClose={() => {
                                         setOpenCompareSecond(false);
                                         setRecordCompareSecond(null);
-                                        setGetIDCompareSecond(null)
+                                        if (category === 'travels') {
+                                            setGetIDCompareSecond(null)
+                                        } else setGetIDCompareSecondFoods(null)
                                     }}
                                     hContent={conditions.filter(Boolean).length >= 3 ? 'h-[350px]' : ''}
                                     content={
@@ -210,7 +252,10 @@ export default function SettingModals({
                                             <>
                                                 <Form
                                                     setFilteredTravels={setFilteredTravels}
-                                                    travels={travels} />
+                                                    travels={travels}
+                                                    category={category}
+                                                    setFilteredFoods={setFilteredFoods}
+                                                />
                                                 <List
                                                     filteredTravels={filteredTravels}
                                                     travels={travels}
@@ -218,14 +263,16 @@ export default function SettingModals({
                                                     setGetID={setGetIDCompareSecond}
                                                     gridCols='grid-cols-2'
                                                     category={category}
-                                                    setGetIDFoods={setGetIDFoods} />
+                                                    setGetIDFoods={setGetIDCompareSecondFoods}
+                                                />
                                             </> :
                                             <Show
                                                 item={recordCompareSecond}
                                                 comparison={() => setOpenCompareThirty(true)}
                                                 adding={(item: Travel | Food) => {
                                                     addFavorites(item);
-                                                    return item;
+                                                    if (category === 'travels') return item as Travel
+                                                    else if (category === 'foods') return item as Food
                                                 }}
                                                 activeComparison={!openCompareThirty}
                                                 favorites={favorites}
@@ -238,11 +285,18 @@ export default function SettingModals({
                                 <Modal
                                     isOpen={openCompareThirty}
                                     isStatic={true}
-                                    title={recordCompareThirty ? `Viaggio a ${recordCompareThirty?.title}` : 'Confronta viaggi'}
+                                    title={
+                                        category === 'travels' && recordCompare ?
+                                            `Viaggio a ${recordCompare?.title}` :
+                                            !recordCompare ? 'Confronta viaggi' :
+                                                category !== 'travels' && recordCompare ?
+                                                    `Food & Beverage` : 'Confronta alimenti'}
                                     onClose={() => {
                                         setOpenCompareThirty(false);
                                         setRecordCompareThirty(null);
-                                        setGetIDCompareThirty(null)
+                                        if (category === 'travels') {
+                                            setGetIDCompareThirty(null)
+                                        } else setGetIDCompareThirtyFoods(null)
                                     }}
                                     hContent={conditions.filter(Boolean).length >= 3 ? 'h-[350px]' : ''}
                                     content={
@@ -250,7 +304,11 @@ export default function SettingModals({
                                             <>
                                                 <Form
                                                     setFilteredTravels={setFilteredTravels}
-                                                    travels={travels} />
+                                                    travels={travels}
+                                                    category={category}
+                                                    setFilteredFoods={setFilteredFoods}
+                                                />
+
                                                 <List
                                                     filteredTravels={filteredTravels}
                                                     travels={travels}
@@ -258,14 +316,16 @@ export default function SettingModals({
                                                     setGetID={setGetIDCompareThirty}
                                                     gridCols='grid-cols-2'
                                                     category={category}
-                                                    setGetIDFoods={setGetIDFoods} />
+                                                    setGetIDFoods={setGetIDCompareThirtyFoods}
+                                                />
                                             </> :
                                             <Show
                                                 item={recordCompareThirty}
                                                 comparison={() => setOpenModal(true)}
                                                 adding={(item: Travel | Food) => {
                                                     addFavorites(item);
-                                                    return item;
+                                                    if (category === 'travels') return item as Travel
+                                                    else if (category === 'foods') return item as Food
                                                 }}
                                                 activeComparison={!openModal}
                                                 favorites={favorites}
@@ -291,7 +351,10 @@ export default function SettingModals({
                                     <>
                                         <Form
                                             setFilteredTravels={setFilteredTravels}
-                                            travels={travels} />
+                                            travels={travels}
+                                            category={category}
+                                            setFilteredFoods={setFilteredFoods}
+                                        />
                                         <List
                                             filteredTravels={filteredTravels}
                                             travels={travels}

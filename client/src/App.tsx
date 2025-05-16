@@ -58,18 +58,25 @@ function App() {
   // COMPARISON 
   // Comparison setting first
   const [openCompare, setOpenCompare] = React.useState<boolean>(false);
-  const [recordCompare, setRecordCompare] = React.useState<Travel | null>(null);
+  const [recordCompare, setRecordCompare] = React.useState<Travel | Food | null>(null);
   const [getIDCompare, setGetIDCompare] = React.useState<number | null>(null);
+  // Get Ids Foods
+  const [getIDCompareFoods, setGetIDCompareFoods] = React.useState<number | null>(null);
+
 
   // Comparison setting second
   const [openCompareSecond, setOpenCompareSecond] = React.useState<boolean>(false);
-  const [recordCompareSecond, setRecordCompareSecond] = React.useState<Travel | null>(null);
+  const [recordCompareSecond, setRecordCompareSecond] = React.useState<Travel | Food | null>(null);
   const [getIDCompareSecond, setGetIDCompareSecond] = React.useState<number | null>(null);
+  // Get Ids Foods
+  const [getIDCompareSecondFoods, setGetIDCompareSecondFoods] = React.useState<number | null>(null);
 
   // Comparison setting thirty
   const [openCompareThirty, setOpenCompareThirty] = React.useState<boolean>(false);
-  const [recordCompareThirty, setRecordCompareThirty] = React.useState<Travel | null>(null);
+  const [recordCompareThirty, setRecordCompareThirty] = React.useState<Travel | Food | null>(null);
   const [getIDCompareThirty, setGetIDCompareThirty] = React.useState<number | null>(null);
+  // Get Ids Foods
+  const [getIDCompareThirtyFoods, setGetIDCompareThirtyFoods] = React.useState<number | null>(null);
 
   // Favorites setting
   const [favorites, setFavorites] = React.useState<Travel[] | null>(() => {
@@ -147,12 +154,15 @@ function App() {
 
   React.useEffect(() => {
     openModal && category === 'travels' && getItem({ URL_fetch: URL_API, set: setRecord, id: getIDs });
-    openModal && category === 'foods' && getItem({ URL_fetch: URL_API, set: setRecord, id: getIDFoods });
+    openCompare && category === 'travels' && getItem({ URL_fetch: URL_API, set: setRecordCompare, id: getIDCompare });
+    openCompareSecond && category === 'travels' && getItem({ URL_fetch: URL_API, set: setRecordCompareSecond, id: getIDCompareSecond });
+    openCompareThirty && category === 'travels' && getItem({ URL_fetch: URL_API, set: setRecordCompareThirty, id: getIDCompareThirty })
 
-    // openCompare && getItem({ set: setRecordCompare, id: getIDCompare });
-    // openCompareSecond && getItem({ set: setRecordCompareSecond, id: getIDCompareSecond });
-    // openCompareThirty && getItem({ set: setRecordCompareThirty, id: getIDCompareThirty })
-  }, [getIDs, getIDFoods, getIDCompare, getIDCompareSecond, getIDCompareThirty]);//
+    openModal && category === 'foods' && getItem({ URL_fetch: URL_API, set: setRecord, id: getIDFoods });
+    openCompare && category === 'foods' && getItem({ URL_fetch: URL_API, set: setRecordCompare, id: getIDCompareFoods });
+    openCompareSecond && category === 'foods' && getItem({ URL_fetch: URL_API, set: setRecordCompareSecond, id: getIDCompareSecondFoods });
+    openCompareThirty && category === 'foods' && getItem({ URL_fetch: URL_API, set: setRecordCompareThirty, id: getIDCompareThirtyFoods })
+  }, [getIDs, getIDCompare, getIDCompareSecond, getIDCompareThirty, getIDFoods, getIDCompareFoods, getIDCompareSecondFoods, getIDCompareThirtyFoods]);
 
 
 
@@ -312,6 +322,7 @@ function App() {
 
           {/* SETTING MODALS */}
           <SettingModals
+
             // Modal settings 
             // --open modal--
             openModal={openModal}
@@ -335,6 +346,9 @@ function App() {
             // --get ID item compare--
             getIDCompare={getIDCompare}
             setGetIDCompare={setGetIDCompare}
+            // --get ID item compare food--
+            getIDCompareFoods={getIDCompareFoods}
+            setGetIDCompareFoods={setGetIDCompareFoods}
 
             // Comparison settings compare Second
             // --open modal compare second--
@@ -346,6 +360,9 @@ function App() {
             // --get ID item compare second--
             getIDCompareSecond={getIDCompareSecond}
             setGetIDCompareSecond={setGetIDCompareSecond}
+            // --get ID item compare second food--
+            getIDCompareSecondFoods={getIDCompareSecondFoods}
+            setGetIDCompareSecondFoods={setGetIDCompareSecondFoods}
 
             // Comparison settings compare Thirty
             // --open modal compare second--
@@ -357,11 +374,16 @@ function App() {
             getIDCompareThirty={getIDCompareThirty}
             // --get ID item compare second--
             setGetIDCompareThirty={setGetIDCompareThirty}
+            // --get ID item compare thirty food--
+            getIDCompareThirtyFoods={getIDCompareThirtyFoods}
+            setGetIDCompareThirtyFoods={setGetIDCompareThirtyFoods}
 
             // Travels / Filtered travels
             travels={category === 'travels' ? travels : category === 'foods' ? foods : null}
             filteredTravels={filteredTravels}
             setFilteredTravels={setFilteredTravels}
+
+            setFilteredFoods={setFilteredFoods}
 
             // Adding favorites item
             addFavorites={addFavorites}
@@ -370,6 +392,7 @@ function App() {
             favorites={favorites}
 
             category={category}
+
           />
 
         </div>

@@ -20,6 +20,8 @@ export default function Show({
         } else return false
     });
 
+    console.log(item)
+
     return (
         <div className='flex justify-center items-center m-3'>
             {item ?
