@@ -2,15 +2,21 @@ export type Base = {
     id: number,
     title: string,
     category: string,
-    start: string
 }
 
 export type Travel = Base & {
+    start: string,
     image?: string,
     price: number,
     duration: number,
     direct: boolean,
     scale?: number,
+    available: boolean
+}
+
+export type Food = Base & {
+    brand: string,
+    price: number,
     available: boolean
 }
 
@@ -20,53 +26,69 @@ export type SettingModal = {
     openModal: boolean,
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>,
     // --item modal--
-    record: Travel | null,
-    setRecord: React.Dispatch<React.SetStateAction<Travel | null>>,
+    record: Travel | Food | null,
+    setRecord: React.Dispatch<React.SetStateAction<Travel | Food | null>>,
     // --get ID item modal--
     getIDs: number | null,
     setGetIDs: React.Dispatch<React.SetStateAction<number | null>>,
+
+    // --get ID item food--
+    getIDFoods: number | null,
+    setGetIDFoods: React.Dispatch<React.SetStateAction<number | null>>,
 
     // Comparison settings compare
     // --open modal compare--
     openCompare: boolean,
     setOpenCompare: React.Dispatch<React.SetStateAction<boolean>>,
     // --item compare--
-    recordCompare: Travel | null,
-    setRecordCompare: React.Dispatch<React.SetStateAction<Travel | null>>,
+    recordCompare: Travel | Food | null,
+    setRecordCompare: React.Dispatch<React.SetStateAction<Travel | Food | null>>,
     // --get ID item compare--
     getIDCompare: number | null,
     setGetIDCompare: React.Dispatch<React.SetStateAction<number | null>>,
+    // --get ID item compare food--
+    getIDCompareFoods: number | null,
+    setGetIDCompareFoods: React.Dispatch<React.SetStateAction<number | null>>,
 
     // Comparison settings compare Second
     // --open modal compare second--
     openCompareSecond: boolean,
     setOpenCompareSecond: React.Dispatch<React.SetStateAction<boolean>>,
     // --item compare second--
-    recordCompareSecond: Travel | null,
-    setRecordCompareSecond: React.Dispatch<React.SetStateAction<Travel | null>>,
+    recordCompareSecond: Travel | Food | null,
+    setRecordCompareSecond: React.Dispatch<React.SetStateAction<Travel | Food | null>>,
     // --get ID item compare second--
     getIDCompareSecond: number | null,
     setGetIDCompareSecond: React.Dispatch<React.SetStateAction<number | null>>,
+    // --get ID item compare second food--
+    getIDCompareSecondFoods: number | null,
+    setGetIDCompareSecondFoods: React.Dispatch<React.SetStateAction<number | null>>,
 
     // Comparison settings compare Thirty
     // --open modal compare thirty--
     openCompareThirty: boolean,
     setOpenCompareThirty: React.Dispatch<React.SetStateAction<boolean>>,
     // --item compare thirty--
-    recordCompareThirty: Travel | null,
-    setRecordCompareThirty: React.Dispatch<React.SetStateAction<Travel | null>>,
+    recordCompareThirty: Travel | Food | null,
+    setRecordCompareThirty: React.Dispatch<React.SetStateAction<Travel | Food | null>>,
     // --get ID item compare thirty--
     getIDCompareThirty: number | null,
     setGetIDCompareThirty: React.Dispatch<React.SetStateAction<number | null>>,
+    // --get ID item compare thirty food--
+    getIDCompareThirtyFoods: number | null,
+    setGetIDCompareThirtyFoods: React.Dispatch<React.SetStateAction<number | null>>,
 
     // Travels / Filtered travels
-    travels: Travel[] | null,
+    travels: Travel[] | Food[] | null,
     filteredTravels: Travel[] | null,
     setFilteredTravels: React.Dispatch<React.SetStateAction<Travel[] | null>>,
 
     // Adding favorites item
-    addFavorites: (favorite: Base) => void,
-    favorites: Base[] | null,
+    addFavorites: (favorite: Travel | Food) => void,
+    favorites: Travel[] | Food[] | null,
+
+    category: "travels" | "foods" | null,
+    setFilteredFoods: React.Dispatch<React.SetStateAction<Food[] | null>>
 }
 
 export type PopUp = {
@@ -77,17 +99,21 @@ export type PopUp = {
 
 export type Form = {
     setFilteredTravels: (filteredTravels: Travel[] | null) => void,
-    travels: (Travel[] | null)
+    travels: (Travel[] | Food[] | null),
+    category: "travels" | "foods" | null,
+    setFilteredFoods: React.Dispatch<React.SetStateAction<Food[] | null>>
 }
 
 export type List = {
-    filteredTravels: (Travel[] | null),
-    travels: (Travel[] | null),
+    filteredTravels: (Travel[] | Food[] | null),
+    travels: (Travel[] | Food[] | null),
     setOpenModal: (isOpen: boolean) => void,
     setGetID: (id: number) => void,
+    setGetIDFoods: (id: number) => void,
     gridCols?: string,
     onDelete?: boolean,
-    setDeleted?: React.Dispatch<React.SetStateAction<Base[] | Travel[] | null>>
+    setDeleted?: (items: Travel[] | Food[] | null) => void;
+    category: "travels" | "foods" | null
 }
 
 export type Modal = {
@@ -100,9 +126,10 @@ export type Modal = {
 }
 
 export type Show = {
-    item: Travel | null,
+    item: Travel | Food | null,
     comparison: () => void,
-    adding: (data: { id: number; title: string; category: string; start: string }) => Base
+    adding: (data: Travel | Food) => void
     activeComparison: boolean,
-    favorites: Base[] | null
+    favorites: Travel[] | Food[] | null,
+    category: "travels" | "foods" | null
 }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // Types
-import type { Travel, Form } from '../types/types';
+import type { Travel, Food, Form } from '../types/types';
 
 // Debounce Function
 function debounce<T>(callback: (value: T) => void, delay: number) {
@@ -16,25 +16,43 @@ function debounce<T>(callback: (value: T) => void, delay: number) {
 
 export default function Form({
     setFilteredTravels,
-    travels
+    travels,
+    category,
+    setFilteredFoods
 }: Form) {
 
     const [search, setSearch] = React.useState<string>(''); // set Input query
     const [checkValue, setCheckValue] = React.useState<'scalo' | 'diretto' | null>(null); // set Checkbox value
-    const [suggest, setSuggest] = React.useState<Travel[] | null>(null); // set Suggestion
+    const [suggest, setSuggest] = React.useState<Travel[] | Food[] | null>(null); // set Suggestion
 
 
-    // handle submit to Form
-    function handleSubmitSearch(e: React.FormEvent<HTMLFormElement>): void {
+    // submit travels
+    function handleSubmitTravel(e: React.FormEvent<HTMLFormElement>): void {
         e.preventDefault();
-        const filteredTravels = travels?.filter(t => {
-            const matchesSearch = search ? t.title.toLowerCase().trim().includes(search.toLowerCase().trim()) : true;
-            const matchesCategory = checkValue ? t.category === checkValue : true;
-            return matchesSearch && matchesCategory;
-        }) || null;
+        const filteredTravels = travels
+            ?.filter(t => {
+                const matchesSearch = search ? t.title.toLowerCase().trim().includes(search.toLowerCase().trim()) : true;
+                const matchesCategory = checkValue ? t.category === checkValue : true;
+                return matchesSearch && matchesCategory
+            }) || null;
+        setFilteredTravels(filteredTravels as Travel[]);
 
-        setFilteredTravels(filteredTravels);
+        setCheckValue(null);
         setSuggest(null)
+    }
+
+    // submit foods
+    function handleSubmitFood(e: React.FormEvent<HTMLFormElement>): void {
+        e.preventDefault();
+        const filteredTravels = travels
+            ?.filter(t => {
+                const matchesSearch = search ? t.title.toLowerCase().trim().includes(search.toLowerCase().trim()) : true;
+                return matchesSearch
+            }) || null;
+        setFilteredFoods(filteredTravels as Food[]);
+
+        setSuggest(null);
+        setSearch('')
     }
 
     // handle change for Category
@@ -44,8 +62,12 @@ export default function Form({
 
     // Suggestion function Debounce
     const suggestion = React.useCallback(debounce((searchValue: string) => {
-        const filteredTitle = travels?.filter(t => searchValue.length > 0 && t.title.toLowerCase().trim().includes(searchValue.toLowerCase().trim()))
-        return setSuggest(filteredTitle || null)
+
+        const filteredTitleTravel = travels
+            ?.filter(t => searchValue.length > 0 && t.title.toLowerCase().trim().includes(searchValue.toLowerCase().trim()))
+        return setSuggest(filteredTitleTravel)
+
+
     }, 500), [search])
 
     React.useEffect(() => {
@@ -58,7 +80,7 @@ export default function Form({
         <>
             {/* FILTER BY QUERY/CATEGORY */}
             <form
-                onSubmit={handleSubmitSearch}
+                onSubmit={category === 'travels' ? handleSubmitTravel : category === 'foods' ? handleSubmitFood : undefined}
                 className='my-5 flex flex-wrap items-center sm:flex-nowrap gap-3 '>
 
                 <div className='flex flex-col relative'>
@@ -91,26 +113,27 @@ export default function Form({
                 </div>
 
                 {/* CHECKBOX */}
-                <div className='flex items-center'>
-                    <div className='flex items-center gap-0.5'>
-                        <label htmlFor="scalo" className='ml-2 pb-0.5'>scalo</label>
-                        <input
-                            type="checkbox"
-                            name="scalo"
-                            checked={checkValue === 'scalo'}
-                            onChange={() => handleCheckboxChange('scalo')} />
-                    </div>
+                {category === 'travels' ?
+                    <div className='flex items-center'>
+                        <div className='flex items-center gap-0.5'>
+                            <label htmlFor="scalo" className='ml-2 pb-0.5'>scalo</label>
+                            <input
+                                type="checkbox"
+                                name="scalo"
+                                checked={checkValue === 'scalo'}
+                                onChange={() => handleCheckboxChange('scalo')} />
+                        </div>
 
-                    <div className='flex items-center gap-0.5'>
-                        <label htmlFor="diretto" className='ml-2 pb-0.5'>diretto</label>
-                        <input
-                            type="checkbox"
-                            name="diretto"
-                            checked={checkValue === 'diretto'}
-                            onChange={() => handleCheckboxChange('diretto')} />
-                    </div>
+                        <div className='flex items-center gap-0.5'>
+                            <label htmlFor="diretto" className='ml-2 pb-0.5'>diretto</label>
+                            <input
+                                type="checkbox"
+                                name="diretto"
+                                checked={checkValue === 'diretto'}
+                                onChange={() => handleCheckboxChange('diretto')} />
+                        </div>
 
-                </div>
+                    </div> : ''}
 
                 <button type="submit" className='px-5 py-1 rounded-md bg-[#4973fc] text-[#ffff00] hover:bg-[#0b43fa] hover:shadow-md shadow-[#4973fc]'>Cerca</button>
             </form>

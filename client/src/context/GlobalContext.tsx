@@ -5,13 +5,16 @@ const URL_API = import.meta.env.VITE_URL_API;
 import type { Travel } from "../types/types";
 
 // tipo di contenuto che viene esportato
-type ContextURL = {
-    URL_API: string,
-    fetchURL: (url: string) => Promise<Travel[]>
+type ContextValues = {
+    getIDs,
+    setGetIDs,
+    record: Travel | null,
+    setRecord: () => void,
+    getItem: () => void
 }
 
 // creo un context tipizzato 
-const GlobalContext = createContext<ContextURL | null>(null);
+const GlobalContext = createContext<ContextValues | null>(null);
 
 // tipizzo le props children del context
 type ContextProps = {
@@ -20,12 +23,17 @@ type ContextProps = {
 
 export function GlobalProvider({ children }: ContextProps) {
 
-    // creo una funzione fetch per recuperare il contenuto sotto formato json e utilizzarlo in tutto il progetto
-    async function fetchURL(url: string): Promise<Travel[]> {
+    // Show setting
+    const [getIDs, setGetIDs] = React.useState<number | null>(null);
+    const [record, setRecord] = React.useState<Travel | null>(null);
+
+    async function getItem(): Promise<Travel | null> {
         try {
-            const res: Response = await fetch(url);
+            const res = await fetch(`${URL_API}/${getIDs}`);
             if (!res.ok) throw new Error(`Errore durante il recupero dei dati. Errore: ${res.status}, message: ${res.statusText}`)
             const data = await res.json();
+            // console.log(data);
+            setRecord(data.travel)
             return data
         } catch (err) {
             if (err instanceof Error) {
@@ -33,12 +41,18 @@ export function GlobalProvider({ children }: ContextProps) {
             } else {
                 console.error(err)
             }
-            return []
+            return null
         }
-    }
+    };
 
     return (
-        <GlobalContext.Provider value={{ URL_API, fetchURL }}>
+        <GlobalContext.Provider value={{
+            getIDs,
+            setGetIDs,
+            record,
+            setRecord,
+            getItem
+        }}>
             {children}
         </GlobalContext.Provider>
     )
