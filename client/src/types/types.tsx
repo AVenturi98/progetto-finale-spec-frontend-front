@@ -20,6 +20,18 @@ export type Food = Base & {
     available: boolean
 }
 
+export type Props<T> = {
+    URL_fetch: string,
+    set: React.Dispatch<React.SetStateAction<T[] | null>>,
+    id?: number | null
+};
+
+export type ResponseData = {
+    URL_fetch: string,
+    set: React.Dispatch<React.SetStateAction<Travel | Food | null>>,
+    id?: number | null
+};
+
 export type SettingModal = {
     // Modal settings 
     // --open modal--
@@ -132,4 +144,49 @@ export type Show = {
     activeComparison: boolean,
     favorites: Travel[] | Food[] | null,
     category: "travels" | "foods" | null
+}
+
+export type BtnSwitch = {
+    category: "travels" | "foods" | null,
+    setCategory: React.Dispatch<React.SetStateAction<"travels" | "foods" | null>>,
+    categories: string[],
+    selectedBtn: "travels" | "foods" | null,
+    setSelectedBtn: React.Dispatch<React.SetStateAction<"travels" | "foods" | null>>
+}
+
+export type Favorites = {
+    favorites: Travel[] | Food[] | null,
+    setFavorites: React.Dispatch<React.SetStateAction<Travel[] | null>>,
+    favoritesModal: boolean,
+    setFavoritesModal: React.Dispatch<React.SetStateAction<boolean>>,
+    filteredFavorites: Base[] | null,
+    setFilteredFavorites: React.Dispatch<React.SetStateAction<Travel[] | Food[] | null>>,
+    setOpenModal: React.Dispatch<React.SetStateAction<boolean>>,
+    setGetIDs: React.Dispatch<React.SetStateAction<number | null>>,
+    setGetIDFoods: React.Dispatch<React.SetStateAction<number | null>>, // get id foods
+    timing: () => void,
+    setAddRemoved: React.Dispatch<React.SetStateAction<"Rimosso" | "Aggiunto">>,
+    category: "travels" | "foods" | null,
+    setCategory: React.Dispatch<React.SetStateAction<"travels" | "foods" | null>>,
+    setFavoritesFoods: React.Dispatch<React.SetStateAction<Food[] | null>>,
+    categories: string[],
+    selectedBtn: "travels" | "foods" | null,
+    setSelectedBtn: React.Dispatch<React.SetStateAction<"travels" | "foods" | null>>,
+    setFilteredFoods: React.Dispatch<React.SetStateAction<Food[] | null>>
+}
+
+export type FoodShow = {
+    item: Food | null,
+    exists: boolean | undefined,
+    activeComparison: boolean,
+    comparison: () => void,
+    adding: (data: Food) => void
+}
+
+export type TravelShow = {
+    item: Travel | null,
+    exists: boolean | undefined,
+    activeComparison: boolean,
+    comparison: () => void,
+    adding: (data: Travel | Food) => void
 }

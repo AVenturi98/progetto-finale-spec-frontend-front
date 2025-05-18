@@ -1,5 +1,5 @@
 // Types
-import type { Travel, Food, Base } from "../types/types";
+import type { Travel, Food, Favorites } from "../types/types";
 
 // Components
 import Modal from "./Modal";
@@ -24,26 +24,9 @@ export default function Favorites({
     setFavoritesFoods,
     categories,
     selectedBtn,
-    setSelectedBtn
-}: {
-    favorites: Travel[] | Food[] | null,
-    setFavorites: React.Dispatch<React.SetStateAction<Travel[] | null>>,
-    favoritesModal: boolean,
-    setFavoritesModal: React.Dispatch<React.SetStateAction<boolean>>,
-    filteredFavorites: Base[] | null,
-    setFilteredFavorites: React.Dispatch<React.SetStateAction<Travel[] | Food[] | null>>,
-    setOpenModal: React.Dispatch<React.SetStateAction<boolean>>,
-    setGetIDs: React.Dispatch<React.SetStateAction<number | null>>,
-    setGetIDFoods: React.Dispatch<React.SetStateAction<number | null>>, // get id foods
-    timing: () => void,
-    setAddRemoved: React.Dispatch<React.SetStateAction<"Rimosso" | "Aggiunto">>,
-    category: "travels" | "foods" | null,
-    setCategory: React.Dispatch<React.SetStateAction<"travels" | "foods" | null>>,
-    setFavoritesFoods: React.Dispatch<React.SetStateAction<Food[] | null>>,
-    categories: string[],
-    selectedBtn: "travels" | "foods" | null,
-    setSelectedBtn: React.Dispatch<React.SetStateAction<"travels" | "foods" | null>>
-}) {
+    setSelectedBtn,
+    setFilteredFoods
+}: Favorites) {
 
 
     return (
@@ -65,6 +48,8 @@ export default function Favorites({
                             <>
                                 <Form
                                     // form search
+                                    category={category}
+                                    setFilteredFoods={setFilteredFoods}
                                     setFilteredTravels={setFilteredFavorites}
                                     travels={favorites as unknown as Travel[] | Food[]}
                                 />

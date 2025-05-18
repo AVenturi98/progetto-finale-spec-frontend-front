@@ -1,4 +1,5 @@
-import * as React from 'react';
+// Types
+import type { BtnSwitch } from '../types/types';
 
 export default function BtnSwitch({
     category,
@@ -6,13 +7,7 @@ export default function BtnSwitch({
     categories,
     selectedBtn,
     setSelectedBtn
-}: {
-    category: "travels" | "foods" | null,
-    setCategory: React.Dispatch<React.SetStateAction<"travels" | "foods" | null>>,
-    categories: string[],
-    selectedBtn: "travels" | "foods" | null,
-    setSelectedBtn: React.Dispatch<React.SetStateAction<"travels" | "foods" | null>>
-}) {
+}: BtnSwitch) {
 
 
     function handleSelectedBtn(e: string) {

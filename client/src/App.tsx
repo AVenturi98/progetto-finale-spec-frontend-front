@@ -2,7 +2,7 @@ import * as React from 'react';
 const URL_API = import.meta.env.VITE_URL_API;
 
 //Types 
-import type { Travel, Food } from './types/types';
+import type { Travel, Food, Props, ResponseData } from './types/types';
 
 // Components
 import Form from './components/Form';
@@ -25,18 +25,6 @@ import {
 
 // Images
 import mask from './assets/Mask_1.png'
-
-type Props<T> = {
-  URL_fetch: string,
-  set: React.Dispatch<React.SetStateAction<T[] | null>>,
-  id?: number | null
-};
-
-type ResponseData = {
-  URL_fetch: string,
-  set: React.Dispatch<React.SetStateAction<Travel | Food | null>>,
-  id?: number | null
-};
 
 
 const categories = ['travels', 'foods'];
@@ -435,6 +423,7 @@ function App() {
             <Favorites
               favorites={category === 'travels' ? favorites : favoritesFoods}
               setFavorites={setFavorites}
+              setFilteredFoods={setFilteredFoods}
               favoritesModal={favoritesModal}
               setFavoritesModal={setFavoritesModal}
               filteredFavorites={filteredFavorites}

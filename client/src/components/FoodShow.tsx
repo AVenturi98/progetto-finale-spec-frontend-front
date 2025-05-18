@@ -1,5 +1,5 @@
 // Types
-import type { Food } from '../types/types';
+import type { Food, FoodShow } from '../types/types';
 
 export default function FoodShow({
     item,
@@ -7,13 +7,7 @@ export default function FoodShow({
     activeComparison,
     comparison,
     adding
-}: {
-    item: Food | null,
-    exists: boolean | undefined,
-    activeComparison: boolean,
-    comparison: () => void,
-    adding: (data: Food) => void
-}
+}: FoodShow
 ) {
 
     return (

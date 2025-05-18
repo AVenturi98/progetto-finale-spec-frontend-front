@@ -1,5 +1,5 @@
 // Types
-import type { Travel, Food } from '../types/types';
+import type { Travel, TravelShow } from '../types/types';
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,13 +11,7 @@ export default function TravelShow({
     activeComparison,
     comparison,
     adding
-}: {
-    item: Travel | null,
-    exists: boolean | undefined,
-    activeComparison: boolean,
-    comparison: () => void,
-    adding: (data: Travel | Food) => void
-}) {
+}: TravelShow) {
 
 
     return (
