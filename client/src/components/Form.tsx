@@ -39,6 +39,7 @@ export default function Form({
 
         setCheckValue(null);
         setSuggest(null)
+        setSearch('')
     }
 
     // submit foods
@@ -98,10 +99,12 @@ export default function Form({
                                 <div
                                     key={e.id}
                                     onClick={() => {
+                                        setSuggest(null)
                                         setSearch(e.title);
                                         if (e.category === 'scalo' || e.category === 'diretto') {
                                             setCheckValue(e.category);
                                         };
+                                        return
                                     }}
                                     className='px-1.5 py-1 rounded-sm flex items-center justify-between hover:bg-gray-300 cursor-pointer'>
                                     <p>{e.title}</p>
@@ -135,7 +138,7 @@ export default function Form({
 
                     </div> : ''}
 
-                <button type="submit" className='px-5 py-1 rounded-md bg-[#4973fc] text-[#ffff00] hover:bg-[#0b43fa] hover:shadow-md shadow-[#4973fc]'>Cerca</button>
+                <button type="submit" className='mx-3 px-5 py-1 rounded-md bg-[#4973fc] text-[#ffff00] hover:bg-[#0b43fa] hover:shadow-md shadow-[#4973fc]'>Cerca</button>
             </form>
         </>
     )

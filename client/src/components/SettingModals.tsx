@@ -124,9 +124,6 @@ export default function SettingModals({
         },
     ];
 
-    console.log('ID', getIDFoods)
-    console.log('IDSSSS', getIDCompareFoods)
-
     return (
         <>
             {
@@ -354,7 +351,7 @@ export default function SettingModals({
                             title={modal.record ? `Viaggio a ${modal.record?.title}` : 'Confronta viaggi'}
                             onClose={() => {
                                 modal.setIsOpen(false);
-                                conditions.filter(Boolean).length >= 2 && modal.setRecord(null);
+                                modal.setRecord(null);
                             }}
                             content={
                                 modal.record === null ?

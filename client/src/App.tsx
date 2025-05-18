@@ -14,8 +14,17 @@ import Favorites from './components/Favorites';
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlaneDeparture, faBars, faX } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlaneDeparture,
+  faBars,
+  faX,
+  faLemon,
+  faHouse
+} from '@fortawesome/free-solid-svg-icons';
 
+
+// Images
+import mask from './assets/Mask_1.png'
 
 type Props<T> = {
   URL_fetch: string,
@@ -156,15 +165,15 @@ function App() {
 
 
   React.useEffect(() => {
-    openModal && category === 'travels' && getItem({ URL_fetch: URL_API, set: setRecord, id: getIDs });
-    openCompare && category === 'travels' && getItem({ URL_fetch: URL_API, set: setRecordCompare, id: getIDCompare });
-    openCompareSecond && category === 'travels' && getItem({ URL_fetch: URL_API, set: setRecordCompareSecond, id: getIDCompareSecond });
-    openCompareThirty && category === 'travels' && getItem({ URL_fetch: URL_API, set: setRecordCompareThirty, id: getIDCompareThirty })
+    category === 'travels' && getItem({ URL_fetch: URL_API, set: setRecord, id: getIDs });
+    category === 'travels' && getItem({ URL_fetch: URL_API, set: setRecordCompare, id: getIDCompare });
+    category === 'travels' && getItem({ URL_fetch: URL_API, set: setRecordCompareSecond, id: getIDCompareSecond });
+    category === 'travels' && getItem({ URL_fetch: URL_API, set: setRecordCompareThirty, id: getIDCompareThirty })
 
-    openModal && category === 'foods' && getItem({ URL_fetch: URL_API, set: setRecord, id: getIDFoods });
-    openCompare && category === 'foods' && getItem({ URL_fetch: URL_API, set: setRecordCompare, id: getIDCompareFoods });
-    openCompareSecond && category === 'foods' && getItem({ URL_fetch: URL_API, set: setRecordCompareSecond, id: getIDCompareSecondFoods });
-    openCompareThirty && category === 'foods' && getItem({ URL_fetch: URL_API, set: setRecordCompareThirty, id: getIDCompareThirtyFoods })
+    category === 'foods' && getItem({ URL_fetch: URL_API, set: setRecord, id: getIDFoods });
+    category === 'foods' && getItem({ URL_fetch: URL_API, set: setRecordCompare, id: getIDCompareFoods });
+    category === 'foods' && getItem({ URL_fetch: URL_API, set: setRecordCompareSecond, id: getIDCompareSecondFoods });
+    category === 'foods' && getItem({ URL_fetch: URL_API, set: setRecordCompareThirty, id: getIDCompareThirtyFoods })
   }, [getIDs, getIDCompare, getIDCompareSecond, getIDCompareThirty, getIDFoods, getIDCompareFoods, getIDCompareSecondFoods, getIDCompareThirtyFoods]);
 
 
@@ -251,7 +260,11 @@ function App() {
     <>
       <header className='bg-[#4973fc] shadow-2xl shadow-amber-300'>
         <nav className='mb-3 md:mb-12 p-3 cursor-context-menu mx-20 py-5 flex justify-around'>
-          <FontAwesomeIcon icon={faPlaneDeparture} size='2xl' style={{ color: '#ffffff', }} />
+          {category === 'travels' ?
+            <FontAwesomeIcon icon={faPlaneDeparture} size='2xl' style={{ color: '#ffffff', }} />
+            : category === 'foods' ?
+              <FontAwesomeIcon icon={faLemon} size='2xl' style={{ color: '#ffffff', }} />
+              : <FontAwesomeIcon icon={faHouse} size='2xl' style={{ color: '#ffffff', }} />}
           <button
             type="button"
             onClick={() => {
@@ -264,10 +277,6 @@ function App() {
               style={{ color: !openAside ? '#ffffff' : '#ffff00', }} />
           </button>
         </nav>
-      </header>
-
-      <main className='flex flex-col gap-10 cursor-context-menu'>
-
 
         <aside className={`fixed top-0.5 right-0 bg-[#000000ef] text-white rounded-l-full h-screen flex items-center transition-all transition-discrete duration-500 ${openAside ? ' translate-0 xl:w-[30%]' : ' translate-100 w-0'}`}>
           <button
@@ -301,135 +310,160 @@ function App() {
           </ul>
         </aside>
 
-        <div className='m-2'>
-          <h1>Viaggia oltre meta</h1>
+      </header>
 
 
 
-          {/* FORM SEARCH */}
-          <Form
-            setFilteredTravels={setFilteredTravels}
-            travels={category === 'travels' ? travels : category === 'foods' ? foods : null}
-            category={category}
-            setFilteredFoods={setFilteredFoods} />
+      <main className='flex flex-col gap-10 cursor-context-menu'>
 
-          {/* RECORDS LIST */}
-          <List
-            filteredTravels={category === 'travels' ? filteredTravels : category === 'foods' ? filteredFoods : null}
-            travels={category === 'travels' ? travels : category === 'foods' ? foods : null}
-            setOpenModal={setOpenModal}
-            setGetID={setGetIDs}
-            category={category}
-            setGetIDFoods={setGetIDFoods}
+        {/* HERO */}
+        {!category ? (
+          <section id='hero-show' className='relative w-[80%] h-[600px] flex items-start flex-wrap sm:flex-nowrap bg-gray-100 shadow-lg'
+            style={{ backgroundImage: `linear-gradient(rgba(12, 12, 22, 0.6), rgba(54, 54, 88, 0.4)), url(${mask})`, backgroundSize: 'cover', backgroundPosition: 'center', zIndex: -99 }}>
 
-          />
+            <div>
+              <div className='text-white uppercase text-8xl font-extrabold font-serif font-stretch-95% font absolute top-25 left-50'>Naviga tra <br /> <span>tantissime offerte</span></div>
+            </div>
 
-          {/* SETTING MODALS */}
-          <SettingModals
+          </section>
+        ) : (
 
-            // Modal settings 
-            // --open modal--
-            openModal={openModal}
-            setOpenModal={setOpenModal}
-            // --item modal--
-            record={record}
-            setRecord={setRecord}
-            // --get ID item modal--
-            getIDs={getIDs}
-            setGetIDs={setGetIDs}
+          <>
+            <div className='m-2'>
 
-            getIDFoods={getIDFoods} // get id food
-            setGetIDFoods={setGetIDFoods} // get id food
-            // Comparison settings compare
-            // --open modal compare--
-            openCompare={openCompare}
-            setOpenCompare={setOpenCompare}
-            // --item compare--
-            recordCompare={recordCompare}
-            setRecordCompare={setRecordCompare}
-            // --get ID item compare--
-            getIDCompare={getIDCompare}
-            setGetIDCompare={setGetIDCompare}
-            // --get ID item compare food--
-            getIDCompareFoods={getIDCompareFoods}
-            setGetIDCompareFoods={setGetIDCompareFoods}
 
-            // Comparison settings compare Second
-            // --open modal compare second--
-            openCompareSecond={openCompareSecond}
-            setOpenCompareSecond={setOpenCompareSecond}
-            // --item compare second--
-            recordCompareSecond={recordCompareSecond}
-            setRecordCompareSecond={setRecordCompareSecond}
-            // --get ID item compare second--
-            getIDCompareSecond={getIDCompareSecond}
-            setGetIDCompareSecond={setGetIDCompareSecond}
-            // --get ID item compare second food--
-            getIDCompareSecondFoods={getIDCompareSecondFoods}
-            setGetIDCompareSecondFoods={setGetIDCompareSecondFoods}
+              <h1>{category === 'travels' ? 'Viaggia oltre meta' : 'Foods & Beverages'}</h1>
 
-            // Comparison settings compare Thirty
-            // --open modal compare second--
-            openCompareThirty={openCompareThirty}
-            setOpenCompareThirty={setOpenCompareThirty}
-            // --item compare second-
-            recordCompareThirty={recordCompareThirty}
-            setRecordCompareThirty={setRecordCompareThirty}
-            getIDCompareThirty={getIDCompareThirty}
-            // --get ID item compare second--
-            setGetIDCompareThirty={setGetIDCompareThirty}
-            // --get ID item compare thirty food--
-            getIDCompareThirtyFoods={getIDCompareThirtyFoods}
-            setGetIDCompareThirtyFoods={setGetIDCompareThirtyFoods}
 
-            // Travels / Filtered travels
-            travels={category === 'travels' ? travels : category === 'foods' ? foods : null}
-            filteredTravels={filteredTravels}
-            setFilteredTravels={setFilteredTravels}
 
-            setFilteredFoods={setFilteredFoods}
+              {/* FORM SEARCH */}
+              <Form
+                setFilteredTravels={setFilteredTravels}
+                travels={category === 'travels' ? travels : category === 'foods' ? foods : null}
+                category={category}
+                setFilteredFoods={setFilteredFoods} />
 
-            // Adding favorites item
-            addFavorites={addFavorites}
+              {/* RECORDS LIST */}
+              <List
+                filteredTravels={category === 'travels' ? filteredTravels : category === 'foods' ? filteredFoods : null}
+                travels={category === 'travels' ? travels : category === 'foods' ? foods : null}
+                setOpenModal={setOpenModal}
+                setGetID={setGetIDs}
+                category={category}
+                setGetIDFoods={setGetIDFoods}
 
-            // Custom text btn add favorites
-            favorites={favorites}
+              />
 
-            category={category}
+              {/* SETTING MODALS */}
+              <SettingModals
 
-          />
+                // Modal settings 
+                // --open modal--
+                openModal={openModal}
+                setOpenModal={setOpenModal}
+                // --item modal--
+                record={record}
+                setRecord={setRecord}
+                // --get ID item modal--
+                getIDs={getIDs}
+                setGetIDs={setGetIDs}
 
-        </div>
+                getIDFoods={getIDFoods} // get id food
+                setGetIDFoods={setGetIDFoods} // get id food
+                // Comparison settings compare
+                // --open modal compare--
+                openCompare={openCompare}
+                setOpenCompare={setOpenCompare}
+                // --item compare--
+                recordCompare={recordCompare}
+                setRecordCompare={setRecordCompare}
+                // --get ID item compare--
+                getIDCompare={getIDCompare}
+                setGetIDCompare={setGetIDCompare}
+                // --get ID item compare food--
+                getIDCompareFoods={getIDCompareFoods}
+                setGetIDCompareFoods={setGetIDCompareFoods}
 
-        {/* FAVORITES */}
-        <Favorites
-          favorites={category === 'travels' ? favorites : favoritesFoods}
-          setFavorites={setFavorites}
-          favoritesModal={favoritesModal}
-          setFavoritesModal={setFavoritesModal}
-          filteredFavorites={filteredFavorites}
-          setFilteredFavorites={setFilteredFavorites}
-          setOpenModal={setOpenModal}
-          setGetIDs={setGetIDs}
-          timing={timing}
-          setAddRemoved={setAddRemoved}
-          category={category}
-          setCategory={setCategory}
-          setGetIDFoods={setGetIDFoods}
-          setFavoritesFoods={setFavoritesFoods}
-          categories={categories}
-          selectedBtn={selectedBtn}
-          setSelectedBtn={setSelectedBtn}
-        />
+                // Comparison settings compare Second
+                // --open modal compare second--
+                openCompareSecond={openCompareSecond}
+                setOpenCompareSecond={setOpenCompareSecond}
+                // --item compare second--
+                recordCompareSecond={recordCompareSecond}
+                setRecordCompareSecond={setRecordCompareSecond}
+                // --get ID item compare second--
+                getIDCompareSecond={getIDCompareSecond}
+                setGetIDCompareSecond={setGetIDCompareSecond}
+                // --get ID item compare second food--
+                getIDCompareSecondFoods={getIDCompareSecondFoods}
+                setGetIDCompareSecondFoods={setGetIDCompareSecondFoods}
 
-        {/* BUTTONS */}
-        <BtnsFixed setFavoritesModal={setFavoritesModal} />
+                // Comparison settings compare Thirty
+                // --open modal compare second--
+                openCompareThirty={openCompareThirty}
+                setOpenCompareThirty={setOpenCompareThirty}
+                // --item compare second-
+                recordCompareThirty={recordCompareThirty}
+                setRecordCompareThirty={setRecordCompareThirty}
+                getIDCompareThirty={getIDCompareThirty}
+                // --get ID item compare second--
+                setGetIDCompareThirty={setGetIDCompareThirty}
+                // --get ID item compare thirty food--
+                getIDCompareThirtyFoods={getIDCompareThirtyFoods}
+                setGetIDCompareThirtyFoods={setGetIDCompareThirtyFoods}
 
-        {/* POP UP */}
-        <PopUp
-          isVisible={isVisible}
-          popUp={popUp}
-          addRemoved={addRemoved} />
+                // Travels / Filtered travels
+                travels={category === 'travels' ? travels : category === 'foods' ? foods : null}
+                filteredTravels={filteredTravels}
+                setFilteredTravels={setFilteredTravels}
+
+                setFilteredFoods={setFilteredFoods}
+
+                // Adding favorites item
+                addFavorites={addFavorites}
+
+                // Custom text btn add favorites
+                favorites={favorites}
+
+                category={category}
+
+              />
+
+            </div>
+
+            {/* FAVORITES */}
+            <Favorites
+              favorites={category === 'travels' ? favorites : favoritesFoods}
+              setFavorites={setFavorites}
+              favoritesModal={favoritesModal}
+              setFavoritesModal={setFavoritesModal}
+              filteredFavorites={filteredFavorites}
+              setFilteredFavorites={setFilteredFavorites}
+              setOpenModal={setOpenModal}
+              setGetIDs={setGetIDs}
+              timing={timing}
+              setAddRemoved={setAddRemoved}
+              category={category}
+              setCategory={setCategory}
+              setGetIDFoods={setGetIDFoods}
+              setFavoritesFoods={setFavoritesFoods}
+              categories={categories}
+              selectedBtn={selectedBtn}
+              setSelectedBtn={setSelectedBtn}
+            />
+
+            {/* BUTTONS */}
+            <BtnsFixed setFavoritesModal={setFavoritesModal} />
+
+            {/* POP UP */}
+            <PopUp
+              isVisible={isVisible}
+              popUp={popUp}
+              addRemoved={addRemoved} />
+
+          </>
+        )
+        }
 
       </main>
     </>
