@@ -423,7 +423,7 @@ function App() {
                 addFavorites={addFavorites}
 
                 // Custom text btn add favorites
-                favorites={favorites}
+                favorites={category === 'travels' ? favorites : favoritesFoods}
 
                 category={category}
 

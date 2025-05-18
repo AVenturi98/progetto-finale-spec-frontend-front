@@ -348,7 +348,12 @@ export default function SettingModals({
                         <Modal
                             key={index}
                             isOpen={modal.isOpen}
-                            title={modal.record ? `Viaggio a ${modal.record?.title}` : 'Confronta viaggi'}
+                            title={
+                                category === 'travels' && record ?
+                                    `Viaggio a ${record?.title}` :
+                                    !record && category === 'travels' ? 'Confronta viaggi' :
+                                        category !== 'travels' && record ?
+                                            `Food & Beverage` : 'Confronta alimenti'}
                             onClose={() => {
                                 modal.setIsOpen(false);
                                 modal.setRecord(null);
